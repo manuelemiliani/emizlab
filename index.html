@@ -241,6 +241,7 @@
             align-items: center;
             gap: 5px;
             margin-top: 4px;
+            flex-wrap: wrap;
         }
 
         .section-header {
@@ -380,18 +381,26 @@
         .btn-view-file {
             background-color: #028090;
             color: white;
-            padding: 6px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 11px;
+            font-size: 12px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             font-weight: 500;
+            transition: all 0.2s;
         }
 
         .btn-view-file:hover {
             background-color: #05668d;
+        }
+
+        .btn-view-file.disabled {
+            background-color: #cbd5e1;
+            color: #94a3b8;
+            pointer-events: none;
+            border: 1px solid #e2e8f0;
         }
 
         .admin-table {
@@ -430,19 +439,6 @@
         .edit-exam-btn:hover {
             background-color: #e0f2fe;
             color: var(--accent);
-        }
-
-        .action-cell {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .file-upload-btn {
-            font-size: 11px;
-            display: block;
-            margin-top: 4px;
-            max-width: 180px;
         }
 
         .exam-date-small {
@@ -515,6 +511,70 @@
             font-size: 20px;
             cursor: pointer;
             color: var(--text-muted);
+        }
+
+        .current-pdf-box {
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .current-pdf-info {
+            font-size: 12px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-delete-pdf {
+            background-color: #fef2f2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-delete-pdf:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .load-more-container {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .btn-load-more {
+            background-color: #f1f5f9;
+            color: var(--primary-dark);
+            border: 1px solid #cbd5e1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-load-more:hover {
+            background-color: #e2e8f0;
+            color: var(--accent);
         }
 
         .app-footer {
@@ -636,12 +696,9 @@
                     <h3>Panel de Bacteriología</h3>
                     <p style="font-size: 11px;">Gestión de Resultados y Pacientes</p>
                     <div class="bacteriologist-detail">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
-                            <line x1="8.5" y1="2" x2="15.5" y2="2"/>
-                            <line x1="7" y1="16" x2="17" y2="16"/>
-                        </svg>
-                        <span>Bacteriólogo: Andrea Hernandez | CC: 000</span>
+                        <span>Bacteriólogo: Andrea Hernandez | CC: 000 | </span>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px; margin-right:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>E.S.E. Hospital Local de Usiacurí</span>
                     </div>
                 </div>
                 <button onclick="handleLogout()" class="btn btn-outline-danger">
@@ -720,19 +777,35 @@
         </div>
     </div>
 
-    <!-- MODAL EDITAR EXAMEN -->
+    <!-- MODAL EDITAR EXAMEN Y SUBIR PDF -->
     <div id="editExamModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Editar Nombre de Examen</h3>
+                <h3>Editar Examen y Cargar Resultado</h3>
                 <button onclick="closeEditExamModal()" class="close-modal">&times;</button>
             </div>
             <form onsubmit="handleSaveExamEdit(event)">
                 <input type="hidden" id="editExamUserId">
                 <input type="hidden" id="editExamId">
                 <div class="form-group">
-                    <label style="font-size:12px; color:var(--text-muted);">Nombre / Análisis Correcto</label>
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre del Examen / Análisis</label>
                     <input type="text" id="editExamNameInput" class="form-control" required style="margin-top:4px;">
+                </div>
+
+                <!-- SECCIÓN DE PDF ACTUAL -->
+                <div id="currentPdfContainer" class="hidden">
+                    <label style="font-size:12px; color:var(--text-muted);">Archivo Actual Cargado</label>
+                    <div class="current-pdf-box">
+                        <div class="current-pdf-info">
+                            📄 <a id="currentPdfLink" href="#" target="_blank" style="color:var(--primary-dark); text-decoration:underline;">Ver PDF cargado</a>
+                        </div>
+                        <button type="button" class="btn-delete-pdf" onclick="handleRemovePdf()">Eliminar archivo</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);" id="uploadPdfLabel">Subir / Modificar Resultado en PDF</label>
+                    <input type="file" id="editExamFileInput" class="form-control" accept=".pdf" style="margin-top:4px; font-size:12px; padding: 10px;">
                 </div>
                 <button type="submit" class="btn" style="margin-top:10px;">Guardar Cambios</button>
             </form>
@@ -748,14 +821,14 @@
         yesterdayObj.setDate(todayObj.getDate() - 1);
         const fechaAyerFormateada = yesterdayObj.toLocaleDateString('es-ES', opcionesFecha);
 
-        // Base de datos de Pacientes (Ayer configurado exactamente con 5 resultados de laboratorio clínico)
+        // Base de datos de Pacientes
         const database = {
-            "123": {
+            "1234567890": {
                 name: "Andrés Soto",
                 docType: "CC",
-                doc: "CC: 123",
+                doc: "CC: 1234567890",
                 exams: [
-                    { id: 1, name: "Parcial de Orina y Urocultivo", date: fechaHoyFormateada, status: "pending", pdf: "12345.pdf" },
+                    { id: 1, name: "Parcial de Orina y Urocultivo", date: fechaHoyFormateada, status: "pending", pdf: "" },
                     { id: 2, name: "Hemograma Completo y Perfil Lipídico", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
                     { id: 3, name: "Glicemia en Ayunas y HbA1c", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
                     { id: 4, name: "Pruebas de Función Tiroidea (TSH y T4)", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
@@ -919,7 +992,7 @@
                     table.innerHTML = `
                         <thead>
                             <tr>
-                                <th style="width: 30px;"></th>
+                                <th style="width: 30px;">Editar</th>
                                 <th>Paciente</th>
                                 <th>Examen</th>
                                 <th>Estado</th>
@@ -935,8 +1008,11 @@
                         const isPending = exam.status === "pending";
                         const statusText = isPending ? "🟡 En proceso" : "🟢 Disponible";
 
-                        const fileControlHTML = isPending
-                            ? `<input type="file" id="file-${userId}-${exam.id}" onchange="uploadPdf('${userId}', ${exam.id})" class="file-upload-btn" accept=".pdf">`
+                        const actionBtnHTML = isPending
+                            ? `<a href="#" class="btn-view-file disabled">
+                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                 Ver archivo
+                               </a>`
                             : `<a href="${exam.pdf}" target="_blank" class="btn-view-file">
                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                  Ver archivo
@@ -944,29 +1020,28 @@
 
                         row.innerHTML = `
                             <td style="text-align: center; padding-right: 0;">
-                                <button onclick="openEditExamModal('${userId}', ${exam.id})" class="edit-exam-btn" title="Editar nombre de examen">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <button onclick="openEditExamModal('${userId}', ${exam.id})" class="edit-exam-btn" title="Editar examen o cargar PDF">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                     </svg>
                                 </button>
                             </td>
                             <td><strong>${user.name}</strong><br><small>${user.doc}</small></td>
                             <td>${exam.name}<span class="exam-date-small">${exam.date}</span></td>
-                            <td><span id="status-text-${userId}-${exam.id}">${statusText}</span></td>
-                            <td class="action-cell">
-                                <select onchange="updateExamStatus('${userId}', ${exam.id}, this.value)" class="form-control" style="padding: 4px 8px; font-size:12px;">
-                                    <option value="pending" ${isPending ? 'selected' : ''}>En proceso</option>
-                                    <option value="ready" ${!isPending ? 'selected' : ''}>Disponible</option>
-                                </select>
-                                <div id="action-file-container-${userId}-${exam.id}">
-                                    ${fileControlHTML}
-                                </div>
-                            </td>
+                            <td><span>${statusText}</span></td>
+                            <td>${actionBtnHTML}</td>
                         `;
                         tbody.appendChild(row);
                     });
                     container.appendChild(table);
+
+                    if (groupName === "Días Anteriores") {
+                        const loadMoreDiv = document.createElement('div');
+                        loadMoreDiv.className = 'load-more-container';
+                        loadMoreDiv.innerHTML = `<button type="button" class="btn-load-more">Ver más días</button>`;
+                        container.appendChild(loadMoreDiv);
+                    }
                 }
             });
         }
@@ -977,7 +1052,36 @@
                 document.getElementById('editExamUserId').value = userId;
                 document.getElementById('editExamId').value = examId;
                 document.getElementById('editExamNameInput').value = exam.name;
+                document.getElementById('editExamFileInput').value = '';
+
+                const pdfContainer = document.getElementById('currentPdfContainer');
+                const pdfLink = document.getElementById('currentPdfLink');
+
+                if (exam.pdf && exam.status === "ready") {
+                    pdfLink.href = exam.pdf;
+                    pdfContainer.classList.remove('hidden');
+                } else {
+                    pdfContainer.classList.add('hidden');
+                }
+
                 document.getElementById('editExamModal').classList.remove('hidden');
+            }
+        }
+
+        function handleRemovePdf() {
+            const userId = document.getElementById('editExamUserId').value;
+            const examId = parseInt(document.getElementById('editExamId').value);
+
+            const exam = database[userId].exams.find(e => e.id === examId);
+            if (exam) {
+                exam.pdf = "";
+                exam.status = "pending";
+                document.getElementById('currentPdfContainer').classList.add('hidden');
+                document.getElementById('editExamFileInput').value = '';
+                
+                // REFRESCAR TABLA INMEDIATAMENTE
+                renderAdminPanel();
+                alert("El archivo PDF ha sido eliminado. El examen pasa a estado 'En proceso'.");
             }
         }
 
@@ -990,33 +1094,19 @@
             const userId = document.getElementById('editExamUserId').value;
             const examId = parseInt(document.getElementById('editExamId').value);
             const newName = document.getElementById('editExamNameInput').value.trim();
+            const fileInput = document.getElementById('editExamFileInput');
 
             const exam = database[userId].exams.find(e => e.id === examId);
             if (exam && newName) {
                 exam.name = newName;
-                renderAdminPanel();
-                closeEditExamModal();
-            }
-        }
-
-        function updateExamStatus(userId, examId, newStatus) {
-            const exam = database[userId].exams.find(e => e.id === examId);
-            if (exam) {
-                exam.status = newStatus;
-                renderAdminPanel();
-            }
-        }
-
-        function uploadPdf(userId, examId) {
-            const fileInput = document.getElementById(`file-${userId}-${examId}`);
-            if (fileInput && fileInput.files.length > 0) {
-                const exam = database[userId].exams.find(e => e.id === examId);
-                if (exam) {
+                
+                if (fileInput.files.length > 0) {
                     exam.status = "ready";
                     exam.pdf = URL.createObjectURL(fileInput.files[0]);
-                    alert(`PDF cargado con éxito para ${database[userId].name}.`);
-                    renderAdminPanel();
                 }
+
+                renderAdminPanel();
+                closeEditExamModal();
             }
         }
 
@@ -1119,7 +1209,7 @@
                     name: examName,
                     date: fechaHoyFormateada,
                     status: "pending",
-                    pdf: "12345.pdf"
+                    pdf: ""
                 });
 
                 alert(`Paciente ${name} registrado con éxito.`);
