@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Emizlab - Portal de Resultados de Laboratorio Clínico</title>
+    
+    <!-- FAVICON: Mismo icono que la interfaz de Login -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300a896' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2'/%3E%3Cline x1='8.5' y1='2' x2='15.5' y2='2'/%3E%3Cline x1='7' y1='16' x2='17' y2='16'/%3E%3C/svg%3E">
+
     <meta name="description" content="Consulta y descarga tus resultados de laboratorio clínico en línea de manera rápida, segura y confidencial con Emizlab.">
     <meta name="keywords" content="Emizlab, resultados de laboratorio, laboratorio clinico, examenes medicos, consulta de resultados, salud">
     <meta name="robots" content="index, follow">
@@ -814,7 +818,6 @@
                 user.exams.forEach(exam => {
                     const item = { user, exam, userId };
                     if (exam.date === fechaHoyFormateada) {
-                        // Los últimos creados quedan de primero en la categoría Hoy
                         groups["Hoy"].unshift(item);
                     } else if (exam.date === fechaAyerFormateada) {
                         groups["Ayer"].push(item);
@@ -852,7 +855,6 @@
                         const isPending = exam.status === "pending";
                         const statusText = isPending ? "🟡 En proceso" : "🟢 Disponible";
 
-                        // Cambia a botón "Ver archivo" cuando está disponible
                         const fileControlHTML = isPending
                             ? `<input type="file" id="file-${userId}-${exam.id}" onchange="uploadPdf('${userId}', ${exam.id})" class="file-upload-btn" accept=".pdf">`
                             : `<a href="${exam.pdf}" target="_blank" class="btn-view-file">
@@ -926,7 +928,6 @@
                 };
             }
 
-            // Agrega la prueba al inicio de las del paciente con fecha de hoy
             database[docNum].exams.unshift({
                 id: Date.now(),
                 name: examName,
