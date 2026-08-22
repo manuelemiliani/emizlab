@@ -48,7 +48,7 @@
         }
 
         .dashboard-container {
-            max-width: 760px;
+            max-width: 800px;
         }
 
         .card {
@@ -107,7 +107,6 @@
             margin-bottom: 18px;
         }
 
-        /* font-size a 16px previene el zoom automático en móviles */
         .form-control {
             width: 100%;
             padding: 13px 16px;
@@ -156,6 +155,14 @@
             transform: translateY(-1px);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            box-shadow: 0 4px 12px rgba(5, 102, 141, 0.3);
+            padding: 10px 16px;
+            font-size: 13px;
+            width: auto;
+        }
+
         .btn-outline-danger {
             background: transparent;
             color: var(--danger);
@@ -168,6 +175,24 @@
 
         .btn-outline-danger:hover {
             background-color: #fef2f2;
+        }
+
+        .forgot-password-container {
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        .forgot-password-link {
+            font-size: 13px;
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .forgot-password-link:hover {
+            text-decoration: underline;
+            color: var(--accent);
         }
 
         .alert-error {
@@ -204,11 +229,17 @@
             color: var(--text-muted);
         }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
         .section-title {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 14px;
         }
 
         .lab-list {
@@ -313,7 +344,7 @@
             transition: all 0.2s ease;
         }
 
-        /* Estilos Panel Empleados */
+        /* Estilos Panel Empleados / Bacteriólogo */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
@@ -341,6 +372,51 @@
 
         .file-upload-btn {
             font-size: 11px;
+        }
+
+        /* Modal para agregar paciente */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
         }
 
         .app-footer {
@@ -398,7 +474,7 @@
 
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <select id="docType" class="form-control" required>
+                    <select id="docType" class="form-control" onchange="toggleForgotLink()" required>
                         <option value="CC">Cédula de Ciudadanía</option>
                         <option value="TI">Tarjeta de Identidad</option>
                         <option value="RC">Registro Civil</option>
@@ -419,11 +495,16 @@
                 <button type="submit" class="btn">
                     <span>Iniciar Sesión</span>
                 </button>
+
+                <!-- Enlace exclusivo para el perfil de Empleados -->
+                <div id="forgotPasswordContainer" class="forgot-password-container hidden">
+                    <a href="#" onclick="handleForgotPassword(event)" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- VISTA PACIENTES (ANDRES / FELIPE) -->
+    <!-- VISTA PACIENTES -->
     <div id="dashboardView" class="container dashboard-container hidden">
         <div class="card">
             <div class="user-header">
@@ -450,20 +531,25 @@
         </footer>
     </div>
 
-    <!-- VISTA EMPLEADOS -->
+    <!-- VISTA BACTERIÓLOGO / EMPLEADOS -->
     <div id="adminView" class="container dashboard-container hidden">
         <div class="card">
             <div class="user-header">
                 <div class="user-info">
-                    <h3>Panel Administrativo</h3>
-                    <p>Gestión de Resultados de Pacientes</p>
+                    <h3>Panel de Bacteriología</h3>
+                    <p>Gestión de Resultados y Pacientes</p>
                 </div>
                 <button onclick="handleLogout()" class="btn btn-outline-danger">
                     Cerrar Sesión
                 </button>
             </div>
 
-            <h2 class="section-title">Pacientes y Exámenes</h2>
+            <div class="section-header">
+                <h2 class="section-title">Pacientes y Exámenes</h2>
+                <button onclick="openModal()" class="btn btn-secondary">
+                    + Agregar Paciente
+                </button>
+            </div>
             
             <div style="overflow-x:auto;">
                 <table class="admin-table">
@@ -485,13 +571,48 @@
         </footer>
     </div>
 
+    <!-- MODAL REGISTRAR PACIENTE -->
+    <div id="patientModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Nuevo Paciente</h3>
+                <button onclick="closeModal()" class="close-modal">&times;</button>
+            </div>
+            <form onsubmit="handleCreatePatient(event)">
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Tipo de Documento</label>
+                    <select id="newDocType" class="form-control" required style="margin-top:4px;">
+                        <option value="CC">Cédula de Ciudadanía (CC)</option>
+                        <option value="TI">Tarjeta de Identidad (TI)</option>
+                        <option value="RC">Registro Civil (RC)</option>
+                        <option value="NV">Certificado de Nacido Vivo (NV)</option>
+                        <option value="PPT">PPT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Número de Documento</label>
+                    <input type="text" id="newDocNum" class="form-control" placeholder="Ej: 789012" required style="margin-top:4px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre Completo</label>
+                    <input type="text" id="newName" class="form-control" placeholder="Ej: Maria Lopez" required style="margin-top:4px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Examen Inicial</label>
+                    <input type="text" id="newExamName" class="form-control" placeholder="Ej: Cuadro Hemático" required style="margin-top:4px;">
+                </div>
+                <button type="submit" class="btn" style="margin-top:10px;">Guardar Paciente</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Formatear fecha de hoy dinámicamente
+        // Formatear fecha de hoy
         const today = new Date();
         const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' };
         const fechaHoyFormateada = today.toLocaleDateString('es-ES', opcionesFecha);
 
-        // Base de datos de Exámenes
+        // Base de datos de Pacientes y Exámenes (5 exámenes para Andrés)
         const database = {
             "123": {
                 name: "Andrés",
@@ -518,6 +639,21 @@
 
         let currentActiveUser = null;
 
+        function toggleForgotLink() {
+            const docType = document.getElementById('docType').value;
+            const forgotContainer = document.getElementById('forgotPasswordContainer');
+            if (docType === "EMP") {
+                forgotContainer.classList.remove('hidden');
+            } else {
+                forgotContainer.classList.add('hidden');
+            }
+        }
+
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            alert("Para restablecer tu contraseña corporativa de Emizlab, por favor contacta al Administrador de Sistemas o a la jefatura de laboratorio.");
+        }
+
         function handleLogin(event) {
             event.preventDefault();
             
@@ -526,17 +662,21 @@
             const pass = document.getElementById('password').value.trim();
             const errorDiv = document.getElementById('errorMessage');
 
-            // Login Empleado
-            if (docType === "EMP" && user === "000" && pass === "000") {
-                errorDiv.style.display = "none";
-                document.getElementById('loginView').classList.add('hidden');
-                document.getElementById('adminView').classList.remove('hidden');
-                renderAdminPanel();
+            // 1. Caso Empleados: SOLO entra con 000 / 000
+            if (docType === "EMP") {
+                if (user === "000" && pass === "000") {
+                    errorDiv.style.display = "none";
+                    document.getElementById('loginView').classList.add('hidden');
+                    document.getElementById('adminView').classList.remove('hidden');
+                    renderAdminPanel();
+                } else {
+                    errorDiv.style.display = "block";
+                }
                 return;
             }
 
-            // Login Pacientes
-            if ((user === "123" && pass === "123") || (user === "456" && pass === "456")) {
+            // 2. Caso Pacientes: Verifica contra la base de datos de pacientes
+            if (database[user] && pass === user) {
                 errorDiv.style.display = "none";
                 currentActiveUser = user;
                 
@@ -553,7 +693,6 @@
             }
         }
 
-        // Renderizar exámenes para el paciente
         function renderPatientExams(userId) {
             const container = document.getElementById('labList');
             container.innerHTML = '';
@@ -602,7 +741,6 @@
             });
         }
 
-        // Renderizar tabla del Administrador / Empleado
         function renderAdminPanel() {
             const tbody = document.getElementById('adminTableBody');
             tbody.innerHTML = '';
@@ -632,7 +770,6 @@
             });
         }
 
-        // Cambiar estado desde panel admin
         function updateExamStatus(userId, examId, newStatus) {
             const exam = database[userId].exams.find(e => e.id === examId);
             if (exam) {
@@ -644,7 +781,6 @@
             }
         }
 
-        // Subir PDF simulado desde panel admin
         function uploadPdf(userId, examId) {
             const fileInput = document.getElementById(`file-${userId}-${examId}`);
             if (fileInput.files.length > 0) {
@@ -652,14 +788,55 @@
                 if (exam) {
                     exam.status = "ready";
                     exam.pdf = URL.createObjectURL(fileInput.files[0]);
-                    alert(`PDF cargado con éxito para ${database[userId].name}. El examen ahora está Disponible.`);
+                    alert(`PDF cargado con éxito para ${database[userId].name}.`);
                     renderAdminPanel();
                 }
             }
         }
 
+        function openModal() {
+            document.getElementById('patientModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('patientModal').classList.add('hidden');
+        }
+
+        function handleCreatePatient(event) {
+            event.preventDefault();
+            const type = document.getElementById('newDocType').value;
+            const docNum = document.getElementById('newDocNum').value.trim();
+            const name = document.getElementById('newName').value.trim();
+            const examName = document.getElementById('newExamName').value.trim();
+
+            if (!database[docNum]) {
+                database[docNum] = {
+                    name: name,
+                    doc: `${type}: ${docNum}`,
+                    exams: []
+                };
+            }
+
+            database[docNum].exams.push({
+                id: Date.now(),
+                name: examName,
+                date: fechaHoyFormateada,
+                status: "pending",
+                pdf: "12345.pdf"
+            });
+
+            alert(`Paciente ${name} creado con éxito. Puede ingresar con su documento (${docNum}) como usuario y contraseña.`);
+            
+            document.getElementById('newDocNum').value = '';
+            document.getElementById('newName').value = '';
+            document.getElementById('newExamName').value = '';
+            closeModal();
+            renderAdminPanel();
+        }
+
         function handleLogout() {
             document.getElementById('loginForm').reset();
+            toggleForgotLink();
             document.getElementById('dashboardView').classList.add('hidden');
             document.getElementById('adminView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
