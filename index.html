@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Emizlab - Portal de Resultados de Laboratorio Clínico</title>
     
-    <!-- FAVICON: Mismo icono que la interfaz de Login -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300a896' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2'/%3E%3Cline x1='8.5' y1='2' x2='15.5' y2='2'/%3E%3Cline x1='7' y1='16' x2='17' y2='16'/%3E%3C/svg%3E">
 
     <meta name="description" content="Consulta y descarga tus resultados de laboratorio clínico en línea de manera rápida, segura y confidencial con Emizlab.">
@@ -162,8 +162,8 @@
         .btn-secondary {
             background: linear-gradient(135deg, var(--accent), var(--primary-dark));
             box-shadow: 0 4px 12px rgba(5, 102, 141, 0.3);
-            padding: 10px 16px;
-            font-size: 13px;
+            padding: 10px 14px;
+            font-size: 12px;
             width: auto;
         }
 
@@ -233,17 +233,35 @@
             color: var(--text-muted);
         }
 
+        .bacteriologist-detail {
+            font-size: 12px;
+            color: var(--primary-dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 4px;
+        }
+
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .section-title {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-main);
+        }
+
+        .header-action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .date-group-title {
@@ -376,7 +394,6 @@
             background-color: #05668d;
         }
 
-        /* Estilos Panel Empleados / Bacteriólogo */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
@@ -385,7 +402,7 @@
         }
 
         .admin-table th, .admin-table td {
-            padding: 12px;
+            padding: 10px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
             font-size: 13px;
@@ -397,6 +414,24 @@
             font-weight: 600;
         }
 
+        .edit-exam-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary-dark);
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-exam-btn:hover {
+            background-color: #e0f2fe;
+            color: var(--accent);
+        }
+
         .action-cell {
             display: flex;
             flex-direction: column;
@@ -405,6 +440,9 @@
 
         .file-upload-btn {
             font-size: 11px;
+            display: block;
+            margin-top: 4px;
+            max-width: 180px;
         }
 
         .exam-date-small {
@@ -414,7 +452,6 @@
             margin-top: 2px;
         }
 
-        /* Botón de WhatsApp */
         .whatsapp-btn {
             display: inline-flex;
             align-items: center;
@@ -436,7 +473,6 @@
             transform: translateY(-1px);
         }
 
-        /* Modal para agregar paciente */
         .modal {
             position: fixed;
             top: 0;
@@ -598,7 +634,15 @@
             <div class="user-header">
                 <div class="user-info">
                     <h3>Panel de Bacteriología</h3>
-                    <p>Gestión de Resultados y Pacientes</p>
+                    <p style="font-size: 11px;">Gestión de Resultados y Pacientes</p>
+                    <div class="bacteriologist-detail">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
+                            <line x1="8.5" y1="2" x2="15.5" y2="2"/>
+                            <line x1="7" y1="16" x2="17" y2="16"/>
+                        </svg>
+                        <span>Bacteriólogo: Andrea Hernandez | CC: 000</span>
+                    </div>
                 </div>
                 <button onclick="handleLogout()" class="btn btn-outline-danger">
                     Cerrar Sesión
@@ -607,9 +651,17 @@
 
             <div class="section-header">
                 <h2 class="section-title">Pacientes y Exámenes</h2>
-                <button onclick="openModal()" class="btn btn-secondary">
-                    + Agregar Paciente
-                </button>
+                <div class="header-action-buttons">
+                    <button onclick="openModal('create')" class="btn btn-secondary">
+                        + Agregar Paciente
+                    </button>
+                    <button onclick="openModal('edit')" class="btn btn-secondary" style="background: linear-gradient(135deg, #475569, #334155);">
+                        Editar Paciente
+                    </button>
+                    <button type="button" class="btn btn-secondary" style="background: linear-gradient(135deg, #028090, #05668d);">
+                        🔍 Buscar Paciente
+                    </button>
+                </div>
             </div>
             
             <div style="overflow-x:auto;" id="adminTablesContainer"></div>
@@ -626,14 +678,21 @@
         </footer>
     </div>
 
-    <!-- MODAL REGISTRAR PACIENTE -->
+    <!-- MODAL REGISTRAR / EDITAR PACIENTE -->
     <div id="patientModal" class="modal hidden">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Registrar Nuevo Paciente</h3>
+                <h3 id="modalTitle">Registrar Nuevo Paciente</h3>
                 <button onclick="closeModal()" class="close-modal">&times;</button>
             </div>
-            <form onsubmit="handleCreatePatient(event)">
+            <form onsubmit="handleSubmitPatient(event)">
+                <input type="hidden" id="modalMode" value="create">
+                <div id="selectPatientToEditGroup" class="form-group hidden">
+                    <label style="font-size:12px; color:var(--text-muted);">Seleccionar Paciente a Editar</label>
+                    <select id="editPatientSelect" class="form-control" onchange="loadPatientDataForEdit()" style="margin-top:4px;">
+                        <option value="">-- Seleccione un paciente --</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label style="font-size:12px; color:var(--text-muted);">Tipo de Documento</label>
                     <select id="newDocType" class="form-control" required style="margin-top:4px;">
@@ -649,20 +708,38 @@
                     <input type="text" id="newDocNum" class="form-control" placeholder="Ej: 789012" required style="margin-top:4px;">
                 </div>
                 <div class="form-group">
-                    <label style="font-size:12px; color:var(--text-muted);">Nombre Completo</label>
-                    <input type="text" id="newName" class="form-control" placeholder="Ej: Maria Lopez" required style="margin-top:4px;">
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre y Apellido Completo</label>
+                    <input type="text" id="newName" class="form-control" placeholder="Ej: Andrés Soto" required style="margin-top:4px;">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="examNameGroup">
                     <label style="font-size:12px; color:var(--text-muted);">Examen Inicial</label>
-                    <input type="text" id="newExamName" class="form-control" placeholder="Ej: Cuadro Hemático" required style="margin-top:4px;">
+                    <input type="text" id="newExamName" class="form-control" placeholder="Ej: Cuadro Hemático" style="margin-top:4px;">
                 </div>
-                <button type="submit" class="btn" style="margin-top:10px;">Guardar Paciente</button>
+                <button type="submit" id="modalSubmitBtn" class="btn" style="margin-top:10px;">Guardar Paciente</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR EXAMEN -->
+    <div id="editExamModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Nombre de Examen</h3>
+                <button onclick="closeEditExamModal()" class="close-modal">&times;</button>
+            </div>
+            <form onsubmit="handleSaveExamEdit(event)">
+                <input type="hidden" id="editExamUserId">
+                <input type="hidden" id="editExamId">
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre / Análisis Correcto</label>
+                    <input type="text" id="editExamNameInput" class="form-control" required style="margin-top:4px;">
+                </div>
+                <button type="submit" class="btn" style="margin-top:10px;">Guardar Cambios</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Manejo dinámico de fechas
         const todayObj = new Date();
         const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' };
         const fechaHoyFormateada = todayObj.toLocaleDateString('es-ES', opcionesFecha);
@@ -671,34 +748,35 @@
         yesterdayObj.setDate(todayObj.getDate() - 1);
         const fechaAyerFormateada = yesterdayObj.toLocaleDateString('es-ES', opcionesFecha);
 
-        // Base de datos de Pacientes y Exámenes
+        // Base de datos de Pacientes (Ayer configurado exactamente con 5 resultados de laboratorio clínico)
         const database = {
             "123": {
-                name: "Andrés",
+                name: "Andrés Soto",
                 docType: "CC",
                 doc: "CC: 123",
                 exams: [
                     { id: 1, name: "Parcial de Orina y Urocultivo", date: fechaHoyFormateada, status: "pending", pdf: "12345.pdf" },
                     { id: 2, name: "Hemograma Completo y Perfil Lipídico", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
-                    { id: 3, name: "Glicemia en Ayunas y HbA1c", date: "10 de Febrero, 2026", status: "ready", pdf: "12345.pdf" },
-                    { id: 4, name: "Pruebas de Función Tiroidea (TSH y T4)", date: "05 de Noviembre, 2025", status: "ready", pdf: "12345.pdf" },
+                    { id: 3, name: "Glicemia en Ayunas y HbA1c", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
+                    { id: 4, name: "Pruebas de Función Tiroidea (TSH y T4)", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
                     { id: 5, name: "Coproanalisis y Coprocultivo", date: "18 de Julio, 2025", status: "ready", pdf: "12345.pdf" }
                 ]
             },
             "456": {
-                name: "Felipe",
+                name: "Felipe González",
                 docType: "CC",
                 doc: "CC: 456",
                 exams: [
                     { id: 101, name: "Hemograma Completo", date: fechaHoyFormateada, status: "ready", pdf: "12345.pdf" },
-                    { id: 102, name: "Perfil Hepático", date: "01 de Junio, 2026", status: "ready", pdf: "12345.pdf" },
-                    { id: 103, name: "Examen de Vitamina D y B12", date: "15 de Marzo, 2026", status: "ready", pdf: "12345.pdf" },
-                    { id: 104, name: "Electrocardiograma", date: "20 de Enero, 2026", status: "ready", pdf: "12345.pdf" }
+                    { id: 102, name: "Perfil Hepático (TGO, TGP y Bilirrubinas)", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
+                    { id: 103, name: "Examen de Vitamina D y B12", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
+                    { id: 104, name: "Perfil Renal (BUN y Creatinina)", date: "20 de Enero, 2026", status: "ready", pdf: "12345.pdf" }
                 ]
             }
         };
 
         let currentActiveUser = null;
+        let originalDocBeingEdited = null;
 
         function toggleForgotLink() {
             const docType = document.getElementById('docType').value;
@@ -723,7 +801,6 @@
             const pass = document.getElementById('password').value.trim();
             const errorDiv = document.getElementById('errorMessage');
 
-            // 1. Caso Empleados: SOLO entra con 000 / 000
             if (docType === "EMP") {
                 if (user === "000" && pass === "000") {
                     errorDiv.style.display = "none";
@@ -736,7 +813,6 @@
                 return;
             }
 
-            // 2. Caso Pacientes: Verifica documento, contraseña Y tipo de documento exacto
             const patient = database[user];
             if (patient && pass === user && patient.docType === docType) {
                 errorDiv.style.display = "none";
@@ -802,7 +878,6 @@
             });
         }
 
-        // Renderizar Panel Bacteriología agrupado por fechas y ordenado cronológicamente
         function renderAdminPanel() {
             const container = document.getElementById('adminTablesContainer');
             container.innerHTML = '';
@@ -818,13 +893,17 @@
                 user.exams.forEach(exam => {
                     const item = { user, exam, userId };
                     if (exam.date === fechaHoyFormateada) {
-                        groups["Hoy"].unshift(item);
+                        groups["Hoy"].push(item);
                     } else if (exam.date === fechaAyerFormateada) {
                         groups["Ayer"].push(item);
                     } else {
                         groups["Días Anteriores"].push(item);
                     }
                 });
+            });
+
+            Object.keys(groups).forEach(groupName => {
+                groups[groupName].sort((a, b) => b.exam.id - a.exam.id);
             });
 
             Object.keys(groups).forEach(groupName => {
@@ -840,6 +919,7 @@
                     table.innerHTML = `
                         <thead>
                             <tr>
+                                <th style="width: 30px;"></th>
                                 <th>Paciente</th>
                                 <th>Examen</th>
                                 <th>Estado</th>
@@ -863,6 +943,14 @@
                                </a>`;
 
                         row.innerHTML = `
+                            <td style="text-align: center; padding-right: 0;">
+                                <button onclick="openEditExamModal('${userId}', ${exam.id})" class="edit-exam-btn" title="Editar nombre de examen">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </button>
+                            </td>
                             <td><strong>${user.name}</strong><br><small>${user.doc}</small></td>
                             <td>${exam.name}<span class="exam-date-small">${exam.date}</span></td>
                             <td><span id="status-text-${userId}-${exam.id}">${statusText}</span></td>
@@ -881,6 +969,34 @@
                     container.appendChild(table);
                 }
             });
+        }
+
+        function openEditExamModal(userId, examId) {
+            const exam = database[userId].exams.find(e => e.id === examId);
+            if (exam) {
+                document.getElementById('editExamUserId').value = userId;
+                document.getElementById('editExamId').value = examId;
+                document.getElementById('editExamNameInput').value = exam.name;
+                document.getElementById('editExamModal').classList.remove('hidden');
+            }
+        }
+
+        function closeEditExamModal() {
+            document.getElementById('editExamModal').classList.add('hidden');
+        }
+
+        function handleSaveExamEdit(event) {
+            event.preventDefault();
+            const userId = document.getElementById('editExamUserId').value;
+            const examId = parseInt(document.getElementById('editExamId').value);
+            const newName = document.getElementById('editExamNameInput').value.trim();
+
+            const exam = database[userId].exams.find(e => e.id === examId);
+            if (exam && newName) {
+                exam.name = newName;
+                renderAdminPanel();
+                closeEditExamModal();
+            }
         }
 
         function updateExamStatus(userId, examId, newStatus) {
@@ -904,43 +1020,111 @@
             }
         }
 
-        function openModal() {
-            document.getElementById('patientModal').classList.remove('hidden');
+        function openModal(mode = 'create') {
+            const modal = document.getElementById('patientModal');
+            const title = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('modalSubmitBtn');
+            const selectGroup = document.getElementById('selectPatientToEditGroup');
+            const examGroup = document.getElementById('examNameGroup');
+            document.getElementById('modalMode').value = mode;
+
+            if (mode === 'edit') {
+                title.innerText = "Editar Datos de Paciente";
+                submitBtn.innerText = "Actualizar Paciente";
+                selectGroup.classList.remove('hidden');
+                examGroup.classList.add('hidden');
+                document.getElementById('newExamName').required = false;
+                
+                const select = document.getElementById('editPatientSelect');
+                select.innerHTML = '<option value="">-- Seleccione un paciente --</option>';
+                Object.keys(database).forEach(docKey => {
+                    const p = database[docKey];
+                    select.innerHTML += `<option value="${docKey}">${p.name} (${p.doc})</option>`;
+                });
+            } else {
+                title.innerText = "Registrar Nuevo Paciente";
+                submitBtn.innerText = "Guardar Paciente";
+                selectGroup.classList.add('hidden');
+                examGroup.classList.remove('hidden');
+                document.getElementById('newExamName').required = true;
+                clearModalFields();
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function loadPatientDataForEdit() {
+            const selectedDoc = document.getElementById('editPatientSelect').value;
+            if (!selectedDoc || !database[selectedDoc]) return;
+
+            const patient = database[selectedDoc];
+            originalDocBeingEdited = selectedDoc;
+            document.getElementById('newDocType').value = patient.docType;
+            document.getElementById('newDocNum').value = selectedDoc;
+            document.getElementById('newName').value = patient.name;
+        }
+
+        function clearModalFields() {
+            document.getElementById('newDocNum').value = '';
+            document.getElementById('newName').value = '';
+            document.getElementById('newExamName').value = '';
+            originalDocBeingEdited = null;
         }
 
         function closeModal() {
             document.getElementById('patientModal').classList.add('hidden');
+            clearModalFields();
         }
 
-        function handleCreatePatient(event) {
+        function handleSubmitPatient(event) {
             event.preventDefault();
+            const mode = document.getElementById('modalMode').value;
             const type = document.getElementById('newDocType').value;
             const docNum = document.getElementById('newDocNum').value.trim();
             const name = document.getElementById('newName').value.trim();
-            const examName = document.getElementById('newExamName').value.trim();
 
-            if (!database[docNum]) {
+            if (mode === 'edit') {
+                if (!originalDocBeingEdited) {
+                    alert("Por favor selecciona un paciente a editar.");
+                    return;
+                }
+
+                const existingExams = database[originalDocBeingEdited] ? database[originalDocBeingEdited].exams : [];
+                
+                if (originalDocBeingEdited !== docNum) {
+                    delete database[originalDocBeingEdited];
+                }
+
                 database[docNum] = {
                     name: name,
                     docType: type,
                     doc: `${type}: ${docNum}`,
-                    exams: []
+                    exams: existingExams
                 };
+
+                alert(`Datos del paciente actualizados con éxito.`);
+            } else {
+                const examName = document.getElementById('newExamName').value.trim();
+                if (!database[docNum]) {
+                    database[docNum] = {
+                        name: name,
+                        docType: type,
+                        doc: `${type}: ${docNum}`,
+                        exams: []
+                    };
+                }
+
+                database[docNum].exams.unshift({
+                    id: Date.now(),
+                    name: examName,
+                    date: fechaHoyFormateada,
+                    status: "pending",
+                    pdf: "12345.pdf"
+                });
+
+                alert(`Paciente ${name} registrado con éxito.`);
             }
 
-            database[docNum].exams.unshift({
-                id: Date.now(),
-                name: examName,
-                date: fechaHoyFormateada,
-                status: "pending",
-                pdf: "12345.pdf"
-            });
-
-            alert(`Paciente ${name} creado con éxito. Puede ingresar seleccionando (${type}) con su documento (${docNum}) como usuario y contraseña.`);
-            
-            document.getElementById('newDocNum').value = '';
-            document.getElementById('newName').value = '';
-            document.getElementById('newExamName').value = '';
             closeModal();
             renderAdminPanel();
         }
