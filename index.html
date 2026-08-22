@@ -13,9 +13,8 @@
     
     <!-- Open Graph para Redes Sociales -->
     <meta property="og:title" content="Emizlab - Portal de Resultados de Laboratorio">
-    <meta property="og:description" content="Accede a tus exámanes y resultados clínicos en línea de forma segura.">
+    <meta property="og:description" content="Accede a tus exámenes y resultados clínicos en línea de forma segura.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emizlab.com/">
 
     <!-- Tipografía Moderna Google Fonts (Poppins) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,10 +56,10 @@
         }
 
         .dashboard-container {
-            max-width: 680px;
+            max-width: 720px;
         }
 
-        /* Tarjeta Blanca Principal */
+        /* Tarjeta Principal */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
@@ -196,7 +195,7 @@
             text-align: center;
         }
 
-        /* Estilos de la Vista de Resultados */
+        /* Vista del Panel de Resultados */
         .user-header {
             display: flex;
             justify-content: space-between;
@@ -226,16 +225,28 @@
             margin-bottom: 14px;
         }
 
+        .lab-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         .lab-item {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 14px;
-            padding: 18px;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lab-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.08);
         }
 
         .lab-info {
@@ -244,7 +255,7 @@
             gap: 14px;
         }
 
-        .pdf-icon {
+        .pdf-icon-wrapper {
             width: 44px;
             height: 44px;
             background-color: #fef2f2;
@@ -264,35 +275,48 @@
             margin-bottom: 2px;
         }
 
-        .lab-details span {
+        .lab-details p {
             font-size: 12px;
             color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .lab-details .location-tag {
+            font-size: 11px;
+            color: var(--primary-dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .btn-download {
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             padding: 9px 16px;
             border-radius: 10px;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             white-space: nowrap;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 168, 150, 0.2);
         }
 
         .btn-download:hover {
-            background-color: var(--primary-dark);
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 168, 150, 0.35);
         }
 
         .hidden {
             display: none !important;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 520px) {
             .card { padding: 26px 20px; }
             .lab-item { flex-direction: column; align-items: flex-start; }
             .btn-download { width: 100%; justify-content: center; }
@@ -307,7 +331,6 @@
             <div class="brand-header">
                 <div class="brand-logo-container">
                     <div class="brand-icon">
-                        <!-- Logo tipo Matraz de laboratorio / Salud -->
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
                             <line x1="8.5" y1="2" x2="15.5" y2="2"/>
@@ -353,30 +376,188 @@
         <div class="card">
             <div class="user-header">
                 <div class="user-info">
-                    <h3>Andrés Gómez</h3>
-                    <p>CC: 12345</p>
+                    <h3 id="patientName">Paciente</h3>
+                    <p id="patientDoc">CC: 12345</p>
                 </div>
                 <button onclick="handleLogout()" class="btn btn-outline-danger">
-                    Salir
+                    Cerrar Sesión
                 </button>
             </div>
 
-            <h2 class="section-title">Resultados de Laboratorio</h2>
+            <h2 class="section-title">Historial de Resultados</h2>
 
-            <div class="lab-item">
-                <div class="lab-info">
-                    <div class="pdf-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <div class="lab-list">
+                
+                <!-- Examen 1 (Más reciente) -->
+                <div class="lab-item">
+                    <div class="lab-info">
+                        <div class="pdf-icon-wrapper">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lab-details">
+                            <h4>Parcial de Orina y Urocultivo</h4>
+                            <p>Fecha de Toma: 21 de Agosto, 2026</p>
+                            <span class="location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                E.S.E. Hospital Local de Usiacurí
+                            </span>
+                        </div>
                     </div>
-                    <div class="lab-details">
-                        <h4>Parcial de Orina y Urocultivo</h4>
-                        <span>Fecha: 21/08/2026 • Estado: Completado</span>
-                    </div>
+                    <a href="12345.pdf" download="12345.pdf" class="btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Descargar
+                    </a>
                 </div>
-                <a href="#" onclick="downloadMockPDF(event)" class="btn-download">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Descargar
-                </a>
+
+                <!-- Examen 2 -->
+                <div class="lab-item">
+                    <div class="lab-info">
+                        <div class="pdf-icon-wrapper">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lab-details">
+                            <h4>Hemograma Completo y Perfil Lipídico</h4>
+                            <p>Fecha de Toma: 14 de Mayo, 2026</p>
+                            <span class="location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                E.S.E. Hospital Local de Usiacurí
+                            </span>
+                        </div>
+                    </div>
+                    <a href="12345.pdf" download="12345_2.pdf" class="btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Descargar
+                    </a>
+                </div>
+
+                <!-- Examen 3 -->
+                <div class="lab-item">
+                    <div class="lab-info">
+                        <div class="pdf-icon-wrapper">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lab-details">
+                            <h4>Glicemia en Ayunas y HbA1c</h4>
+                            <p>Fecha de Toma: 10 de Febrero, 2026</p>
+                            <span class="location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                E.S.E. Hospital Local de Usiacurí
+                            </span>
+                        </div>
+                    </div>
+                    <a href="12345.pdf" download="12345_3.pdf" class="btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Descargar
+                    </a>
+                </div>
+
+                <!-- Examen 4 -->
+                <div class="lab-item">
+                    <div class="lab-info">
+                        <div class="pdf-icon-wrapper">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lab-details">
+                            <h4>Pruebas de Función Tiroidea (TSH y T4)</h4>
+                            <p>Fecha de Toma: 05 de Noviembre, 2025</p>
+                            <span class="location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                E.S.E. Hospital Local de Usiacurí
+                            </span>
+                        </div>
+                    </div>
+                    <a href="12345.pdf" download="12345_4.pdf" class="btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Descargar
+                    </a>
+                </div>
+
+                <!-- Examen 5 -->
+                <div class="lab-item">
+                    <div class="lab-info">
+                        <div class="pdf-icon-wrapper">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lab-details">
+                            <h4>Coproanalisis y Coprocultivo</h4>
+                            <p>Fecha de Toma: 18 de Julio, 2025</p>
+                            <span class="location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                E.S.E. Hospital Local de Usiacurí
+                            </span>
+                        </div>
+                    </div>
+                    <a href="12345.pdf" download="12345_5.pdf" class="btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Descargar
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
@@ -385,12 +566,17 @@
         function handleLogin(event) {
             event.preventDefault();
             
+            const docType = document.getElementById('docType').value;
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
             const errorDiv = document.getElementById('errorMessage');
 
+            // Validación de credenciales de prueba
             if (user === "12345" && pass === "12345") {
                 errorDiv.style.display = "none";
+                document.getElementById('patientName').innerText = "Usuario de Prueba";
+                document.getElementById('patientDoc').innerText = docType + ": " + user;
+                
                 document.getElementById('loginView').classList.add('hidden');
                 document.getElementById('dashboardView').classList.remove('hidden');
             } else {
@@ -402,11 +588,6 @@
             document.getElementById('loginForm').reset();
             document.getElementById('dashboardView').classList.add('hidden');
             document.getElementById('loginView').classList.remove('hidden');
-        }
-
-        function downloadMockPDF(event) {
-            event.preventDefault();
-            alert("Iniciando descarga del examen: Parcial de Orina y Urocultivo...");
         }
     </script>
 </body>
