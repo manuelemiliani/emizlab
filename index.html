@@ -52,7 +52,7 @@
         }
 
         .dashboard-container {
-            max-width: 800px;
+            max-width: 850px;
         }
 
         .card {
@@ -577,6 +577,37 @@
             color: var(--accent);
         }
 
+        /* METRICAS PANEL 0202 */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .metric-card h4 {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .metric-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
         .app-footer {
             margin-top: 24px;
             padding: 16px 8px 0 8px;
@@ -594,6 +625,29 @@
             color: #ffffff;
             text-decoration: underline;
         }
+
+        .btn-sm-action {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            margin-right: 4px;
+        }
+        .btn-toggle-active { background-color: #fef3c7; color: #d97706; }
+        .btn-toggle-inactive { background-color: #d1fae5; color: #059669; }
+        .btn-delete-staff { background-color: #fee2e2; color: #dc2626; }
+
+        .role-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .role-bact { background-color: #e0f2fe; color: #0369a1; }
+        .role-aux { background-color: #fef3c7; color: #b45309; }
 
         .hidden {
             display: none !important;
@@ -688,7 +742,7 @@
         </footer>
     </div>
 
-    <!-- VISTA BACTERIÓLOGO / EMPLEADOS -->
+    <!-- VISTA BACTERIÓLOGO / EMPLEADOS (000) -->
     <div id="adminView" class="container dashboard-container hidden">
         <div class="card">
             <div class="user-header">
@@ -733,6 +787,150 @@
                 Ayuda / Soporte
             </a>
         </footer>
+    </div>
+
+    <!-- VISTA ADMINISTRADOR GENERAL (0101) -->
+    <div id="admin0101View" class="container dashboard-container hidden">
+        <div class="card">
+            <div class="user-header">
+                <div class="user-info">
+                    <h3>Panel Administrador Principal</h3>
+                    <p style="font-size: 11px;">Monitoreo Global y Gestión de Personal</p>
+                </div>
+                <div>
+                    <button onclick="downloadBackup()" class="btn btn-secondary" style="background: linear-gradient(135deg, #10b981, #059669); margin-right: 8px;">
+                        💾 Crear copia de seguridad
+                    </button>
+                    <button onclick="handleLogout()" class="btn btn-outline-danger">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Administradores Nivel 2 (0202)</h2>
+                <button onclick="openStaffModal('0202')" class="btn btn-secondary">+ Agregar Admin 0202</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Documento</th>
+                            <th>Fecha de Ingreso</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableAdmins0202"></tbody>
+                </table>
+            </div>
+
+            <div class="section-header" style="margin-top: 25px;">
+                <h2 class="section-title">Bacteriólogos y Auxiliares Registrados</h2>
+                <button onclick="openStaffModal('000')" class="btn btn-secondary">+ Agregar Personal</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Documento</th>
+                            <th>Fecha de Ingreso</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBact0101"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA ADMINISTRADOR SECUNDARIO (0202) -->
+    <div id="admin0202View" class="container dashboard-container hidden">
+        <div class="card">
+            <div class="user-header">
+                <div class="user-info">
+                    <h3>Gestión de Bacteriólogos y Métricas</h3>
+                    <p style="font-size: 11px;">Admin. de Laboratorio: <strong>Francisco Narváez</strong></p>
+                </div>
+                <button onclick="handleLogout()" class="btn btn-outline-danger">
+                    Cerrar Sesión
+                </button>
+            </div>
+
+            <!-- MÉRTRICAS / REPORTE RÁPIDO -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h4>Total Personal</h4>
+                    <div class="metric-value" id="metricTotalStaff">0</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Bacteriólogos</h4>
+                    <div class="metric-value" id="metricBactCount">0</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Auxiliares</h4>
+                    <div class="metric-value" id="metricAuxCount">0</div>
+                </div>
+                <div class="metric-card">
+                    <h4>Pruebas Procesadas</h4>
+                    <div class="metric-value" id="metricTotalExams">0</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Nómina del Laboratorio</h2>
+                <button onclick="openStaffModal('000')" class="btn btn-secondary">+ Agregar Personal</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Documento / Cédula</th>
+                            <th>Fecha de Ingreso</th>
+                            <th>Pruebas Propias</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBact0202"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRAR PERSONAL (ADMINS / BACTERIÓLOGOS / AUXILIARES) -->
+    <div id="staffModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="staffModalTitle">Registrar Personal</h3>
+                <button onclick="closeStaffModal()" class="close-modal">&times;</button>
+            </div>
+            <form onsubmit="handleSaveStaff(event)">
+                <input type="hidden" id="staffRoleType">
+                
+                <div class="form-group" id="staffRoleSelectGroup">
+                    <label style="font-size:12px; color:var(--text-muted);">Cargo / Rol</label>
+                    <select id="staffRoleSelect" class="form-control" style="margin-top:4px;">
+                        <option value="Bacteriólogo">Bacteriólogo</option>
+                        <option value="Auxiliar">Auxiliar de Laboratorio</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Cédula / Documento</label>
+                    <input type="text" id="staffDoc" class="form-control" placeholder="Ej: 10123456" required style="margin-top:4px;">
+                </div>
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre Completo</label>
+                    <input type="text" id="staffName" class="form-control" placeholder="Ej: María Pérez" required style="margin-top:4px;">
+                </div>
+                <button type="submit" class="btn" style="margin-top:10px;">Guardar Registro</button>
+            </form>
+        </div>
     </div>
 
     <!-- MODAL REGISTRAR / EDITAR PACIENTE -->
@@ -821,6 +1019,17 @@
         yesterdayObj.setDate(todayObj.getDate() - 1);
         const fechaAyerFormateada = yesterdayObj.toLocaleDateString('es-ES', opcionesFecha);
 
+        // Base de datos de Personal (Admins, Bacteriólogos y Auxiliares)
+        const staffDatabase = {
+            admins0202: [
+                { doc: "102030", name: "Francisco Narváez (Admin)", dateAdded: "10 de Agosto, 2025", active: true }
+            ],
+            bacteriologists: [
+                { doc: "000", name: "Andrea Hernandez", role: "Bacteriólogo", dateAdded: "01 de Enero, 2025", active: true, examsCount: 142 },
+                { doc: "889911", name: "Carlos Ramírez", role: "Auxiliar", dateAdded: "15 de Febrero, 2026", active: true, examsCount: 89 }
+            ]
+        };
+
         // Base de datos de Pacientes
         const database = {
             "1234567890": {
@@ -875,14 +1084,37 @@
             const errorDiv = document.getElementById('errorMessage');
 
             if (docType === "EMP") {
-                if (user === "000" && pass === "000") {
+                // Admin Nivel 1 (0101)
+                if (user === "0101" && pass === "0101") {
                     errorDiv.style.display = "none";
-                    document.getElementById('loginView').classList.add('hidden');
+                    hideAllViews();
+                    document.getElementById('admin0101View').classList.remove('hidden');
+                    renderAdmin0101Panel();
+                    return;
+                }
+                // Admin Nivel 2 (0202)
+                if (user === "0202" && pass === "0202") {
+                    errorDiv.style.display = "none";
+                    hideAllViews();
+                    document.getElementById('admin0202View').classList.remove('hidden');
+                    renderAdmin0202Panel();
+                    return;
+                }
+                // Bacteriólogo u Auxiliar
+                const bact = staffDatabase.bacteriologists.find(b => b.doc === user);
+                if ((user === "000" || bact) && pass === user) {
+                    if (bact && !bact.active) {
+                        alert("Su usuario se encuentra inhabilitado.");
+                        return;
+                    }
+                    errorDiv.style.display = "none";
+                    hideAllViews();
                     document.getElementById('adminView').classList.remove('hidden');
                     renderAdminPanel();
-                } else {
-                    errorDiv.style.display = "block";
+                    return;
                 }
+                
+                errorDiv.style.display = "block";
                 return;
             }
 
@@ -896,11 +1128,19 @@
 
                 renderPatientExams(user);
 
-                document.getElementById('loginView').classList.add('hidden');
+                hideAllViews();
                 document.getElementById('dashboardView').classList.remove('hidden');
             } else {
                 errorDiv.style.display = "block";
             }
+        }
+
+        function hideAllViews() {
+            document.getElementById('loginView').classList.add('hidden');
+            document.getElementById('dashboardView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('admin0101View').classList.add('hidden');
+            document.getElementById('admin0202View').classList.add('hidden');
         }
 
         function renderPatientExams(userId) {
@@ -1046,6 +1286,171 @@
             });
         }
 
+        // FUNCIONES ADMIN 0101 & 0202
+        function renderAdmin0101Panel() {
+            const tbodyAdmins = document.getElementById('tableAdmins0202');
+            tbodyAdmins.innerHTML = '';
+            staffDatabase.admins0202.forEach(a => {
+                const badge = a.active ? '🟢 Activo' : '🔴 Inactivo';
+                tbodyAdmins.innerHTML += `
+                    <tr>
+                        <td><strong>${a.name}</strong></td>
+                        <td>${a.doc}</td>
+                        <td>${a.dateAdded}</td>
+                        <td>${badge}</td>
+                    </tr>
+                `;
+            });
+
+            const tbodyBact = document.getElementById('tableBact0101');
+            tbodyBact.innerHTML = '';
+            staffDatabase.bacteriologists.forEach(b => {
+                const badge = b.active ? '🟢 Activo' : '🔴 Inactivo';
+                const roleTag = b.role === "Bacteriólogo" 
+                    ? '<span class="role-tag role-bact">Bacteriólogo</span>' 
+                    : '<span class="role-tag role-aux">Auxiliar</span>';
+
+                tbodyBact.innerHTML += `
+                    <tr>
+                        <td><strong>${b.name}</strong></td>
+                        <td>${roleTag}</td>
+                        <td>${b.doc}</td>
+                        <td>${b.dateAdded}</td>
+                        <td>${badge}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderAdmin0202Panel() {
+            // Recalcular métricas del sistema
+            let totalExamsSystem = 0;
+            Object.keys(database).forEach(k => {
+                totalExamsSystem += database[k].exams.length;
+            });
+
+            let bCount = 0;
+            let aCount = 0;
+            staffDatabase.bacteriologists.forEach(b => {
+                if (b.role === "Auxiliar") aCount++;
+                else bCount++;
+            });
+
+            document.getElementById('metricTotalStaff').innerText = staffDatabase.bacteriologists.length;
+            document.getElementById('metricBactCount').innerText = bCount;
+            document.getElementById('metricAuxCount').innerText = aCount;
+            document.getElementById('metricTotalExams').innerText = totalExamsSystem;
+
+            const tbody = document.getElementById('tableBact0202');
+            tbody.innerHTML = '';
+            staffDatabase.bacteriologists.forEach(b => {
+                const badge = b.active ? '🟢 Activo' : '🔴 Inactivo';
+                const toggleText = b.active ? 'Inhabilitar' : 'Habilitar';
+                const toggleClass = b.active ? 'btn-toggle-active' : 'btn-toggle-inactive';
+                const roleTag = b.role === "Bacteriólogo" 
+                    ? '<span class="role-tag role-bact">Bacteriólogo</span>' 
+                    : '<span class="role-tag role-aux">Auxiliar</span>';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${b.name}</strong></td>
+                        <td>${roleTag}</td>
+                        <td>${b.doc}</td>
+                        <td>${b.dateAdded}</td>
+                        <td><strong>${b.examsCount || 0}</strong> exámenes</td>
+                        <td>${badge}</td>
+                        <td>
+                            <button onclick="toggleBacteriologist('${b.doc}')" class="btn-sm-action ${toggleClass}">${toggleText}</button>
+                            <button onclick="deleteBacteriologist('${b.doc}')" class="btn-sm-action btn-delete-staff">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function toggleBacteriologist(doc) {
+            const bact = staffDatabase.bacteriologists.find(b => b.doc === doc);
+            if (bact) {
+                bact.active = !bact.active;
+                renderAdmin0202Panel();
+            }
+        }
+
+        function deleteBacteriologist(doc) {
+            if (confirm("¿Estás seguro de eliminar este registro del personal?")) {
+                staffDatabase.bacteriologists = staffDatabase.bacteriologists.filter(b => b.doc !== doc);
+                renderAdmin0202Panel();
+            }
+        }
+
+        function openStaffModal(roleType) {
+            document.getElementById('staffRoleType').value = roleType;
+            const roleSelectGroup = document.getElementById('staffRoleSelectGroup');
+
+            if (roleType === '0202') {
+                document.getElementById('staffModalTitle').innerText = "Agregar Administrador (0202)";
+                roleSelectGroup.classList.add('hidden');
+            } else {
+                document.getElementById('staffModalTitle').innerText = "Agregar Personal al Laboratorio";
+                roleSelectGroup.classList.remove('hidden');
+            }
+
+            document.getElementById('staffDoc').value = '';
+            document.getElementById('staffName').value = '';
+            document.getElementById('staffModal').classList.remove('hidden');
+        }
+
+        function closeStaffModal() {
+            document.getElementById('staffModal').classList.add('hidden');
+        }
+
+        function handleSaveStaff(event) {
+            event.preventDefault();
+            const roleType = document.getElementById('staffRoleType').value;
+            const doc = document.getElementById('staffDoc').value.trim();
+            const name = document.getElementById('staffName').value.trim();
+            const selectedRole = document.getElementById('staffRoleSelect').value;
+
+            if (roleType === '0202') {
+                staffDatabase.admins0202.push({
+                    doc: doc,
+                    name: name,
+                    dateAdded: fechaHoyFormateada,
+                    active: true
+                });
+                renderAdmin0101Panel();
+            } else {
+                staffDatabase.bacteriologists.push({
+                    doc: doc,
+                    name: name,
+                    role: selectedRole,
+                    dateAdded: fechaHoyFormateada,
+                    active: true,
+                    examsCount: 0
+                });
+
+                if (!document.getElementById('admin0101View').classList.contains('hidden')) {
+                    renderAdmin0101Panel();
+                }
+                if (!document.getElementById('admin0202View').classList.contains('hidden')) {
+                    renderAdmin0202Panel();
+                }
+            }
+
+            closeStaffModal();
+            alert("Registro de personal guardado con éxito.");
+        }
+
+        function downloadBackup() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ database, staffDatabase }, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `backup_emizlab_${Date.now()}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+
         function openEditExamModal(userId, examId) {
             const exam = database[userId].exams.find(e => e.id === examId);
             if (exam) {
@@ -1079,7 +1484,6 @@
                 document.getElementById('currentPdfContainer').classList.add('hidden');
                 document.getElementById('editExamFileInput').value = '';
                 
-                // REFRESCAR TABLA INMEDIATAMENTE
                 renderAdminPanel();
                 alert("El archivo PDF ha sido eliminado. El examen pasa a estado 'En proceso'.");
             }
@@ -1222,8 +1626,7 @@
         function handleLogout() {
             document.getElementById('loginForm').reset();
             toggleForgotLink();
-            document.getElementById('dashboardView').classList.add('hidden');
-            document.getElementById('adminView').classList.add('hidden');
+            hideAllViews();
             document.getElementById('loginView').classList.remove('hidden');
             currentActiveUser = null;
         }
