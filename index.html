@@ -242,6 +242,17 @@
             color: var(--text-main);
         }
 
+        .date-group-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            background-color: #e0f2fe;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
         .lab-list {
             display: flex;
             flex-direction: column;
@@ -344,11 +355,29 @@
             transition: all 0.2s ease;
         }
 
+        .btn-view-file {
+            background-color: #028090;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        .btn-view-file:hover {
+            background-color: #05668d;
+        }
+
         /* Estilos Panel Empleados / Bacteriólogo */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
         }
 
         .admin-table th, .admin-table td {
@@ -372,6 +401,35 @@
 
         .file-upload-btn {
             font-size: 11px;
+        }
+
+        .exam-date-small {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Botón de WhatsApp */
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #25d366;
+            color: #ffffff !important;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none !important;
+            margin-top: 6px;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #128c7e;
+            transform: translateY(-1px);
         }
 
         /* Modal para agregar paciente */
@@ -469,7 +527,7 @@
             </div>
 
             <div id="errorMessage" class="alert-error">
-                Usuario o contraseña incorrectos.
+                Usuario, contraseña o tipo de documento incorrectos.
             </div>
 
             <form id="loginForm" onsubmit="handleLogin(event)">
@@ -496,7 +554,6 @@
                     <span>Iniciar Sesión</span>
                 </button>
 
-                <!-- Enlace exclusivo para el perfil de Empleados -->
                 <div id="forgotPasswordContainer" class="forgot-password-container hidden">
                     <a href="#" onclick="handleForgotPassword(event)" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
                 </div>
@@ -551,23 +608,17 @@
                 </button>
             </div>
             
-            <div style="overflow-x:auto;">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Paciente</th>
-                            <th>Examen</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminTableBody"></tbody>
-                </table>
-            </div>
+            <div style="overflow-x:auto;" id="adminTablesContainer"></div>
         </div>
 
         <footer class="app-footer">
             <p>© 2026 Emizlab - Portal Interno de Gestión</p>
+            <a href="https://wa.me/573000000000" target="_blank" class="whatsapp-btn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                Ayuda / Soporte
+            </a>
         </footer>
     </div>
 
@@ -607,19 +658,24 @@
     </div>
 
     <script>
-        // Formatear fecha de hoy
-        const today = new Date();
+        // Manejo dinámico de fechas
+        const todayObj = new Date();
         const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' };
-        const fechaHoyFormateada = today.toLocaleDateString('es-ES', opcionesFecha);
+        const fechaHoyFormateada = todayObj.toLocaleDateString('es-ES', opcionesFecha);
 
-        // Base de datos de Pacientes y Exámenes (5 exámenes para Andrés)
+        const yesterdayObj = new Date();
+        yesterdayObj.setDate(todayObj.getDate() - 1);
+        const fechaAyerFormateada = yesterdayObj.toLocaleDateString('es-ES', opcionesFecha);
+
+        // Base de datos de Pacientes y Exámenes
         const database = {
             "123": {
                 name: "Andrés",
+                docType: "CC",
                 doc: "CC: 123",
                 exams: [
                     { id: 1, name: "Parcial de Orina y Urocultivo", date: fechaHoyFormateada, status: "pending", pdf: "12345.pdf" },
-                    { id: 2, name: "Hemograma Completo y Perfil Lipídico", date: "14 de Mayo, 2026", status: "ready", pdf: "12345.pdf" },
+                    { id: 2, name: "Hemograma Completo y Perfil Lipídico", date: fechaAyerFormateada, status: "ready", pdf: "12345.pdf" },
                     { id: 3, name: "Glicemia en Ayunas y HbA1c", date: "10 de Febrero, 2026", status: "ready", pdf: "12345.pdf" },
                     { id: 4, name: "Pruebas de Función Tiroidea (TSH y T4)", date: "05 de Noviembre, 2025", status: "ready", pdf: "12345.pdf" },
                     { id: 5, name: "Coproanalisis y Coprocultivo", date: "18 de Julio, 2025", status: "ready", pdf: "12345.pdf" }
@@ -627,9 +683,10 @@
             },
             "456": {
                 name: "Felipe",
+                docType: "CC",
                 doc: "CC: 456",
                 exams: [
-                    { id: 101, name: "Hemograma Completo", date: "12 de Agosto, 2026", status: "ready", pdf: "12345.pdf" },
+                    { id: 101, name: "Hemograma Completo", date: fechaHoyFormateada, status: "ready", pdf: "12345.pdf" },
                     { id: 102, name: "Perfil Hepático", date: "01 de Junio, 2026", status: "ready", pdf: "12345.pdf" },
                     { id: 103, name: "Examen de Vitamina D y B12", date: "15 de Marzo, 2026", status: "ready", pdf: "12345.pdf" },
                     { id: 104, name: "Electrocardiograma", date: "20 de Enero, 2026", status: "ready", pdf: "12345.pdf" }
@@ -675,14 +732,14 @@
                 return;
             }
 
-            // 2. Caso Pacientes: Verifica contra la base de datos de pacientes
-            if (database[user] && pass === user) {
+            // 2. Caso Pacientes: Verifica documento, contraseña Y tipo de documento exacto
+            const patient = database[user];
+            if (patient && pass === user && patient.docType === docType) {
                 errorDiv.style.display = "none";
                 currentActiveUser = user;
                 
-                const userData = database[user];
-                document.getElementById('patientName').innerText = "Paciente: " + userData.name;
-                document.getElementById('patientDoc').innerText = userData.doc;
+                document.getElementById('patientName').innerText = "Paciente: " + patient.name;
+                document.getElementById('patientDoc').innerText = patient.doc;
 
                 renderPatientExams(user);
 
@@ -741,32 +798,86 @@
             });
         }
 
+        // Renderizar Panel Bacteriología agrupado por fechas y ordenado cronológicamente
         function renderAdminPanel() {
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = '';
+            const container = document.getElementById('adminTablesContainer');
+            container.innerHTML = '';
+
+            const groups = {
+                "Hoy": [],
+                "Ayer": [],
+                "Días Anteriores": []
+            };
 
             Object.keys(database).forEach(userId => {
                 const user = database[userId];
                 user.exams.forEach(exam => {
-                    const row = document.createElement('tr');
-                    
-                    const isPending = exam.status === "pending";
-                    const statusText = isPending ? "🟡 En proceso" : "🟢 Disponible";
-                    
-                    row.innerHTML = `
-                        <td><strong>${user.name}</strong><br><small>${user.doc}</small></td>
-                        <td>${exam.name}</td>
-                        <td><span id="status-text-${userId}-${exam.id}">${statusText}</span></td>
-                        <td class="action-cell">
-                            <select onchange="updateExamStatus('${userId}', ${exam.id}, this.value)" class="form-control" style="padding: 4px 8px; font-size:12px;">
-                                <option value="pending" ${isPending ? 'selected' : ''}>En proceso</option>
-                                <option value="ready" ${!isPending ? 'selected' : ''}>Disponible</option>
-                            </select>
-                            <input type="file" id="file-${userId}-${exam.id}" onchange="uploadPdf('${userId}', ${exam.id})" class="file-upload-btn" accept=".pdf">
-                        </td>
-                    `;
-                    tbody.appendChild(row);
+                    const item = { user, exam, userId };
+                    if (exam.date === fechaHoyFormateada) {
+                        // Los últimos creados quedan de primero en la categoría Hoy
+                        groups["Hoy"].unshift(item);
+                    } else if (exam.date === fechaAyerFormateada) {
+                        groups["Ayer"].push(item);
+                    } else {
+                        groups["Días Anteriores"].push(item);
+                    }
                 });
+            });
+
+            Object.keys(groups).forEach(groupName => {
+                const itemsList = groups[groupName];
+                if (itemsList.length > 0) {
+                    const groupTitle = document.createElement('div');
+                    groupTitle.className = 'date-group-title';
+                    groupTitle.innerText = groupName;
+                    container.appendChild(groupTitle);
+
+                    const table = document.createElement('table');
+                    table.className = 'admin-table';
+                    table.innerHTML = `
+                        <thead>
+                            <tr>
+                                <th>Paciente</th>
+                                <th>Examen</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    `;
+                    const tbody = table.querySelector('tbody');
+
+                    itemsList.forEach(({ user, exam, userId }) => {
+                        const row = document.createElement('tr');
+                        const isPending = exam.status === "pending";
+                        const statusText = isPending ? "🟡 En proceso" : "🟢 Disponible";
+
+                        // Cambia a botón "Ver archivo" cuando está disponible
+                        const fileControlHTML = isPending
+                            ? `<input type="file" id="file-${userId}-${exam.id}" onchange="uploadPdf('${userId}', ${exam.id})" class="file-upload-btn" accept=".pdf">`
+                            : `<a href="${exam.pdf}" target="_blank" class="btn-view-file">
+                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                 Ver archivo
+                               </a>`;
+
+                        row.innerHTML = `
+                            <td><strong>${user.name}</strong><br><small>${user.doc}</small></td>
+                            <td>${exam.name}<span class="exam-date-small">${exam.date}</span></td>
+                            <td><span id="status-text-${userId}-${exam.id}">${statusText}</span></td>
+                            <td class="action-cell">
+                                <select onchange="updateExamStatus('${userId}', ${exam.id}, this.value)" class="form-control" style="padding: 4px 8px; font-size:12px;">
+                                    <option value="pending" ${isPending ? 'selected' : ''}>En proceso</option>
+                                    <option value="ready" ${!isPending ? 'selected' : ''}>Disponible</option>
+                                </select>
+                                <div id="action-file-container-${userId}-${exam.id}">
+                                    ${fileControlHTML}
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    container.appendChild(table);
+                }
             });
         }
 
@@ -774,16 +885,13 @@
             const exam = database[userId].exams.find(e => e.id === examId);
             if (exam) {
                 exam.status = newStatus;
-                const statusLabel = document.getElementById(`status-text-${userId}-${examId}`);
-                if (statusLabel) {
-                    statusLabel.innerText = newStatus === "ready" ? "🟢 Disponible" : "🟡 En proceso";
-                }
+                renderAdminPanel();
             }
         }
 
         function uploadPdf(userId, examId) {
             const fileInput = document.getElementById(`file-${userId}-${examId}`);
-            if (fileInput.files.length > 0) {
+            if (fileInput && fileInput.files.length > 0) {
                 const exam = database[userId].exams.find(e => e.id === examId);
                 if (exam) {
                     exam.status = "ready";
@@ -812,12 +920,14 @@
             if (!database[docNum]) {
                 database[docNum] = {
                     name: name,
+                    docType: type,
                     doc: `${type}: ${docNum}`,
                     exams: []
                 };
             }
 
-            database[docNum].exams.push({
+            // Agrega la prueba al inicio de las del paciente con fecha de hoy
+            database[docNum].exams.unshift({
                 id: Date.now(),
                 name: examName,
                 date: fechaHoyFormateada,
@@ -825,7 +935,7 @@
                 pdf: "12345.pdf"
             });
 
-            alert(`Paciente ${name} creado con éxito. Puede ingresar con su documento (${docNum}) como usuario y contraseña.`);
+            alert(`Paciente ${name} creado con éxito. Puede ingresar seleccionando (${type}) con su documento (${docNum}) como usuario y contraseña.`);
             
             document.getElementById('newDocNum').value = '';
             document.getElementById('newName').value = '';
