@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emizlab - Panel de Bacteriología</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300a896' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2'/%3E%3Cline x1='8.5' y1='2' x2='15.5' y2='2'/%3E%3Cline x1='7' y1='16' x2='17' y2='16'/%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="estilo.css" rel="stylesheet" type="text/css" />
+
+    <!-- ESTILOS CON LAS IMÁGENES BASE64 -->
+    <link rel="stylesheet" href="css/estilos-reporte.css">
+
+    <style>
+        .exam-item-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .exam-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary-dark, #0f172a);
+            margin-bottom: 8px;
+        }
+        .signature-box {
+            background-color: #f1f5f9;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .search-results-dropdown {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            position: absolute;
+            width: calc(100% - 2px);
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .search-result-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .search-result-item:hover {
+            background-color: #f0fdf4;
+            color: #00a896;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Elementos ocultos auxiliares para leer las imágenes del CSS -->
+<div id="dummy-logo" class="logo-emizlab" style="display:none;"></div>
+<div id="dummy-firma" class="firma-bacteriologo" style="display:none;"></div>
+
+    <div id="admin999View" class="container dashboard-container">
+        <div class="card">
+            <div class="user-header">
+                <div class="user-info">
+                    <h3>Panel de Bacteriología</h3>
+                    <p style="font-size: 11px;">Captura y Digitador Manual de Resultados</p>
+                    <div class="bacteriologist-detail">
+                        <span>Bacteriólogo: CLAUDIA DANIELA MONTES | TP: 99441 | </span>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px; margin-right:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>E.S.E. Hospital Local de Ciudad Caribe</span>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="btn btn-outline-danger">
+                    Cerrar Sesión
+                </button>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Órdenes y digitación de Resultados</h2>
+                <div class="header-action-buttons">
+                    <button onclick="openManualResultModal()" class="btn btn-secondary" id="btnAddOrderMain">
+                        + Agregar orden del paciente
+                    </button>
+                </div>
+            </div>
+            
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>N° Orden</th>
+                            <th>Tipo Documento</th>
+                            <th>Paciente</th>
+                            <th>Fecha Realización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableOrders999"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="app-footer">
+            <p>© 2026 Emizlab - Portal Interno de Gestión</p>
+            <a href="https://wa.me/573000000000" target="_blank" class="whatsapp-btn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                Ayuda / Soporte
+            </a>
+        </footer>
+    </div>
+
+    <!-- MODAL AGREGAR / EDITAR RESULTADO -->
+    <div id="manualResultModal" class="modal hidden">
+        <div class="modal-content" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 id="manualModalTitle">Digitación de Resultado</h3>
+                <button type="button" onclick="closeManualResultModal()" class="close-modal">&times;</button>
+            </div>
+            <form onsubmit="handleSaveAndPublishOrder(event)">
+                <input type="hidden" id="manualEditOrderId">
+                
+                <!-- Fila Tipo y Número de Documento con eventos de búsqueda automática -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">Tipo de Documento</label>
+                        <select id="manualDocType" onchange="buscarPacienteRegistrado()" class="form-control" style="margin-top:4px;">
+                            <option value="CC">Cédula de Ciudadanía (CC)</option>
+                            <option value="TI">Tarjeta de Identidad (TI)</option>
+                            <option value="CE">Cédula de Extranjería (CE)</option>
+                            <option value="PA">Pasaporte (PA)</option>
+                            <option value="PPT">PPT</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">Identificación (Clave Portal Pacientes)</label>
+                        <input type="text" id="manualDocNum" oninput="buscarPacienteRegistrado()" placeholder="Ej: 3333" class="form-control" style="margin-top:4px;" required>
+                    </div>
+                </div>
+
+                <!-- Fila Nombre y Fecha de Nacimiento / Edad -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">Nombre del Paciente</label>
+                        <input type="text" id="manualPatientName" class="form-control" placeholder="Ej: María José Pérez" style="margin-top:4px;" required>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">F. Nacimiento / Edad</label>
+                        <div style="display: flex; gap: 4px; margin-top: 4px;">
+                            <input type="date" id="manualDobDate" onchange="calcularEdadDesdeFecha()" class="form-control" style="flex: 1.3; padding: 6px; font-size: 11px;" required>
+                            <input type="text" id="manualAgeDisplay" placeholder="Edad" readonly class="form-control" style="flex: 0.7; background-color: #f8fafc; text-align: center; font-weight: 600; padding: 6px; font-size: 11px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila Sexo y Teléfono -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">Sexo</label>
+                        <select id="manualSex" class="form-control" style="margin-top:4px;" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size:12px; color:var(--text-muted);">Teléfono</label>
+                        <input type="text" id="manualPhone" class="form-control" placeholder="Ej: 3001234567" style="margin-top:4px;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label style="font-size:12px; color:var(--text-muted);">Médico Solicitante</label>
+                        <input type="text" id="manualDoctor" class="form-control" value="ARMANDO CUESTAS" required style="margin-top:4px;">
+                    </div>
+                </div>
+
+                <!-- CONTENEDOR DE EXÁMENES (Se oculta al crear orden nueva, se muestra al editar) -->
+                <div id="examSectionContainer">
+                    <div class="form-group" style="position: relative; margin-top: 15px;">
+                        <label style="font-size:12px; color:var(--text-muted);">Examen a Digitar (Escriba para buscar entre los 15 disponibles)</label>
+                        <input type="text" id="searchExamInput" class="form-control" placeholder="Escriba examen..." onkeyup="filterExamDropdown()" style="margin-top:4px;">
+                        <div id="searchDropdown" class="search-results-dropdown hidden"></div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <div id="addedExamsContainer" style="margin-top: 8px;">
+                            <p id="emptyExamsText" style="font-size:12px; color:var(--text-muted); font-style:italic;">No se han agregado exámenes a la orden.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENEDOR DE FIRMA (Se oculta al crear orden nueva, se muestra al editar) -->
+                <div id="signatureSectionContainer">
+                    <div class="signature-box">
+                        <div>
+                            <p style="font-size: 12px; font-weight: 600; margin: 0; color: #334155;">Firma Bacteriólogo(a)</p>
+                            <span id="signatureStatus" style="font-size: 11px; color: #e11d48; font-weight: 500;">Pendiente de firma</span>
+                        </div>
+                        <button type="button" onclick="signOrder()" class="btn-sm-action" style="background-color: #059669; color: white; padding: 6px 12px; font-size: 12px;">
+                            Firmar
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 15px;">
+                    <button type="button" onclick="closeManualResultModal()" class="btn btn-outline-danger" style="padding: 8px 16px;">Cancelar</button>
+                    <button type="submit" class="btn" style="padding: 8px 16px;" id="btnPublicarOrden">Publicar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Librerías externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Tu archivo de script separado -->
+    <script src="script.js"></script>
+</body>
+</html>
