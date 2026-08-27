@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emizlab - Portal de Resultados de Pacientes</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300a896' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2'/%3E%3Cline x1='8.5' y1='2' x2='15.5' y2='2'/%3E%3Cline x1='7' y1='16' x2='17' y2='16'/%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS EXCLUSIVO DE PACIENTES -->
+    <link href="pacientes.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="pacientes-body">
+
+    <div class="pacientes-container">
+        <div class="pacientes-card">
+            
+            <!-- CABECERA PACIENTE -->
+            <div class="pacientes-header">
+                <div class="pacientes-info">
+                    <h3 id="patientName">Solicitudes de Laboratorio</h3>
+                    <p id="patientDoc">Portal de descarga de resultados de laboratorio</p>
+                                                <span class="pacientes-name-tag">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2A5 5 0 1 0 12 12A5 5 0 0 0 12 2ZM4 19C4 15.134 7.134 12 11 12C12.38 12 13.666 12.4 14.743 13.09C13.66 14.39 13 16.06 13 17.88C13 18.26 13.03 18.63 13.09 19H4Z" fill="#4C4B6C"/>
+      <circle cx="17.5" cy="17.5" r="5.5" fill="#52D68A"/>
+      <path d="M15 17.5L16.8 19.3L20 15.5" stroke="#004D1A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+            Paciente: Andres Soto Gutierrez | CC: 123
+                    </span>
+                </div>
+                <button onclick="handleLogout()" class="pacientes-btn-logout">
+                    Cerrar Sesión
+                </button>
+            </div>
+
+            <!-- HISTORIAL -->
+            <h2 class="pacientes-section-title">Historial de Resultados</h2>
+            
+            <div id="labList" class="pacientes-lab-list">
+                <!-- Ejemplo de Examen Disponible -->
+                <div class="pacientes-lab-item">
+                    <div class="pacientes-lab-info">
+                        <svg class="pacientes-pdf-icon" viewBox="0 0 100 120" fill="none">
+                            <path d="M25 10 H60 L85 35 V105 A 10 10 0 0 1 75 115 H25 A 10 10 0 0 1 15 105 V20 A 10 10 0 0 1 25 10 Z" stroke="#333" stroke-width="7" fill="none"/>
+                            <path d="M60 10 V35 H85" stroke="#333" stroke-width="7" fill="none"/>
+                            <rect x="0" y="42" width="58" height="28" rx="6" fill="#e50914"/>
+                            <text x="29" y="61" fill="#ffffff" font-size="15" font-weight="bold" text-anchor="middle">PDF</text>
+                        </svg>
+                        <div class="pacientes-lab-details">
+                            <h4>N° Orden: 4588</h4>
+                            <p>Fecha de Toma: 26 de agosto de 2026</p>
+                            <span class="pacientes-location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                E.S.E. Hospital Local de Ciudad Caribe
+                            </span>
+                            <span class="pacientes-status-badge pacientes-status-ready">🟢 Disponible</span>
+                        </div>
+                    </div>
+                    <a href="#" download class="pacientes-btn-download">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Descargar
+                    </a>
+                </div>
+
+                <!-- Ejemplo de Examen En Proceso -->
+                <div class="pacientes-lab-item">
+                    <div class="pacientes-lab-info">
+                        <svg class="pacientes-pdf-icon" viewBox="0 0 100 120" fill="none">
+                            <path d="M25 10 H60 L85 35 V105 A 10 10 0 0 1 75 115 H25 A 10 10 0 0 1 15 105 V20 A 10 10 0 0 1 25 10 Z" stroke="#94a3b8" stroke-width="7" fill="none"/>
+                            <path d="M60 10 V35 H85" stroke="#94a3b8" stroke-width="7" fill="none"/>
+                            <rect x="0" y="42" width="58" height="28" rx="6" fill="#94a3b8"/>
+                            <text x="29" y="61" fill="#ffffff" font-size="15" font-weight="bold" text-anchor="middle">PDF</text>
+                        </svg>
+                        <div class="pacientes-lab-details">
+                            <h4>N° Orden: 4587</h4>
+                            <p>Fecha de Toma: 27 de agosto de 2026</p>
+                            <span class="pacientes-location-tag">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                E.S.E. Hospital Local de Ciudad Caribe
+                            </span>
+                            <span class="pacientes-status-badge pacientes-status-pending">🟡 En Proceso</span>
+                        </div>
+                    </div>
+                    <a href="#" class="pacientes-btn-download disabled">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        En proceso
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER PACIENTE -->
+        <footer class="pacientes-footer">
+            <div class="pacientes-footer-links">
+                <a href="#">Política de Tratamiento de Datos (Habeas Data)</a> | 
+                <a href="#">Términos y Condiciones</a>
+            </div>
+            <p>© 2026 Emizlab - Portal de Resultados Clínicos</p>
+            <p style="font-weight: 600; color: #a5f3fc;">VIGILADO Superintendencia Nacional de Salud</p>
+        </footer>
+    </div>
+
+<script>
+    function handleLogout() {
+        // 1. Limpiar las credenciales / token guardados en el navegador
+        localStorage.removeItem('token');
+        localStorage.removeItem('pacienteData');
+        sessionStorage.clear();
+
+        // 2. Redireccionar a la pantalla principal o login
+        // Modifica 'login.html' o 'index.html' según el nombre de tu archivo de acceso
+        window.location.href = 'index.html'; 
+    }
+</script>
+</body>
+</html>

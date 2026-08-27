@@ -1,0 +1,243 @@
+:root {
+    --primary: #00a896;
+    --primary-dark: #028090;
+    --accent: #05668d;
+    --card-bg: rgba(255, 255, 255, 0.94);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+}
+
+.pacientes-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.2)), 
+                url('img/emizlab.jpg') center/cover no-repeat fixed;
+    padding: 16px;
+}
+
+.pacientes-container {
+    width: 100%;
+    max-width: 850px;
+}
+
+.pacientes-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.3);
+    padding: 36px 30px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ENCABEZADO DE USUARIO */
+.pacientes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px solid #e2e8f0;
+    padding-bottom: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pacientes-info h3 {
+    font-size: 18px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.pacientes-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.pacientes-btn-logout {
+    background: transparent;
+    color: var(--danger);
+    border: 1.5px solid var(--danger);
+    border-radius: 12px;
+    width: auto;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.pacientes-btn-logout:hover {
+    background-color: #fef2f2;
+}
+
+/* TITULO SECCION */
+.pacientes-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 16px;
+}
+
+/* LISTA DE EXÁMENES */
+.pacientes-lab-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pacientes-lab-item {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.pacientes-lab-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pacientes-pdf-icon {
+    width: 42px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.pacientes-lab-details h4 {
+    font-size: 14px;
+    color: var(--text-main);
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.pacientes-lab-details p {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.pacientes-location-tag {
+    font-size: 11px;
+    color: var(--primary-dark);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.pacientes-name-tag {
+    font-size: 14px;
+    color: var(--primary-dark);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.pacientes-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.pacientes-status-pending {
+    background-color: #fef9c3;
+    color: #854d0e;
+    border: 1px solid #fef08a;
+}
+
+.pacientes-status-ready {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* BOTONES DE DESCARGA */
+.pacientes-btn-download {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 9px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.pacientes-btn-download:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+.pacientes-btn-download.disabled {
+    background: #cbd5e1;
+    color: #64748b;
+    pointer-events: none;
+    box-shadow: none;
+    border: 1px solid #94a3b8;
+}
+
+/* FOOTER EXCLUSIVO */
+.pacientes-footer {
+    margin-top: 24px;
+    padding: 16px 8px 0 8px;
+    text-align: center;
+    font-size: 11px;
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.pacientes-footer-links a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* ADAPTACIÓN MÓVIL */
+@media (max-width: 600px) {
+    .pacientes-card { 
+        padding: 20px 14px; 
+    }
+    .pacientes-lab-item { 
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    .pacientes-btn-download { 
+        width: 100%; 
+        justify-content: center; 
+    }
+}

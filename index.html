@@ -73,44 +73,55 @@
         </div>
     </div>
 
-    <script>
-        function toggleForgotLink() {
-            const docType = document.getElementById('docType').value;
-            const forgotContainer = document.getElementById('forgotPasswordContainer');
-            if (docType === "EMP") {
-                forgotContainer.classList.remove('hidden');
-            } else {
-                forgotContainer.classList.add('hidden');
-            }
+<script>
+    function toggleForgotLink() {
+        const docType = document.getElementById('docType').value;
+        const forgotContainer = document.getElementById('forgotPasswordContainer');
+        if (docType === "EMP") {
+            forgotContainer.classList.remove('hidden');
+        } else {
+            forgotContainer.classList.add('hidden');
         }
+    }
 
-        function handleForgotPassword(event) {
-            event.preventDefault();
-            alert("Para restablecer tu contraseña corporativa de Emizlab, por favor contacta al Administrador de Sistemas o a la jefatura de laboratorio.");
-        }
+    function handleForgotPassword(event) {
+        event.preventDefault();
+        alert("Para restablecer tu contraseña corporativa de Emizlab, por favor contacta al Administrador de Sistemas o a la jefatura de laboratorio.");
+    }
 
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            const docType = document.getElementById('docType').value;
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            const errorDiv = document.getElementById('errorMessage');
+    function handleLogin(event) {
+        event.preventDefault();
+        
+        const docType = document.getElementById('docType').value;
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value.trim();
+        const errorDiv = document.getElementById('errorMessage');
 
-            if (docType === "EMP") {
-                // Validación para el rol de empleados (999 que va a panel2.html)
-                if (user === "999" && pass === "999") {
-                    errorDiv.style.display = "none";
-                    window.location.href = "panel2.html";
-                    return;
-                }
-                
-                errorDiv.style.display = "block";
+        // 1. Validación para EMPLEADOS (Redirige a panel2.html)
+        if (docType === "EMP") {
+            if (user === "999" && pass === "999") {
+                errorDiv.style.display = "none";
+                window.location.href = "panel2.html";
                 return;
             }
-
             errorDiv.style.display = "block";
+            return;
         }
-    </script>
+
+        // 2. Validación para PACIENTES (CC, TI, RC, NV, PPT -> Redirige a pacientes.html)
+        if (docType === "CC") {
+        if (user === "123" && pass === "123") {
+            errorDiv.style.display = "none";
+            window.location.href = "pacientes.html";
+            return;
+            }
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        // Si ninguna condición se cumple, muestra error
+        errorDiv.style.display = "block";
+    }
+</script>
 </body>
 </html>
