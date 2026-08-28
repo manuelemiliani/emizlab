@@ -97,11 +97,11 @@
         const pass = document.getElementById('password').value.trim();
         const errorDiv = document.getElementById('errorMessage');
 
-        // 1. Validación para EMPLEADOS (Redirige a panel2.html)
+        // 1. Validación para EMPLEADOS (Redirige al panel-bacteriologos.html)
         if (docType === "EMP") {
             if (user === "999" && pass === "999") {
                 errorDiv.style.display = "none";
-                window.location.href = "panel2.html";
+                window.location.href = "panel-bacteriologos.html";
                 return;
             }
             errorDiv.style.display = "block";

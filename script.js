@@ -169,8 +169,8 @@ let currentSelectedExams = [];
 let isSigned = false;
 
 let pacientesSistema = [
-    { docType: "CC", docNum: "2424", name: "DANIEL OROZCO", dob: "1990-01-01", sex: "Masculino", phone: "3000000000" },
-    { docType: "CC", docNum: "3333", name: "Carlos Andrés Pérez", dob: "1985-04-12", sex: "Masculino", phone: "3001112233" }
+    { docType: "CC", docNum: "2424", name: "DANIEL OROZCO", dob: "1990-01-01", sex: "Masculino", phone: "3000000000", email: "daniel@correo.com" },
+    { docType: "CC", docNum: "3333", name: "Carlos Andrés Pérez", dob: "1985-04-12", sex: "Masculino", phone: "3001112233", email: "carlos@correo.com" }
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -242,6 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// ==========================================
+// RENDERIZADO DEL PANEL ADMIN DE ÓRDENES
+// ==========================================
 function renderAdmin999Panel() {
     const tbody = document.getElementById('tableOrders999');
     if (!tbody) return;
@@ -254,37 +257,105 @@ function renderAdmin999Panel() {
 
     orders999Database.forEach(ord => {
         const isPub = ord.isPublished === true;
-        const pdfBg = isPub ? '#059669' : '#94a3b8';
-        const pdfCursor = isPub ? 'pointer' : 'not-allowed';
-        const pdfAction = isPub ? `generarPDF(${ord.orderNum})` : `alert('Debe firmar y publicar la orden antes de poder ver el PDF.');`;
-
-        tbody.innerHTML += `
-            <tr>
-                <td><strong style="color:var(--primary-dark);">#${ord.orderNum}</strong></td>
-                <td>${ord.docType} &nbsp; ${ord.docNum}</td>
-                <td><strong>${ord.patientName}</strong></td>
-                <td>${ord.date}</td>
-                <td>
-                    <button onclick="openManualResultModal(${ord.orderNum})" class="btn-sm-action" style="background:#0284c7; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-right:4px;">Editar</button>
-                    <button onclick="${pdfAction}" class="btn-sm-action" style="background-color:${pdfBg}; color:white; border:none; padding:4px 8px; border-radius:4px; cursor:${pdfCursor};">Ver PDF</button>
-                </td>
-            </tr>
+        
+        // 1. Icono PDF listo o Reloj Salmón limpio
+        const accionEstado = isPub ? `
+            <button onclick="generarPDF(${ord.orderNum})" title="Descargar PDF" style="background:transparent; border:none; padding:2px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;">
+                <svg width="24" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 2C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2H6Z" stroke="#334155" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="#ffffff"/>
+                    <path d="M14 2V8H20" stroke="#334155" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <rect x="7" y="12" width="10" height="5" rx="1" fill="#dc2626"/>
+                    <text x="12" y="15.8" font-size="3.5" font-weight="bold" fill="#ffffff" text-anchor="middle" font-family="Arial, sans-serif">PDF</text>
+                </svg>
+            </button>
+        ` : `
+            <span title="Esperando resultados" style="display:inline-flex; align-items:center; justify-content:center; padding:2px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </span>
         `;
+
+        // 2. Botón Editar
+        const botonEditar = `
+            <button onclick="openManualResultModal(${ord.orderNum})" title="Editar Orden" style="background:#f0f9ff; border:1.5px solid #38bdf8; color:#0284c7; border-radius:6px; padding:4px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; box-sizing:border-box;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+            </button>
+        `;
+
+        // 3. Fila de Datos estructurada en 5 columnas
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid #f1f5f9';
+        tr.innerHTML = `
+            <td style="padding: 10px 8px; vertical-align: middle;">
+                <strong style="color: #00778c; font-size: 14px;">#${ord.orderNum}</strong>
+            </td>
+            <td style="padding: 10px 8px; vertical-align: middle; color: #64748b; font-size: 12.5px; white-space: nowrap;">
+                ${ord.date || fechaHoyFormateada}
+            </td>
+            <td style="padding: 10px 8px; vertical-align: middle; color: #334155; font-size: 13px; white-space: nowrap;">
+                ${ord.docType || 'CC'} ${ord.docNum || ''}
+            </td>
+            <td style="padding: 10px 8px; vertical-align: middle; color: #334155; font-size: 13px;">
+                ${ord.patientName || 'Sin Nombre'}
+            </td>
+            <td style="padding: 10px 8px; vertical-align: middle;">
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    ${accionEstado}
+                    ${botonEditar}
+                </div>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
     });
 }
 
+// ==========================================
+// CÁLCULO DE EDAD EXACTO (Días, Meses, Años)
+// ==========================================
 function calcularEdadDesdeFecha() {
-    const dobInput = document.getElementById('manualDobDate').value;
+    const dateInput = document.getElementById('manualDobDate');
     const ageDisplay = document.getElementById('manualAgeDisplay');
-    if (!dobInput || !ageDisplay) return;
+    
+    if (!dateInput || !ageDisplay || !dateInput.value) return;
 
-    const birthDate = new Date(dobInput);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+    const fechaNac = new Date(dateInput.value + 'T00:00:00');
+    const hoy = new Date();
 
-    ageDisplay.value = `${age} Años`;
+    if (fechaNac > hoy) {
+        ageDisplay.value = "Inválida";
+        return;
+    }
+
+    let anos = hoy.getFullYear() - fechaNac.getFullYear();
+    let meses = hoy.getMonth() - fechaNac.getMonth();
+    let dias = hoy.getDate() - fechaNac.getDate();
+
+    if (dias < 0) {
+        meses--;
+        const ultimoDiaMesAnterior = new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
+        dias += ultimoDiaMesAnterior;
+    }
+
+    if (meses < 0) {
+        anos--;
+        meses += 12;
+    }
+
+    if (anos >= 1) {
+        ageDisplay.value = `${anos} ${anos === 1 ? 'Año' : 'Años'}`;
+    } else if (meses >= 1) {
+        ageDisplay.value = `${meses} ${meses === 1 ? 'Mes' : 'Meses'}`;
+    } else {
+        const diffTime = Math.abs(hoy - fechaNac);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        ageDisplay.value = `${diffDays} ${diffDays === 1 ? 'Día' : 'Días'}`;
+    }
 }
 
 function buscarPacienteRegistrado() {
@@ -299,6 +370,7 @@ function buscarPacienteRegistrado() {
         calcularEdadDesdeFecha();
         if (document.getElementById('manualSex')) document.getElementById('manualSex').value = paciente.sex || '';
         if (document.getElementById('manualPhone')) document.getElementById('manualPhone').value = paciente.phone || '';
+        if (document.getElementById('manualEmail')) document.getElementById('manualEmail').value = paciente.email || '';
     }
 }
 
@@ -435,6 +507,7 @@ function openManualResultModal(editOrderNum = null) {
             if (document.getElementById('manualAgeDisplay')) document.getElementById('manualAgeDisplay').value = ord.ageDisplay || '';
             if (document.getElementById('manualSex')) document.getElementById('manualSex').value = ord.sex || '';
             if (document.getElementById('manualPhone')) document.getElementById('manualPhone').value = ord.phone || '';
+            if (document.getElementById('manualEmail')) document.getElementById('manualEmail').value = ord.email || '';
             
             if (selectDoctor) {
                 selectDoctor.value = 'ARMANDO CUESTAS';
@@ -462,6 +535,7 @@ function openManualResultModal(editOrderNum = null) {
         if (document.getElementById('manualAgeDisplay')) document.getElementById('manualAgeDisplay').value = '';
         if (document.getElementById('manualSex')) document.getElementById('manualSex').value = '';
         if (document.getElementById('manualPhone')) document.getElementById('manualPhone').value = '';
+        if (document.getElementById('manualEmail')) document.getElementById('manualEmail').value = '';
         
         if (examSectionContainer) examSectionContainer.style.display = 'none';
         if (signatureSectionContainer) signatureSectionContainer.style.display = 'none';
@@ -487,6 +561,7 @@ function handleSaveAndPublishOrder(event) {
     const ageDisplay = document.getElementById('manualAgeDisplay')?.value.trim() || '';
     const sex = document.getElementById('manualSex')?.value.trim() || '';
     const phone = document.getElementById('manualPhone')?.value.trim() || '';
+    const email = document.getElementById('manualEmail')?.value.trim() || '';
 
     if (!docNum || !patientName) {
         alert('Por favor complete los campos obligatorios del paciente.');
@@ -502,9 +577,7 @@ function handleSaveAndPublishOrder(event) {
         doctor = selectDoctor.value;
     }
 
-    // ==========================================
-    // INTEGRACIÓN PORTAL DE PACIENTES: Habilitar clave automática (ej: 2424)
-    // ==========================================
+    // Integración portal de pacientes
     let pacientesPortal = JSON.parse(localStorage.getItem('emizlab_portal_pacientes') || '{}');
     pacientesPortal[docNum] = {
         tipoDoc: docType,
@@ -513,13 +586,12 @@ function handleSaveAndPublishOrder(event) {
         activo: true
     };
     localStorage.setItem('emizlab_portal_pacientes', JSON.stringify(pacientesPortal));
-    // ==========================================
 
     const existingPatientIndex = pacientesSistema.findIndex(p => p.docType === docType && p.docNum === docNum);
     if (existingPatientIndex >= 0) {
-        pacientesSistema[existingPatientIndex] = { docType, docNum, name: patientName, dob: dobDate, sex, phone };
+        pacientesSistema[existingPatientIndex] = { docType, docNum, name: patientName, dob: dobDate, sex, phone, email };
     } else {
-        pacientesSistema.push({ docType, docNum, name: patientName, dob: dobDate, sex, phone });
+        pacientesSistema.push({ docType, docNum, name: patientName, dob: dobDate, sex, phone, email });
     }
     localStorage.setItem('emizlab_pacientes', JSON.stringify(pacientesSistema));
 
@@ -533,6 +605,7 @@ function handleSaveAndPublishOrder(event) {
             ageDisplay: ageDisplay,
             sex: sex,
             phone: phone,
+            email: email,
             doctor: doctor,
             exams: [],
             isSigned: false,
@@ -569,6 +642,7 @@ function handleSaveAndPublishOrder(event) {
         ord.ageDisplay = ageDisplay;
         ord.sex = sex;
         ord.phone = phone;
+        ord.email = email;
         ord.doctor = doctor;
         ord.exams = JSON.parse(JSON.stringify(currentSelectedExams));
         ord.isSigned = true;
@@ -597,11 +671,13 @@ function generarPDF(orderNum) {
 
     try {
         const { jsPDF } = window.jspdf;
+        // Documento tamaño carta en mm (215.9 x 279.4 mm)
         const doc = new jsPDF('p', 'mm', 'letter');
 
         const logoDataUrl = obtenerBase64DeCSS('dummy-logo');
         const firmaDataUrl = obtenerBase64DeCSS('dummy-firma');
 
+        // Encabezado principal
         if (logoDataUrl) {
             doc.addImage(logoDataUrl, logoDataUrl.includes('png') ? 'PNG' : 'JPEG', 14, 8, 42, 11);
         }
@@ -618,6 +694,7 @@ function generarPDF(orderNum) {
         doc.text(`Fecha de impresión: ${fechaHoyFormateada}`, 201, 12, { align: "right" });
         doc.text(`Hora: ${horaHoyFormateada}`, 201, 16, { align: "right" });
 
+        // Cuadro de datos del paciente
         doc.setDrawColor(5, 150, 105);
         doc.setLineWidth(0.4);
         doc.roundedRect(14, 21, 187.9, 28, 2.5, 2.5, 'D');
@@ -652,6 +729,7 @@ function generarPDF(orderNum) {
         doc.text(ord.doctor || 'ARMANDO CUESTAS', 148, 31.5);
         doc.text(ord.date || fechaHoyFormateada, 148, 36.5);
 
+        // Estructura de la tabla
         let tableRows = [];
         ord.exams.forEach(ex => {
             tableRows.push([
@@ -662,38 +740,55 @@ function generarPDF(orderNum) {
             });
         });
 
+        // Generación de AutoTable
         doc.autoTable({
-    startY: 52,
-    head: [['EXAMEN', 'RESULTADO', 'UNIDADES', 'VALORES DE REFERENCIA']],
-    body: tableRows,
-    theme: 'plain',
-    headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 8, lineWidth: { bottom: 0.4 }, lineColor: [0, 0, 0] },
-    bodyStyles: { fontSize: 7.5, textColor: [0, 0, 0], cellPadding: 1.5 },
-    columnStyles: { 0: { cellWidth: 72 }, 1: { cellWidth: 36 }, 2: { cellWidth: 32 }, 3: { cellWidth: 47.9 } },
-    margin: { left: 14, right: 14, bottom: 30 },
-    didDrawPage: function (data) {
-      doc.setFont("helvetica", "italic");
-      doc.setFontSize(7);
-      doc.setTextColor(100, 100, 100);
-      doc.text(
-        "La lectura y análisis de los exámenes de laboratorio es competencia exclusiva del profesional médico.",
-        108,
-        274,
-        { align: "center" }
-      );
-    }
-  });
+            startY: 52,
+            head: [['EXAMEN', 'RESULTADO', 'UNIDADES', 'VALORES DE REFERENCIA']],
+            body: tableRows,
+            theme: 'plain',
+            headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', fontSize: 8, lineWidth: { bottom: 0.4 }, lineColor: [0, 0, 0] },
+            bodyStyles: { fontSize: 7.5, textColor: [0, 0, 0], cellPadding: 1.5 },
+            columnStyles: { 0: { cellWidth: 72 }, 1: { cellWidth: 36 }, 2: { cellWidth: 32 }, 3: { cellWidth: 47.9 } },
+            margin: { left: 14, right: 14, bottom: 25 },
+            didDrawPage: function (data) {
+                // Pie de página: Texto legal (Centrado en la parte inferior)
+                doc.setFont("helvetica", "italic");
+                doc.setFontSize(7);
+                doc.setTextColor(100, 100, 100);
+                doc.text(
+                    "La lectura y análisis de los exámenes de laboratorio es competencia exclusiva del profesional médico.",
+                    108,
+                    268,
+                    { align: "center" }
+                );
+            }
+        });
 
-        let finalY = doc.lastAutoTable.finalY + 8;
-        if (finalY > 245) { doc.addPage(); finalY = 25; }
+        // Control de posición para la Firma (Evita solapamientos con el pie de página)
+        let finalY = doc.lastAutoTable.finalY + 12;
+        if (finalY > 225) { 
+            doc.addPage(); 
+            finalY = 30; 
+        }
 
         if (firmaDataUrl) doc.addImage(firmaDataUrl, 'PNG', 14, finalY, 35, 12);
 
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8);
+        doc.setTextColor(0, 0, 0);
         doc.text("CLAUDIA DANIELA MONTES", 14, finalY + 14.5);
         doc.setFont("helvetica", "normal");
         doc.text("BACTERIOLOGA TP: 99441", 14, finalY + 18.5);
+
+        // Numeración de páginas en la esquina inferior derecha (Pag 1, Pag 2, etc.)
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(7.5);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Pag ${i}`, 201, 268, { align: "right" });
+        }
 
         doc.output('dataurlnewwindow');
     } catch (error) {
@@ -702,13 +797,12 @@ function generarPDF(orderNum) {
 }
 
 // ==========================================
-// PORTAL DE PACIENTES (Ingreso con documento ej. 2424 -> pacientes.html)
+// PORTAL DE PACIENTES
 // ==========================================
 
 function handleLogin(event, datosPaciente) {
     if (event) event.preventDefault();
 
-    // Capturar el documento ingresado en el login (Ej: 2424)
     const inputDoc = document.getElementById('loginDocInput')?.value.trim() || datosPaciente?.documento || datosPaciente?.docNum;
 
     if (!inputDoc) {
@@ -716,13 +810,10 @@ function handleLogin(event, datosPaciente) {
         return;
     }
 
-    // CORREGIDO AQUÍ: Usar objeto vacío {} en lugar de string '{}'
     let pacientesPortal = JSON.parse(localStorage.getItem('emizlab_portal_pacientes')) || {};
     
-    // Validar si el documento existe o registrarlo automáticamente para pruebas
     let pacienteInfo = pacientesPortal[inputDoc];
     if (!pacienteInfo) {
-        // Buscar en el sistema general de pacientes
         const encontrado = pacientesSistema.find(p => p.docNum === inputDoc);
         pacienteInfo = {
             tipoDoc: encontrado ? encontrado.docType : 'CC',
@@ -741,8 +832,6 @@ function handleLogin(event, datosPaciente) {
     };
 
     localStorage.setItem("activePatient", JSON.stringify(patientSession));
-    
-    // Redirección automática al portal de pacientes
     window.location.href = "pacientes.html"; 
 }
 
