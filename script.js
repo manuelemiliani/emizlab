@@ -790,13 +790,35 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
-        const pdfBlob = doc.output('blob');
-const blobUrl = URL.createObjectURL(pdfBlob);
-window.open(blobUrl, '_blank');
+        // --- APERTURA DEL MODAL INTREGRADO (OPCIÓN 3) ---
+        const pdfUrl = doc.output('bloburl');
+        const modalFrame = document.getElementById('pdfFrame');
+        const modalContainer = document.getElementById('pdfPreviewModal');
+
+        if (modalFrame && modalContainer) {
+            modalFrame.src = pdfUrl;
+            modalContainer.style.display = 'flex';
+        } else {
+            // Respaldar en caso de que el HTML del modal no esté en el DOM
+            window.open(pdfUrl, '_blank');
+        }
+
     } catch (error) {
         console.error("Error al generar el PDF:", error);
     }
 }
+
+// Función auxiliar para cerrar el modal de previsualización
+function cerrarModalPdf() {
+    const modalContainer = document.getElementById('pdfPreviewModal');
+    const modalFrame = document.getElementById('pdfFrame');
+    
+    if (modalContainer) modalContainer.style.display = 'none';
+    if (modalFrame) modalFrame.src = '';
+}
+
+// Exponer la función de cierre globalmente
+window.cerrarModalPdf = cerrarModalPdf;
 
 // ==========================================
 // PORTAL DE PACIENTES
