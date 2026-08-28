@@ -790,7 +790,9 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
-        doc.output('dataurlnewwindow');
+        const pdfBlob = doc.output('blob');
+const blobUrl = URL.createObjectURL(pdfBlob);
+window.open(blobUrl, '_blank');
     } catch (error) {
         console.error("Error al generar el PDF:", error);
     }
