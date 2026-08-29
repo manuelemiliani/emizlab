@@ -321,6 +321,31 @@
     }
 }
 
+/* Ajuste de contenedor modal para navegadores móviles (Chrome/Safari) */
+.modal-container {
+    background: #ffffff;
+    width: 90%;
+    max-width: 620px;
+    max-height: 85dvh; /* Usa dvh dinámico para Chrome móvil */
+    border-radius: 16px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Permite que header/body/footer se acoplen correctamente */
+    overflow: hidden;
+    animation: modalSlideUp 0.25s ease-out;
+}
+
+/* El cuerpo toma el espacio sobrante y permite scroll suave */
+.modal-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Scroll fluido en móvil */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 
 
     </style>
@@ -643,7 +668,24 @@
                 <i class="fas fa-user-md"></i> Editar Médicos
             </button>
         </div> 
-    </div>             
+    </div>   
+    <!-- Sección 5: Seguridad y Contraseñas (NUEVA) -->
+            <div class="ajustes-seccion">
+                <span class="seccion-titulo">Seguridad y Cuenta</span>
+                <p class="seccion-desc">Administra tus credenciales de acceso y preferencias de seguridad.</p>
+                <div class="grid-botones">
+                    <button class="btn-ajuste outline" type="button">
+                        <i class="fas fa-key"></i> Cambiar Contraseña
+                    </button>
+                    <button class="btn-ajuste outline" type="button">
+                        <i class="fas fa-user-shield"></i> Sesiones Activas
+                    </button>
+                </div>
+            </div>
+            <!-- Pie del Modal -->
+        <div class="modal-footer">
+            <button class="btn-secundario" onclick="cerrarModalAjustes()">Cerrar</button>
+        </div>          
 
 </div>
 
