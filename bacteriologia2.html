@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emizlab - Panel de Bacteriología 2</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300a896' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55A1 1 0 0 0 5.611 22h12.778a1 1 0 0 0 .891-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2'/%3E%3Cline x1='8.5' y1='2' x2='15.5' y2='2'/%3E%3Cline x1='7' y1='16' x2='17' y2='16'/%3E%3C/svg%3E">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #00a896;
+            --primary-dark: #028090;
+            --accent: #05668d;
+            --card-bg: rgba(255, 255, 255, 0.94);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.2)), 
+                        url('emizlab.jpg') center/cover no-repeat fixed;
+            padding: 16px;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .dashboard-container {
+            max-width: 850px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.3);
+            padding: 36px 30px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 16px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .user-info h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .bacteriologist-detail {
+            font-size: 12px;
+            color: var(--primary-dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.95);
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.15);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 16px rgba(0, 168, 150, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            box-shadow: 0 4px 12px rgba(5, 102, 141, 0.3);
+            padding: 10px 14px;
+            font-size: 12px;
+            width: auto;
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            color: var(--danger);
+            border: 1.5px solid var(--danger);
+            box-shadow: none;
+            width: auto;
+            padding: 8px 18px;
+            font-size: 13px;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #fef2f2;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        .admin-table th {
+            background-color: #f8fafc;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .btn-sm-action {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            margin-right: 4px;
+        }
+        .btn-edit-staff { background-color: #e0f2fe; color: #0369a1; }
+
+        .dynamic-fields-container {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .dynamic-field-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .dynamic-field-row label {
+            font-size: 12px;
+            width: 45%;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .dynamic-field-row input, .dynamic-field-row select {
+            width: 55%;
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+
+        .app-footer {
+            margin-top: 24px;
+            padding: 16px 8px 0 8px;
+            text-align: center;
+            font-size: 11px;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 20px 14px; }
+            .admin-table th, .admin-table td { font-size: 11px; padding: 8px 4px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VISTA BACTERIÓLOGO 2 (999) - INGRESO MANUAL -->
+    <div id="admin999View" class="container dashboard-container">
+        <div class="card">
+            <div class="user-header">
+                <div class="user-info">
+                    <h3>Panel de Bacteriología 2</h3>
+                    <p style="font-size: 11px;">Captura y Digitador Manual de Resultados</p>
+                    <div class="bacteriologist-detail">
+                        <span>Bacteriólogo: Usuario 999 | CC: 999 | </span>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:2px; margin-right:2px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>Laboratorio Emizlab Central</span>
+                    </div>
+                </div>
+                <a href="index.html" class="btn btn-outline-danger">
+                    Cerrar Sesión / Volver
+                </a>
+            </div>
+
+            <div class="section-header">
+                <h2 class="section-title">Órdenes y digitación de Resultados</h2>
+                <div class="header-action-buttons">
+                    <button onclick="openManualResultModal()" class="btn btn-secondary">
+                        + Agregar Resultado
+                    </button>
+                </div>
+            </div>
+            
+            <div style="overflow-x:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>N° Orden</th>
+                            <th>Paciente</th>
+                            <th>Examen</th>
+                            <th>Fecha Realización</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableOrders999"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="app-footer">
+            <p>© 2026 Emizlab - Sistema Digitador de Resultados</p>
+        </footer>
+    </div>
+
+    <!-- MODAL AGREGAR RESULTADO MANUAL (PANEL 999) -->
+    <div id="manualResultModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="manualModalTitle">Agregar Resultado por Orden</h3>
+                <button onclick="closeManualResultModal()" class="close-modal">&times;</button>
+            </div>
+            <form onsubmit="handleSaveManualResult(event)">
+                <input type="hidden" id="manualEditOrderId">
+                
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Tipo de Documento</label>
+                    <select id="manualDocType" class="form-control" required style="margin-top:4px;">
+                        <option value="CC">Cédula de Ciudadanía (CC)</option>
+                        <option value="TI">Tarjeta de Identidad (TI)</option>
+                        <option value="RC">Registro Civil (RC)</option>
+                        <option value="NV">Certificado de Nacido Vivo (NV)</option>
+                        <option value="PPT">PPT</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Cédula / Documento</label>
+                    <input type="text" id="manualDocNum" class="form-control" placeholder="Ej: 1040123456" required style="margin-top:4px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Nombre del Paciente</label>
+                    <input type="text" id="manualPatientName" class="form-control" placeholder="Ej: María José Pérez" required style="margin-top:4px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted);">Examen a Digitar (Busca escribiendo: ej. cre, ori, hem)</label>
+                    <input type="text" id="searchExamInput" class="form-control" placeholder="Escriba para filtrar examen..." oninput="filterExamDropdown()" style="margin-top:4px; margin-bottom: 4px;">
+                    <select id="manualExamSelect" class="form-control" onchange="renderDynamicExamFields()" required>
+                        <!-- Opciones cargadas dinámicamente -->
+                    </select>
+                </div>
+
+                <!-- CONTENEDOR DE CAMPOS DINÁMICOS SEGÚN EXAMEN -->
+                <div id="dynamicFieldsContainer" class="dynamic-fields-container">
+                    <p style="font-size: 12px; color: var(--text-muted);">Seleccione un examen para ver los campos requeridos.</p>
+                </div>
+
+                <button type="submit" class="btn" style="margin-top:10px;">Guardar Resultado</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const todayObj = new Date();
+        const opcionesFecha = { day: 'numeric', month: 'long', year: 'numeric' };
+        const fechaHoyFormateada = todayObj.toLocaleDateString('es-ES', opcionesFecha);
+
+        const availableExamsList = [
+            { 
+                id: "embarazo", 
+                name: "Prueba de Embarazo (hCG Subunidad Beta)", 
+                fields: [
+                    { name: "resultado", label: "Resultado de la Prueba", type: "select", options: ["Negativo", "Positivo"] }
+                ] 
+            },
+            { 
+                id: "orina", 
+                name: "Parcial de Orina (Uroanálisis)", 
+                fields: [
+                    { name: "aspecto", label: "Aspecto", type: "text", placeholder: "Ej: Límpido" },
+                    { name: "color", label: "Color", type: "text", placeholder: "Ej: Amarillo" },
+                    { name: "ph", label: "pH", type: "text", placeholder: "Ej: 6.0" },
+                    { name: "densidad", label: "Densidad", type: "text", placeholder: "Ej: 1.015" },
+                    { name: "proteinas", label: "Proteínas", type: "text", placeholder: "Ej: Negativo" },
+                    { name: "glucosa", label: "Glucosa", type: "text", placeholder: "Ej: Negativo" },
+                    { name: "leucocitos", label: "Leucocitos (x campo)", type: "text", placeholder: "Ej: 0-2" }
+                ] 
+            },
+            { 
+                id: "creatinina", 
+                name: "Creatinina en Suero", 
+                fields: [
+                    { name: "creatinina", label: "Creatinina (mg/dL)", type: "text", placeholder: "Ej: 0.9" }
+                ] 
+            },
+            { 
+                id: "hemograma", 
+                name: "Hemograma Completo", 
+                fields: [
+                    { name: "hemoglobina", label: "Hemoglobina (g/dL)", type: "text", placeholder: "Ej: 14.2" },
+                    { name: "hematocrito", label: "Hematocrito (%)", type: "text", placeholder: "Ej: 42.5" },
+                    { name: "leucocitos", label: "Leucocitos totales (/mm³)", type: "text", placeholder: "Ej: 7,500" },
+                    { name: "plaquetas", label: "Plaquetas (/mm³)", type: "text", placeholder: "Ej: 250,000" }
+                ] 
+            },
+            { 
+                id: "glicemia", 
+                name: "Glicemia en Ayunas", 
+                fields: [
+                    { name: "glicemia", label: "Glucosa en ayunas (mg/dL)", type: "text", placeholder: "Ej: 85" }
+                ] 
+            },
+            { 
+                id: "lipidico", 
+                name: "Perfil Lipídico", 
+                fields: [
+                    { name: "colesterol", label: "Colesterol Total (mg/dL)", type: "text", placeholder: "Ej: 180" },
+                    { name: "trigliceridos", label: "Triglicéridos (mg/dL)", type: "text", placeholder: "Ej: 130" },
+                    { name: "hdl", label: "Colesterol HDL (mg/dL)", type: "text", placeholder: "Ej: 45" },
+                    { name: "ldl", label: "Colesterol LDL (mg/dL)", type: "text", placeholder: "Ej: 109" }
+                ] 
+            },
+            { 
+                id: "copro", 
+                name: "Coproanálisis Directo", 
+                fields: [
+                    { name: "consistencia", label: "Consistencia", type: "text", placeholder: "Ej: Blanda" },
+                    { name: "moco", label: "Moco Fecal", type: "text", placeholder: "Ej: Ausente" },
+                    { name: "parasitos", label: "Examen Microscópico / Parásitos", type: "text", placeholder: "Ej: No se observan quistes ni parásitos" }
+                ] 
+            },
+            { 
+                id: "tsh", 
+                name: "TSH Ultrasensible", 
+                fields: [
+                    { name: "tsh", label: "TSH (µIU/mL)", type: "text", placeholder: "Ej: 2.15" }
+                ] 
+            },
+            { 
+                id: "vdrl", 
+                name: "VDRL (Serología Sífilis)", 
+                fields: [
+                    { name: "resultado", label: "Resultado VDRL", type: "select", options: ["No Reactivo", "Reactivo"] }
+                ] 
+            },
+            { 
+                id: "bun", 
+                name: "Nitrógeno Ureico (BUN)", 
+                fields: [
+                    { name: "bun", label: "BUN (mg/dL)", type: "text", placeholder: "Ej: 14.0" }
+                ] 
+            },
+            { 
+                id: "acido_urico", 
+                name: "Ácido Úrico", 
+                fields: [
+                    { name: "acido_urico", label: "Ácido Úrico (mg/dL)", type: "text", placeholder: "Ej: 5.2" }
+                ] 
+            }
+        ];
+
+        let currentOrderCounter = 4574;
+        let orders999Database = [];
+
+        function renderAdmin999Panel() {
+            const tbody = document.getElementById('tableOrders999');
+            tbody.innerHTML = '';
+
+            if (orders999Database.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">No hay resultados digitados aún. Haga clic en "+ Agregar Resultado" para empezar.</td></tr>`;
+                return;
+            }
+
+            orders999Database.forEach(ord => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong style="color:var(--primary-dark);">#${ord.orderNum}</strong></td>
+                        <td><strong>${ord.patientName}</strong><br><small>${ord.docType}: ${ord.docNum}</small></td>
+                        <td>${ord.examName}</td>
+                        <td>${ord.date}</td>
+                        <td>
+                            <button onclick="openManualResultModal(${ord.orderNum})" class="btn-sm-action btn-edit-staff">Editar</button>
+                            <button onclick="viewManualPDF(${ord.orderNum})" class="btn-sm-action" style="background-color:#028090; color:white;">Ver PDF</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterExamDropdown() {
+            const query = document.getElementById('searchExamInput').value.toLowerCase().trim();
+            const select = document.getElementById('manualExamSelect');
+            select.innerHTML = '';
+
+            const filtered = availableExamsList.filter(e => e.name.toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                select.innerHTML = `<option value="">-- No se encontraron exámenes --</option>`;
+            } else {
+                filtered.forEach(e => {
+                    select.innerHTML += `<option value="${e.id}">${e.name}</option>`;
+                });
+            }
+            renderDynamicExamFields();
+        }
+
+        function renderDynamicExamFields() {
+            const selectedExamId = document.getElementById('manualExamSelect').value;
+            const container = document.getElementById('dynamicFieldsContainer');
+            container.innerHTML = '';
+
+            const examObj = availableExamsList.find(e => e.id === selectedExamId);
+            if (!examObj) {
+                container.innerHTML = '<p style="font-size: 12px; color: var(--text-muted);">Seleccione un examen válido.</p>';
+                return;
+            }
+
+            const headerTitle = document.createElement('div');
+            headerTitle.style.cssText = 'font-weight:600; font-size:13px; color:var(--primary-dark); margin-bottom:10px; border-bottom:1px solid #cbd5e1; padding-bottom:4px;';
+            headerTitle.innerText = `Digitación de Campos para: ${examObj.name}`;
+            container.appendChild(headerTitle);
+
+            examObj.fields.forEach(f => {
+                const row = document.createElement('div');
+                row.className = 'dynamic-field-row';
+
+                const label = document.createElement('label');
+                label.innerText = f.label;
+
+                let fieldInput;
+                if (f.type === 'select') {
+                    fieldInput = document.createElement('select');
+                    fieldInput.className = 'form-control';
+                    f.options.forEach(opt => {
+                        fieldInput.innerHTML += `<option value="${opt}">${opt}</option>`;
+                    });
+                } else {
+                    fieldInput = document.createElement('input');
+                    fieldInput.type = 'text';
+                    fieldInput.className = 'form-control';
+                    fieldInput.placeholder = f.placeholder || '';
+                    fieldInput.required = true;
+                }
+                fieldInput.dataset.fieldname = f.name;
+                fieldInput.classList.add('dynamic-input');
+
+                row.appendChild(label);
+                row.appendChild(fieldInput);
+                container.appendChild(row);
+            });
+        }
+
+        function openManualResultModal(editOrderNum = null) {
+            document.getElementById('searchExamInput').value = '';
+            filterExamDropdown();
+
+            if (editOrderNum) {
+                const ord = orders999Database.find(o => o.orderNum === editOrderNum);
+                if (ord) {
+                    document.getElementById('manualModalTitle').innerText = `Editar Orden #${ord.orderNum}`;
+                    document.getElementById('manualEditOrderId').value = ord.orderNum;
+                    document.getElementById('manualDocType').value = ord.docType;
+                    document.getElementById('manualDocNum').value = ord.docNum;
+                    document.getElementById('manualPatientName').value = ord.patientName;
+                    document.getElementById('manualExamSelect').value = ord.examId;
+                    renderDynamicExamFields();
+
+                    const inputs = document.querySelectorAll('.dynamic-input');
+                    inputs.forEach(inp => {
+                        if (ord.resultsData[inp.dataset.fieldname]) {
+                            inp.value = ord.resultsData[inp.dataset.fieldname];
+                        }
+                    });
+                }
+            } else {
+                document.getElementById('manualModalTitle').innerText = `Agregar Resultado (Orden #${currentOrderCounter})`;
+                document.getElementById('manualEditOrderId').value = '';
+                document.getElementById('manualDocNum').value = '';
+                document.getElementById('manualPatientName').value = '';
+            }
+
+            document.getElementById('manualResultModal').classList.remove('hidden');
+        }
+
+        function closeManualResultModal() {
+            document.getElementById('manualResultModal').classList.add('hidden');
+        }
+
+        function handleSaveManualResult(event) {
+            event.preventDefault();
+
+            const editOrderNum = document.getElementById('manualEditOrderId').value;
+            const docType = document.getElementById('manualDocType').value;
+            const docNum = document.getElementById('manualDocNum').value.trim();
+            const patientName = document.getElementById('manualPatientName').value.trim();
+            const examId = document.getElementById('manualExamSelect').value;
+            const examObj = availableExamsList.find(e => e.id === examId);
+
+            const resultsData = {};
+            const inputs = document.querySelectorAll('.dynamic-input');
+            inputs.forEach(inp => {
+                resultsData[inp.dataset.fieldname] = inp.value;
+            });
+
+            if (editOrderNum) {
+                const ord = orders999Database.find(o => o.orderNum === parseInt(editOrderNum));
+                if (ord) {
+                    ord.docType = docType;
+                    ord.docNum = docNum;
+                    ord.patientName = patientName;
+                    ord.examId = examId;
+                    ord.examName = examObj ? examObj.name : '';
+                    ord.resultsData = resultsData;
+                    alert(`Orden #${editOrderNum} actualizada con éxito.`);
+                }
+            } else {
+                const newOrder = {
+                    orderNum: currentOrderCounter,
+                    docType: docType,
+                    docNum: docNum,
+                    patientName: patientName,
+                    examId: examId,
+                    examName: examObj ? examObj.name : '',
+                    resultsData: resultsData,
+                    date: fechaHoyFormateada
+                };
+                orders999Database.unshift(newOrder);
+                alert(`Resultado guardado con éxito bajo la Orden #${currentOrderCounter}.`);
+                currentOrderCounter++;
+            }
+
+            closeManualResultModal();
+            renderAdmin999Panel();
+        }
+
+        function viewManualPDF(orderNum) {
+            const ord = orders999Database.find(o => o.orderNum === orderNum);
+            if (ord) {
+                let textData = `======================================\n`;
+                textData += `       EMIZLAB - REPORTE CLINICO      \n`;
+                textData += `======================================\n`;
+                textData += `Orden N°: ${ord.orderNum}\n`;
+                textData += `Fecha: ${ord.date}\n`;
+                textData += `Paciente: ${ord.patientName}\n`;
+                textData += `Documento: ${ord.docType} ${ord.docNum}\n`;
+                textData += `Examen: ${ord.examName}\n`;
+                textData += `--------------------------------------\n`;
+                textData += `RESULTADOS:\n`;
+                Object.keys(ord.resultsData).forEach(k => {
+                    textData += ` - ${k.toUpperCase()}: ${ord.resultsData[k]}\n`;
+                });
+                textData += `======================================\n`;
+                textData += `Próximamente este formato generará un archivo PDF descargable.`;
+                alert(textData);
+            }
+        }
+
+        renderAdmin999Panel();
+    </script>
+</body>
+</html>
