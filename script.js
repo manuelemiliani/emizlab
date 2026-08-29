@@ -7,6 +7,10 @@ const opcionesFecha = { day: '2-digit', month: '2-digit', year: 'numeric' };
 const fechaHoyFormateada = todayObj.toLocaleDateString('es-ES', opcionesFecha);
 const horaHoyFormateada = todayObj.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
 
+// Estado global para control de zoom y página PDF en pantalla
+let currentPdfScale = 1.5;
+let currentPdfPage = null;
+
 // Listado de 15 opciones de exámenes clínicos disponibles
 const availableExamsList = [
     { 
@@ -258,7 +262,6 @@ function renderAdmin999Panel() {
     orders999Database.forEach(ord => {
         const isPub = ord.isPublished === true;
         
-        // 1. Icono PDF listo o Reloj Salmón limpio
         const accionEstado = isPub ? `
             <button onclick="generarPDF(${ord.orderNum})" title="Descargar PDF" style="background:transparent; border:none; padding:2px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;">
                 <svg width="24" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -277,7 +280,6 @@ function renderAdmin999Panel() {
             </span>
         `;
 
-        // 2. Botón Editar
         const botonEditar = `
             <button onclick="openManualResultModal(${ord.orderNum})" title="Editar Orden" style="background:#f0f9ff; border:1.5px solid #38bdf8; color:#0284c7; border-radius:6px; padding:4px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; box-sizing:border-box;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -287,7 +289,6 @@ function renderAdmin999Panel() {
             </button>
         `;
 
-        // 3. Fila de Datos estructurada en 5 columnas
         const tr = document.createElement('tr');
         tr.style.borderBottom = '1px solid #f1f5f9';
         tr.innerHTML = `
@@ -577,7 +578,6 @@ function handleSaveAndPublishOrder(event) {
         doctor = selectDoctor.value;
     }
 
-    // Integración portal de pacientes
     let pacientesPortal = JSON.parse(localStorage.getItem('emizlab_portal_pacientes') || '{}');
     pacientesPortal[docNum] = {
         tipoDoc: docType,
@@ -665,13 +665,47 @@ function obtenerBase64DeCSS(elementId) {
     return match ? match[2] : '';
 }
 
+// ==========================================
+// RENDERIZADO DE PÁGINA Y FUNCIONES DE ZOOM
+// ==========================================
+
+function renderPageWithScale(scale) {
+    if (!currentPdfPage) return;
+    const canvas = document.getElementById('pdfCanvas');
+    if (!canvas) return;
+    
+    const context = canvas.getContext('2d');
+    const viewport = currentPdfPage.getViewport({ scale: scale });
+    
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+        canvasContext: context,
+        viewport: viewport
+    };
+    
+    currentPdfPage.render(renderContext);
+}
+
+function zoomInPdf() {
+    currentPdfScale += 0.3;
+    renderPageWithScale(currentPdfScale);
+}
+
+function zoomOutPdf() {
+    if (currentPdfScale > 0.8) {
+        currentPdfScale -= 0.3;
+        renderPageWithScale(currentPdfScale);
+    }
+}
+
 function generarPDF(orderNum) {
     const ord = orders999Database.find(o => o.orderNum === orderNum);
     if (!ord) return;
 
     try {
         const { jsPDF } = window.jspdf;
-        // Documento tamaño carta en mm (215.9 x 279.4 mm)
         const doc = new jsPDF('p', 'mm', 'letter');
 
         const logoDataUrl = obtenerBase64DeCSS('dummy-logo');
@@ -751,7 +785,6 @@ function generarPDF(orderNum) {
             columnStyles: { 0: { cellWidth: 72 }, 1: { cellWidth: 36 }, 2: { cellWidth: 32 }, 3: { cellWidth: 47.9 } },
             margin: { left: 14, right: 14, bottom: 25 },
             didDrawPage: function (data) {
-                // Pie de página: Texto legal (Centrado en la parte inferior)
                 doc.setFont("helvetica", "italic");
                 doc.setFontSize(7);
                 doc.setTextColor(100, 100, 100);
@@ -764,7 +797,6 @@ function generarPDF(orderNum) {
             }
         });
 
-        // Control de posición para la Firma (Evita solapamientos con el pie de página)
         let finalY = doc.lastAutoTable.finalY + 12;
         if (finalY > 225) { 
             doc.addPage(); 
@@ -780,7 +812,6 @@ function generarPDF(orderNum) {
         doc.setFont("helvetica", "normal");
         doc.text("BACTERIOLOGA TP: 99441", 14, finalY + 18.5);
 
-        // Numeración de páginas en la esquina inferior derecha (Pag 1, Pag 2, etc.)
         const totalPages = doc.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
             doc.setPage(i);
@@ -790,28 +821,18 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
-        // --- APERTURA COMPATIBLE ANDROID / IOS (PDF.js) ---
+        // --- APERTURA COMPATIBLE SAFARI Y CHROME (PDF.js + Dynamic Scale) ---
         const pdfArrayBuffer = doc.output('arraybuffer');
         const modalContainer = document.getElementById('pdfPreviewModal');
-        const canvas = document.getElementById('pdfCanvas');
 
-        if (modalContainer && canvas && window.pdfjsLib) {
+        if (modalContainer && window.pdfjsLib) {
             pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
             pdfjsLib.getDocument({ data: pdfArrayBuffer }).promise.then(pdf => {
                 pdf.getPage(1).then(page => {
-                    const viewport = page.getViewport({ scale: 1.5 });
-                    const context = canvas.getContext('2d');
-                    
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    
-                    page.render(renderContext);
+                    currentPdfPage = page;
+                    currentPdfScale = 1.5; // Escala inicial predeterminada
+                    renderPageWithScale(currentPdfScale);
                     modalContainer.style.display = 'flex';
                 });
             }).catch(err => {
@@ -819,7 +840,6 @@ function generarPDF(orderNum) {
                 doc.save(`Orden_${orderNum}.pdf`);
             });
         } else {
-            // Respaldar descargando el PDF directamente si el modal o la librería no están presentes
             doc.save(`Orden_${orderNum}.pdf`);
         }
 
@@ -828,7 +848,7 @@ function generarPDF(orderNum) {
     }
 }
 
-// Función auxiliar para cerrar el modal de previsualización
+// Cierre del modal de previsualización y reseteo de variables de página
 function cerrarModalPdf() {
     const modalContainer = document.getElementById('pdfPreviewModal');
     const canvas = document.getElementById('pdfCanvas');
@@ -838,10 +858,13 @@ function cerrarModalPdf() {
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+    currentPdfPage = null;
 }
 
-// Exponer la función de cierre globalmente
+// Exponer la función de cierre y zoom globalmente
 window.cerrarModalPdf = cerrarModalPdf;
+window.zoomInPdf = zoomInPdf;
+window.zoomOutPdf = zoomOutPdf;
 
 // ==========================================
 // PORTAL DE PACIENTES

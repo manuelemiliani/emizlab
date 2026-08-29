@@ -139,9 +139,34 @@
     -webkit-user-select: none;
 }
 
+/* Modal de vista previa centrado y en pantalla completa */
 #pdfPreviewModal {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch; /* Suaviza el desplazamiento táctil en Safari iOS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    display: none; /* Se activa a 'flex' al abrir */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que quede por encima de todo el panel */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Contenido interno del modal */
+#pdfPreviewModal .modal-content {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto; /* Permite scroll si la hoja renderizada sobrepasa la pantalla */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
     </style>
@@ -383,17 +408,17 @@
     <script src="script.js"></script>
 
 <!-- Modal de Vista Previa de PDF -->
-<div id="pdfPreviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; flex-direction: column;">
-    <!-- Barra superior -->
-    <div style="background: #ffffff; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0;">
-        <span style="font-weight: 600; font-size: 14px; color: #1e293b;">Vista Previa de Resultado</span>
-        <button type="button" onclick="cerrarModalPdf()" style="background: #dc2626; color: #ffffff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold;">
-            ✕ Cerrar
-        </button>
-    </div>
-    <!-- Contenedor con Scroll para Android e iOS -->
-    <div style="flex: 1; width: 100%; height: 100%; background: #525659; overflow-y: auto; text-align: center; padding: 10px 0;">
-        <canvas id="pdfCanvas" style="max-width: 95%; height: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: inline-block;"></canvas>
+<div id="pdfPreviewModal" style="display: none;">
+    <div class="modal-content">
+        <!-- Barra de Controles (Zoom y Cerrar) -->
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; width: 100%; justify-content: flex-end;">
+            <button onclick="zoomOutPdf()" style="padding: 6px 14px; cursor: pointer;">-</button>
+            <button onclick="zoomInPdf()" style="padding: 6px 14px; cursor: pointer;">+</button>
+            <button onclick="cerrarModalPdf()" style="background: #dc2626; color: white; border: none; padding: 6px 16px; border-radius: 6px; cursor: pointer;">Cerrar</button>
+        </div>
+
+        <!-- Canvas del PDF -->
+        <canvas id="pdfCanvas" style="border: 1px solid #cbd5e1; border-radius: 4px;"></canvas>
     </div>
 </div>
 
