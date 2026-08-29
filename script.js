@@ -790,17 +790,37 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
-        // --- APERTURA DEL MODAL INTREGRADO (OPCIÓN 3) ---
-        const pdfUrl = doc.output('bloburl');
-        const modalFrame = document.getElementById('pdfFrame');
+        // --- APERTURA COMPATIBLE ANDROID / IOS (PDF.js) ---
+        const pdfArrayBuffer = doc.output('arraybuffer');
         const modalContainer = document.getElementById('pdfPreviewModal');
+        const canvas = document.getElementById('pdfCanvas');
 
-        if (modalFrame && modalContainer) {
-            modalFrame.src = pdfUrl;
-            modalContainer.style.display = 'flex';
+        if (modalContainer && canvas && window.pdfjsLib) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+            pdfjsLib.getDocument({ data: pdfArrayBuffer }).promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    const context = canvas.getContext('2d');
+                    
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    
+                    page.render(renderContext);
+                    modalContainer.style.display = 'flex';
+                });
+            }).catch(err => {
+                console.error("Error al renderizar el PDF en canvas:", err);
+                doc.save(`Orden_${orderNum}.pdf`);
+            });
         } else {
-            // Respaldar en caso de que el HTML del modal no esté en el DOM
-            window.open(pdfUrl, '_blank');
+            // Respaldar descargando el PDF directamente si el modal o la librería no están presentes
+            doc.save(`Orden_${orderNum}.pdf`);
         }
 
     } catch (error) {
@@ -811,10 +831,13 @@ function generarPDF(orderNum) {
 // Función auxiliar para cerrar el modal de previsualización
 function cerrarModalPdf() {
     const modalContainer = document.getElementById('pdfPreviewModal');
-    const modalFrame = document.getElementById('pdfFrame');
+    const canvas = document.getElementById('pdfCanvas');
     
     if (modalContainer) modalContainer.style.display = 'none';
-    if (modalFrame) modalFrame.src = '';
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 }
 
 // Exponer la función de cierre globalmente

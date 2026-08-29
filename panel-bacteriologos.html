@@ -369,16 +369,21 @@
 
 <!-- Modal de Vista Previa de PDF -->
 <div id="pdfPreviewModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 99999; flex-direction: column;">
+    <!-- Barra superior -->
     <div style="background: #ffffff; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0;">
         <span style="font-weight: 600; font-size: 14px; color: #1e293b;">Vista Previa de Resultado</span>
         <button type="button" onclick="cerrarModalPdf()" style="background: #dc2626; color: #ffffff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold;">
             ✕ Cerrar
         </button>
     </div>
-    <div style="flex: 1; width: 100%; height: 100%; background: #525659;">
-        <iframe id="pdfFrame" style="width: 100%; height: 100%; border: none;"></iframe>
+    <!-- Contenedor con Scroll para Android e iOS -->
+    <div style="flex: 1; width: 100%; height: 100%; background: #525659; overflow-y: auto; text-align: center; padding: 10px 0;">
+        <canvas id="pdfCanvas" style="max-width: 95%; height: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: inline-block;"></canvas>
     </div>
 </div>
+
+<!-- Incluir PDF.js de Mozilla (Colócalo antes del cierre de </body>) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
 </body>
 </html>
