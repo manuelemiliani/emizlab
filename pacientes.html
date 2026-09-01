@@ -61,5 +61,20 @@
 
     <!-- SCRIPT DE PACIENTES -->
     <script src="pacientes.js"></script>
+
+<script>
+    function handleLogout() {
+        // 1. Limpiar las credenciales / token guardados en el navegador
+        localStorage.removeItem('token');
+        localStorage.removeItem('pacienteData');
+        sessionStorage.clear();
+
+        // 2. Redireccionar a la pantalla principal o login
+        // Modifica 'login.html' o 'index.html' según el nombre de tu archivo de acceso
+        window.location.href = 'index.html'; 
+    }
+</script>
+
+    
 </body>
 </html>
