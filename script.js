@@ -824,6 +824,14 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
+        // =========================================================================
+        // AQUÍ ESTÁ EL AJUSTE CLAVE: Se guarda el PDF COMPLETO (con resultados y firma)
+        // =========================================================================
+        const pdfBase64Data = doc.output('datauristring');
+        ord.pdfAdjunto = pdfBase64Data;
+        localStorage.setItem('emizlab_orders', JSON.stringify(orders999Database));
+        // =========================================================================
+
         const pdfArrayBuffer = doc.output('arraybuffer');
         const modalContainer = document.getElementById('pdfPreviewModal');
         const canvas = document.getElementById('pdfCanvas');
