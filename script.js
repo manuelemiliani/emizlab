@@ -707,6 +707,21 @@ function obtenerBase64DeCSS(elementId) {
     return match ? match[2] : '';
 }
 
+
+function publicarOrdenBacteriologia(orderNum) {
+    const ord = orders999Database.find(o => o.orderNum === orderNum);
+    if (!ord) return;
+
+    // Valida si la orden está publicada y cuenta con el archivo adjunto/PDF listo
+    if (!ord.isPublished || !ord.pdfAdjunto) {
+        alert("El archivo PDF para esta orden no está disponible para descarga directa todavía.");
+        return;
+    }
+
+    // Si está disponible, procede a generar o mostrar el PDF
+    generarPDF(orderNum);
+}
+
 function generarPDF(orderNum) {
     const ord = orders999Database.find(o => o.orderNum === orderNum);
     if (!ord) return;
@@ -824,43 +839,71 @@ function generarPDF(orderNum) {
             doc.text(`Pag ${i}`, 201, 268, { align: "right" });
         }
 
-        // =========================================================================
-        // AQUÍ ESTÁ EL AJUSTE CLAVE: Se guarda el PDF COMPLETO (con resultados y firma)
-        // =========================================================================
+        // Guardado automático en el localStorage
         const pdfBase64Data = doc.output('datauristring');
         ord.pdfAdjunto = pdfBase64Data;
         localStorage.setItem('emizlab_orders', JSON.stringify(orders999Database));
-        // =========================================================================
 
         const pdfArrayBuffer = doc.output('arraybuffer');
         const modalContainer = document.getElementById('pdfPreviewModal');
-        const canvas = document.getElementById('pdfCanvas');
+        const modalContentArea = document.getElementById('pdfViewerContainer') || modalContainer.querySelector('.modal-body') || modalContainer;
 
-        if (modalContainer && canvas && window.pdfjsLib) {
+        if (modalContainer && window.pdfjsLib) {
             pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-            pdfjsLib.getDocument({ data: pdfArrayBuffer }).promise.then(pdf => {
-                pdf.getPage(1).then(page => {
-                    const viewport = page.getViewport({ scale: 1.5 });
-                    const context = canvas.getContext('2d');
-                    
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+            pdfjsLib.getDocument({ data: pdfArrayBuffer }).promise.then(async pdf => {
+                const existingCanvasContainer = document.getElementById('canvasWrapperList');
+                if (existingCanvasContainer) {
+                    existingCanvasContainer.remove();
+                }
 
-                    const renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
+                const wrapperList = document.createElement('div');
+                wrapperList.id = 'canvasWrapperList';
+                wrapperList.style.display = 'flex';
+                wrapperList.style.flexDirection = 'column';
+                wrapperList.style.alignItems = 'center';
+                wrapperList.style.gap = '25px';
+                wrapperList.style.overflowY = 'auto';
+                wrapperList.style.maxHeight = '82vh';
+                wrapperList.style.width = '100%';
+                wrapperList.style.padding = '15px 10px';
+
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 2.0 });
+
+                    const newCanvas = document.createElement('canvas');
+                    newCanvas.height = viewport.height;
+                    newCanvas.width = viewport.width;
                     
-                    page.render(renderContext);
-                    modalContainer.style.display = 'flex';
-                });
+                    newCanvas.style.width = '92%';
+                    newCanvas.style.maxWidth = '850px';
+                    newCanvas.style.height = 'auto';
+                    newCanvas.style.background = '#ffffff';
+                    newCanvas.style.boxShadow = '0 8px 24px rgba(0,0,0,0.3)';
+                    newCanvas.style.borderRadius = '6px';
+
+                    const context = newCanvas.getContext('2d');
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+                    wrapperList.appendChild(newCanvas);
+                }
+
+                const oldCanvas = document.getElementById('pdfCanvas');
+                if (oldCanvas) {
+                    oldCanvas.style.display = 'none';
+                    oldCanvas.parentNode.appendChild(wrapperList);
+                } else {
+                    modalContentArea.appendChild(wrapperList);
+                }
+
+                modalContainer.style.display = 'flex';
             }).catch(err => {
-                console.error("Error al renderizar el PDF en canvas:", err);
-                doc.save(`Orden_${orderNum}.pdf`);
+                console.error("Error al renderizar en canvas, usando fallback movil:", err);
+                descargarPDFMobileSeguro(doc, orderNum);
             });
         } else {
-            doc.save(`Orden_${orderNum}.pdf`);
+            descargarPDFMobileSeguro(doc, orderNum);
         }
 
     } catch (error) {
@@ -868,14 +911,37 @@ function generarPDF(orderNum) {
     }
 }
 
+// Función auxiliar robusta para forzar la descarga en celulares y computadoras sin bloqueos
+function descargarPDFMobileSeguro(doc, orderNum) {
+    try {
+        const blob = doc.output('blob');
+        const blobURL = URL.createObjectURL(blob);
+        
+        // En dispositivos móviles, abrir en nueva pestaña permite visualizar y descargar con el gestor nativo del cel
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            window.open(blobURL, '_blank');
+        } else {
+            const downloadLink = document.createElement('a');
+            downloadLink.href = blobURL;
+            downloadLink.download = `Orden_${orderNum}.pdf`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    } catch (e) {
+        doc.save(`Orden_${orderNum}.pdf`);
+    }
+}
+
 function cerrarModalPdf() {
     const modalContainer = document.getElementById('pdfPreviewModal');
-    const canvas = document.getElementById('pdfCanvas');
+    const wrapperList = document.getElementById('canvasWrapperList');
     
     if (modalContainer) modalContainer.style.display = 'none';
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (wrapperList) {
+        wrapperList.remove();
     }
 }
 
