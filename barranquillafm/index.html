@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barranquilla FM | El pulso informativo de la región</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome para iconos -->
+    <title>Barranquilla FM - Portal de Noticias y Actualidad</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos generales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #dc2626;
-            --primary-hover: #b91c1c;
+            --primary: #dc2626; /* Color rojo del portal */
             --dark: #0f172a;
             --gray-light: #f8fafc;
             --gray-border: #e2e8f0;
@@ -32,55 +31,83 @@
         body {
             background-color: var(--gray-light);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
 
-        .breaking-bar {
-            background-color: var(--dark);
+        /* MARQUESINA SUPERIOR */
+        .top-ticker-bar {
+            background-color: #0b0f19;
             color: #fff;
-            font-size: 0.85rem;
-            padding: 8px 1rem;
+            padding: 8px 0;
+            font-size: 0.82rem;
+            overflow: hidden;
+            white-space: nowrap;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            text-align: center;
+            width: 100%;
         }
 
-        .breaking-badge {
+        .ticker-container {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 25s linear infinite;
+        }
+
+        .live-badge {
             background-color: var(--primary);
             color: white;
             padding: 2px 8px;
             border-radius: 4px;
             font-weight: 700;
+            font-size: 0.7rem;
+            margin-right: 10px;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
         }
 
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* HEADER */
         header {
             background: #ffffff;
             border-bottom: 1px solid var(--gray-border);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+
+        .header-container, .top-leaderboard-wrapper, .page-layout {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media(min-width: 768px) {
+            .header-container, .top-leaderboard-wrapper, .page-layout {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
         }
 
         .header-container {
-            max-width: 1280px;
-            margin: 0 auto;
             padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        /* LOGO CON FLOR DE CAYENA */
         .logo-area {
             display: flex;
             align-items: center;
@@ -115,12 +142,12 @@
             letter-spacing: 1px;
         }
 
-        .header-social {
+        .header-socials {
             display: flex;
             gap: 10px;
         }
 
-        .social-icon-btn {
+        .header-social-btn {
             width: 38px;
             height: 38px;
             border-radius: 50%;
@@ -132,507 +159,801 @@
             transition: var(--transition);
         }
 
-        .social-icon-btn:hover {
+        .header-social-btn:hover {
             background: var(--primary);
             color: #fff;
             transform: translateY(-2px);
         }
 
-        .main-container {
-            max-width: 1280px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-
-        .hero-article {
-            background: #fff;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            display: grid;
-            grid-template-columns: 1fr;
-            margin-bottom: 2.5rem;
-            border: 1px solid var(--gray-border);
-            transition: var(--transition);
-        }
-
-        @media(min-width: 900px) {
-            .hero-article {
-                grid-template-columns: 1.3fr 1fr;
-            }
-        }
-
-        .hero-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 320px;
-        }
-
-        @media(min-width: 900px) {
-            .hero-img-wrapper {
-                height: 100%;
-                min-height: 400px;
-            }
-        }
-
-        .hero-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .category-badge {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
-            z-index: 2;
-        }
-
-        .hero-content {
-            padding: 2.5rem;
+        /* BANNER SUPERIOR - PUBLICIDAD */
+        .top-leaderboard-wrapper {
+            margin-top: 1.2rem;
+            text-align: center;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
         }
 
-        .article-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            line-height: 1.3;
+        .ad-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .top-leaderboard-slot-empty {
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
             transition: var(--transition);
+            text-decoration: none;
+            padding: 10px;
         }
 
-        .article-title:hover {
+        .top-leaderboard-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .top-leaderboard-slot-empty i {
+            font-size: 1.6rem;
             color: var(--primary);
         }
 
+        @media(max-width: 768px) {
+            .top-leaderboard-slot-empty {
+                height: auto;
+                min-height: 80px;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        /* DISEÑO DE DOS COLUMNAS (CONTENIDO + SIDEBAR) */
+        .page-layout {
+            margin-top: 1.2rem;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        @media(min-width: 1024px) {
+            .page-layout {
+                grid-template-columns: 1fr 350px;
+                gap: 2rem;
+            }
+        }
+
+        .main-content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            min-width: 0;
+        }
+
+        /* NOTICIA PRINCIPAL (HERO) */
+        .hero-article-card {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-border);
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            display: block;
+        }
+
+        .hero-article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -5px rgba(0,0,0,0.08);
+        }
+
+        .hero-image-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+        }
+
         @media(min-width: 768px) {
-            .article-title {
+            .hero-image-container {
+                height: 400px;
+            }
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-article-card:hover .hero-image-container img {
+            transform: scale(1.03);
+        }
+
+        .hero-body {
+            padding: 1.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .hero-body {
+                padding: 2.2rem;
+            }
+        }
+
+        .category-tag {
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.25;
+            margin-bottom: 1rem;
+        }
+
+        @media(min-width: 768px) {
+            .hero-title {
                 font-size: 2rem;
             }
         }
 
-        .article-excerpt {
-            color: var(--text-muted);
+        .hero-excerpt {
             font-size: 1rem;
+            color: var(--text-main);
             margin-bottom: 1.5rem;
         }
 
-        .card-meta-share {
+        .article-meta-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
             border-top: 1px solid var(--gray-border);
-            padding-top: 1.25rem;
-            flex-wrap: wrap;
-            gap: 10px;
+            padding-top: 1rem;
         }
 
-        .meta-info {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .share-group {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .share-label {
-            font-size: 0.75rem;
+        .article-meta-row .date {
+            color: var(--primary);
             font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-right: 4px;
         }
 
-        .share-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .btn-whatsapp { background-color: #25d366; }
-        .btn-facebook { background-color: #1877f2; }
-        .btn-x { background-color: #000000; color: #ffffff; }
-        .btn-copy { background-color: #475569; }
-
-        .share-btn:hover {
-            transform: scale(1.1);
-            opacity: 0.9;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--gray-border);
-            padding-bottom: 0.75rem;
-        }
-
-        .section-title {
+        /* SECCIÓN DE GRILLA DE NOTICIAS SECUNDARIAS */
+        .section-header-title {
             font-size: 1.25rem;
             font-weight: 800;
             color: var(--dark);
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 2px solid var(--gray-border);
+            padding-bottom: 0.5rem;
         }
 
-        .section-title i {
+        .section-header-title i {
             color: var(--primary);
         }
 
-        .news-grid {
+        .news-grid-section {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
-            margin-bottom: 3rem;
+            gap: 1.2rem;
         }
 
-        @media(min-width: 640px) {
-            .news-grid {
+        @media(min-width: 768px) {
+            .news-grid-section {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media(min-width: 1024px) {
-            .news-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .news-card {
+        .standard-news-card {
             background: #fff;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            border-radius: 12px;
             border: 1px solid var(--gray-border);
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             transition: var(--transition);
         }
 
-        .news-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08);
+        .standard-news-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px -3px rgba(0,0,0,0.06);
         }
 
-        .card-img-wrapper {
-            position: relative;
-            height: 200px;
+        .standard-news-card img {
             width: 100%;
-        }
-
-        .card-img-wrapper img {
-            width: 100%;
-            height: 100%;
+            height: 180px;
             object-fit: cover;
         }
 
-        .card-body {
-            padding: 1.5rem;
+        .standard-card-body {
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
+            flex: 1;
             justify-content: space-between;
         }
 
-        .card-title {
-            font-size: 1.15rem;
-            font-weight: 700;
+        .standard-card-body h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
             color: var(--dark);
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
+            line-height: 1.35;
+            margin-bottom: 0.6rem;
         }
 
-        .card-excerpt {
+        .standard-card-body p {
+            font-size: 0.88rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-footer-info {
+            font-size: 0.78rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--gray-border);
+            padding-top: 0.7rem;
         }
 
-        footer {
-            background-color: var(--dark);
-            color: #fff;
-            padding: 4rem 1.5rem 2rem;
-            margin-top: 4rem;
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 2.5rem;
+        .sidebar-box {
+            background: #fff;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius);
+            padding: 1.2rem;
         }
 
-        @media(min-width: 768px) {
-            .footer-content {
-                grid-template-columns: 2fr 1fr;
-            }
+        .sidebar-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
         }
 
-        .footer-brand h2 {
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .trending-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .trending-number {
             font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 0.75rem;
-            color: #fff;
+            color: var(--primary);
+            line-height: 1;
+            min-width: 24px;
         }
 
-        .footer-brand p {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            max-width: 450px;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 15px;
-            margin-top: 1rem;
-        }
-
-        .footer-socials a {
-            background: rgba(255,255,255,0.05);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
+        .trending-content h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.3;
+            margin-bottom: 3px;
             transition: var(--transition);
         }
 
-        .footer-socials a:hover {
-            background: var(--primary);
+        .trending-content h5:hover {
+            color: var(--primary);
         }
 
-        .footer-bottom {
-            max-width: 1280px;
-            margin: 2rem auto 0;
+        .trending-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-ad-card {
+            background: #fff;
+            border: 1px solid var(--gray-border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: block;
+            padding: 10px;
+            transition: var(--transition);
+        }
+
+        .sidebar-ad-card:hover {
+            box-shadow: 0 8px 12px -3px rgba(0,0,0,0.06);
+        }
+
+        .sidebar-ad-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-ad-content img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .sidebar-ad-slot-empty {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: #94a3b8;
-            text-align: center;
+            justify-content: center;
+            gap: 6px;
+            aspect-ratio: 1 / 1;
+            transition: var(--transition);
+        }
+
+        .sidebar-ad-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .sidebar-ad-slot-empty i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #ffffff;
+            color: var(--text-main);
+            border-top: 2px solid var(--gray-border);
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .footer-main-section {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
 
         @media(min-width: 768px) {
-            .footer-bottom {
-                flex-direction: row;
-                justify-content: space-between;
+            .footer-main-section {
+                padding: 2.5rem 1.5rem;
             }
+        }
+
+        .footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 700px;
+        }
+
+        .footer-logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo-badge {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .footer-logo-row h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .footer-custom-legal {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            background: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .footer-socials-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .footer-socials-group span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-right: 4px;
+        }
+
+        .footer-social-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .footer-social-icon:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .footer-bottom-bar {
+            background: #ffffff;
+            border-top: 1px solid var(--gray-border);
+            color: var(--text-muted);
+            padding: 1rem 0;
+            font-size: 0.78rem;
+        }
+
+        .footer-bottom-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media(min-width: 768px) {
+            .footer-bottom-container {
+                padding: 0 1.5rem;
+            }
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links a {
+            color: var(--dark);
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-phone-contact {
+            font-weight: 600;
+            color: var(--text-main);
         }
     </style>
 </head>
 <body>
 
-    <div class="breaking-bar">
-        <span class="breaking-badge">En Vivo</span>
-        <p>Sigue toda la información de última hora sobre Barranquilla y el Atlántico.</p>
+    <!-- BARRA SUPERIOR CON MARQUESINA -->
+    <div class="top-ticker-bar">
+        <div class="ticker-container">
+            <span><strong class="live-badge">En Vivo</strong> Sigue toda la información de última hora sobre Barranquilla y el Atlántico. &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; Entérate de los servicios públicos y avisos de suspensión temporal.</span>
+        </div>
     </div>
 
+    <!-- ENCABEZADO PRINCIPAL CON LOGO DE FLOR DE CAYENA -->
     <header>
         <div class="header-container">
             <a href="index.html" class="logo-area">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-tower-broadcast"></i>
+                <div class="logo-icon" title="Flor de Cayena">
+                    <i class="fa-solid fa-spa"></i>
                 </div>
                 <div class="logo-text">
                     <h1>Barranquilla FM</h1>
                     <span>Portal de Noticias</span>
                 </div>
             </a>
-            <div class="header-social">
-                <a href="https://facebook.com/BarranquillaFM" target="_blank" class="social-icon-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://instagram.com/BarranquillaFM" target="_blank" class="social-icon-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <div class="header-socials">
+                <a href="https://facebook.com" target="_blank" class="header-social-btn" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" class="header-social-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
             </div>
         </div>
     </header>
 
-    <main class="main-container">
-
-        <!-- NOTICIA DESTACADA CON ENLACE A NOTICIA.HTML -->
-        <article class="hero-article">
-            <div class="hero-img-wrapper">
-                <span class="category-badge">Destacado</span>
-                <a href="noticia.html">
-                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1000&q=80" alt="Noticia Principal">
-                </a>
+    <!-- BANNER SUPERIOR PUBLICIDAD -->
+    <div class="top-leaderboard-wrapper">
+        <span class="ad-label">Espacio Publicitario</span>
+        <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
+            <i class="fa-solid fa-rectangle-ad"></i>
+            <div style="text-align: left;">
+                <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
             </div>
-            <div class="hero-content">
-                <div>
-                    <a href="noticia.html">
-                        <h2 class="article-title">Gran transformación urbana proyectada para la zona metropolitana del Atlántico</h2>
-                    </a>
-                    <p class="article-excerpt">Nuevas obras de infraestructura vial y espacios públicos buscan dinamizar la economía local, mejorar la competitividad y optimizar la movilidad de miles de ciudadanos.</p>
+        </a>
+    </div>
+
+    <!-- CONTENEDOR DE LA PÁGINA -->
+    <div class="page-layout">
+        
+        <!-- COLUMNA PRINCIPAL DE NOTICIAS -->
+        <div class="main-content-area">
+            
+            <!-- 1. NOTICIA PRINCIPAL (HERO) - MANDA A noticia.html -->
+            <a href="noticia.html" class="hero-article-card" title="Leer noticia principal">
+                <div class="hero-image-container">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80" alt="Triple A agua">
                 </div>
-                
-                <div class="card-meta-share">
-                    <span class="meta-info"><i class="fa-regular fa-clock"></i> Hace 2 horas</span>
+                <div class="hero-body">
+                    <span class="category-tag"><i class="fa-solid fa-bolt"></i> Noticia Destacada</span>
+                    <h2 class="hero-title">Triple A anuncia suspensión del servicio de agua en Barranquilla y Soledad este martes</h2>
+                    <p class="hero-excerpt">La empresa operadora confirmó que las interrupciones obedecen a trabajos de optimización y mantenimiento preventivo en las redes de conducción principales de la zona metropolitana.</p>
+                    <div class="article-meta-row">
+                        <span class="date"><i class="fa-regular fa-clock"></i> 12 de Septiembre, 2026</span>
+                        <span style="font-weight: 700; color: var(--dark);">Leer artículo completo &rarr;</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. SECCIÓN DE NOTICIAS SECUNDARIAS / GRILLA (6 NOTICIAS) -->
+            <div>
+                <h3 class="section-header-title"><i class="fa-solid fa-newspaper"></i> Más Noticias de la Región</h3>
+                <div class="news-grid-section">
                     
-                    <div class="share-group">
-                        <span class="share-label">Compartir:</span>
-                        <button class="share-btn btn-whatsapp" onclick="compartirRedes('whatsapp', 'Gran transformación urbana proyectada para la zona metropolitana del Atlántico')" title="Compartir en WhatsApp">
-                            <i class="fa-brands fa-whatsapp"></i>
-                        </button>
-                        <button class="share-btn btn-facebook" onclick="compartirRedes('facebook')" title="Compartir en Facebook">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </button>
-                        <!-- ICONO DE X CORREGIDO -->
-                        <button class="share-btn btn-x" onclick="compartirRedes('x', 'Gran transformación urbana proyectada para la zona metropolitana del Atlántico')" title="Compartir en X">
-                            <i class="fa-brands fa-x-twitter"></i>
-                        </button>
-                        <button class="share-btn btn-copy" onclick="copiarEnlace()" title="Copiar Enlace">
-                            <i class="fa-solid fa-link"></i>
-                        </button>
-                    </div>
+                    <!-- Tarjeta 2 -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80" alt="Turismo">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Cultura</span>
+                                <h4>Impulso al turismo cultural en los municipios del Atlántico</h4>
+                                <p>Nuevas rutas turísticas buscan dinamizar la economía local y rescatar las tradiciones artesanales de la subregión.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 2 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Tarjeta 3 -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80" alt="Deportes">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Deportes</span>
+                                <h4>Preparativos listos para el gran torneo regional de fútbol</h4>
+                                <p>Equipos locales ultiman detalles físicos y tácticos para disputar la esperada copa de este semestre en los escenarios principales.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 4 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Tarjeta 4 -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Eventos">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Entretenimiento</span>
+                                <h4>Agenda cultural: eventos imperdibles este fin de semana</h4>
+                                <p>Conciertos, exposiciones de arte al aire libre y muestras gastronómicas lideran la oferta de ocio en la ciudad.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 6 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Tarjeta 5 -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Infraestructura">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Infraestructura</span>
+                                <h4>Avanzan obras viales en puntos clave del norte de la ciudad</h4>
+                                <p>Secretaría de Tránsito reporta buen ritmo en los frentes de trabajo orientados a mejorar la movilidad vehicular.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 8 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Tarjeta 6 (Nueva) -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=600&q=80" alt="Economía">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Economía</span>
+                                <h4>Puerto de Barranquilla registra récord en movimiento de carga</h4>
+                                <p>Las cifras del último trimestre reflejan un incremento importante en las operaciones de comercio exterior y competitividad portuaria.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 10 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Tarjeta 7 (Nueva) -->
+                    <a href="noticia.html" class="standard-news-card">
+                        <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=600&q=80" alt="Tecnología y Salud">
+                        <div class="standard-card-body">
+                            <div>
+                                <span class="category-tag" style="font-size: 0.75rem; margin-bottom: 3px;">Salud</span>
+                                <h4>Hospitales de la red pública adoptan nuevas plataformas digitales</h4>
+                                <p>El proceso de modernización tecnológica busca agilizar la asignación de citas médicas y el historial clínico de los pacientes.</p>
+                            </div>
+                            <div class="card-footer-info">
+                                <span>Hace 12 horas</span>
+                                <span style="color: var(--primary); font-weight: 700;">Ver más</span>
+                            </div>
+                        </div>
+                    </a>
+
                 </div>
             </div>
-        </article>
 
-        <div class="section-header">
-            <h3 class="section-title"><i class="fa-solid fa-bolt"></i> Últimas Noticias</h3>
         </div>
 
-        <div class="news-grid">
-            <article class="news-card">
-                <div class="card-img-wrapper">
-                    <span class="category-badge" style="top: 15px; left: 15px; font-size: 0.7rem; padding: 4px 10px;">Local</span>
-                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80" alt="Noticia 1">
-                </div>
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title">Impulso al turismo cultural en los municipios del Atlántico</h4>
-                        <p class="card-excerpt">Estrategias locales buscan potenciar las festividades tradicionales y la gastronomía típica de la zona.</p>
-                    </div>
-                    <div class="card-meta-share">
-                        <span class="meta-info">Hace 4 horas</span>
-                        <div class="share-group">
-                            <button class="share-btn btn-whatsapp" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('whatsapp', 'Impulso al turismo cultural')"><i class="fa-brands fa-whatsapp"></i></button>
-                            <button class="share-btn btn-facebook" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('facebook')"><i class="fa-brands fa-facebook-f"></i></button>
-                            <button class="share-btn btn-x" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('x', 'Impulso al turismo cultural')"><i class="fa-brands fa-x-twitter"></i></button>
+        <!-- SIDEBAR (LO MÁS LEÍDO + 3 BANNERS) -->
+        <aside class="sidebar">
+            
+            <!-- LO MÁS LEÍDO -->
+            <div class="sidebar-box">
+                <h4 class="sidebar-title">Lo Más Leído</h4>
+                <div class="trending-list">
+                    <a href="noticia.html" class="trending-item">
+                        <span class="trending-number">1</span>
+                        <div class="trending-content">
+                            <h5>Suspensión del servicio de agua en Barranquilla y Soledad</h5>
+                            <span class="trending-time"><i class="fa-regular fa-clock"></i> Hoy</span>
                         </div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="card-img-wrapper">
-                    <span class="category-badge" style="top: 15px; left: 15px; font-size: 0.7rem; padding: 4px 10px;">Deportes</span>
-                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80" alt="Noticia 2">
-                </div>
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title">Preparativos listos para el gran torneo regional de fútbol</h4>
-                        <p class="card-excerpt">Equipos locales intensifican sus entrenamientos de cara al inicio de la competencia este fin de semana.</p>
-                    </div>
-                    <div class="card-meta-share">
-                        <span class="meta-info">Hace 6 horas</span>
-                        <div class="share-group">
-                            <button class="share-btn btn-whatsapp" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('whatsapp', 'Torneo regional de fútbol')"><i class="fa-brands fa-whatsapp"></i></button>
-                            <button class="share-btn btn-facebook" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('facebook')"><i class="fa-brands fa-facebook-f"></i></button>
-                            <button class="share-btn btn-x" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('x', 'Torneo regional de fútbol')"><i class="fa-brands fa-x-twitter"></i></button>
+                    </a>
+                    <a href="noticia.html" class="trending-item">
+                        <span class="trending-number">2</span>
+                        <div class="trending-content">
+                            <h5>Nuevas rutas turísticas impulsan la economía del Atlántico</h5>
+                            <span class="trending-time"><i class="fa-regular fa-clock"></i> Hace 2 horas</span>
                         </div>
-                    </div>
-                </div>
-            </article>
-
-            <article class="news-card">
-                <div class="card-img-wrapper">
-                    <span class="category-badge" style="top: 15px; left: 15px; font-size: 0.7rem; padding: 4px 10px;">Cultura</span>
-                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80" alt="Noticia 3">
-                </div>
-                <div class="card-body">
-                    <div>
-                        <h4 class="card-title">Agenda cultural: eventos imperdibles este fin de semana</h4>
-                        <p class="card-excerpt">Conciertos, exposiciones de arte y ferias de emprendimiento llenarán de vida los espacios públicos.</p>
-                    </div>
-                    <div class="card-meta-share">
-                        <span class="meta-info">Ayer</span>
-                        <div class="share-group">
-                            <button class="share-btn btn-whatsapp" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('whatsapp', 'Agenda cultural')"><i class="fa-brands fa-whatsapp"></i></button>
-                            <button class="share-btn btn-facebook" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('facebook')"><i class="fa-brands fa-facebook-f"></i></button>
-                            <button class="share-btn btn-x" style="width:30px; height:30px; font-size:0.8rem;" onclick="compartirRedes('x', 'Agenda cultural')"><i class="fa-brands fa-x-twitter"></i></button>
+                    </a>
+                    <a href="noticia.html" class="trending-item">
+                        <span class="trending-number">3</span>
+                        <div class="trending-content">
+                            <h5>Todo listo para el gran torneo regional de fútbol</h5>
+                            <span class="trending-time"><i class="fa-regular fa-clock"></i> Hace 4 horas</span>
                         </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ANUNCIO LATERAL 1: COCA-COLA -->
+            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Coca-Cola">
+                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
+                <div class="sidebar-ad-content">
+                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Coca-Cola">
+                    <div>
+                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
+                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
                     </div>
                 </div>
-            </article>
-        </div>
+            </a>
 
-    </main>
+            <!-- ANUNCIO LATERAL 2: PEPSI (NUEVO) -->
+            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Pepsi">
+                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
+                <div class="sidebar-ad-content">
+                    <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&q=80" alt="Pepsi">
+                    <div>
+                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Atrévete a Más!</strong>
+                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus mejores momentos.</p>
+                    </div>
+                </div>
+            </a>
 
+            <!-- ANUNCIO LATERAL 3: ESPACIO VACÍO / PERSONALIZABLE -->
+            <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
+                <i class="fa-solid fa-rectangle-ad"></i>
+                <strong style="font-size: 0.85rem; color: var(--dark);">¡Tu Publicidad Aquí!</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Destaca tu negocio con nosotros</span>
+            </a>
+
+        </aside>
+
+    </div>
+
+    <!-- FOOTER -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h2>Barranquilla FM</h2>
-                <p>Noticias sobre Barranquilla y el Atlántico. Mantente informado con la actualidad de nuestra región al instante.</p>
-                <div class="footer-socials">
-                    <a href="https://facebook.com/BarranquillaFM" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://instagram.com/BarranquillaFM" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <div class="footer-main-section">
+            <div class="footer-brand-col">
+                <div class="footer-logo-row">
+                    <div class="footer-logo-badge"><i class="fa-solid fa-tower-broadcast"></i></div>
+                    <h3>BARRANQUILLA FM</h3>
+                </div>
+                <div class="footer-custom-legal">
+                    BARRANQUILLA FM. Prohibida la reproducción y utilización, total o parcial, de los contenidos en cualquier forma o modalidad, sin previa, expresa y escrita autorización. 2026 &copy;
+                </div>
+                <div class="footer-socials-group">
+                    <span>Síguenos:</span>
+                    <a href="https://facebook.com" target="_blank" class="footer-social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank" class="footer-social-icon" title="X"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="https://instagram.com" target="_blank" class="footer-social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Barranquilla FM. Todos los derechos reservados.</p>
+
+        <div class="footer-bottom-bar">
+            <div class="footer-bottom-container">
+                <div class="footer-bottom-links">
+                    <a href="#">Términos</a>
+                    <span>|</span>
+                    <a href="#">Contáctenos</a>
+                    <span>|</span>
+                    <a href="#">Anuncie</a>
+                </div>
+                <div class="footer-phone-contact">
+                    (+57) 300 000 0000 | Barranquilla
+                </div>
+            </div>
         </div>
     </footer>
 
-    <script>
-        function compartirRedes(red, titulo = "") {
-            const urlActual = window.location.href;
-            let shareUrl = "";
-
-            if (red === 'whatsapp') {
-                const texto = encodeURIComponent((titulo ? titulo + " - " : "") + urlActual);
-                shareUrl = `https://api.whatsapp.com/send?text=${texto}`;
-            } else if (red === 'facebook') {
-                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlActual)}`;
-            } else if (red === 'x') {
-                const textX = encodeURIComponent(titulo || document.title);
-                shareUrl = `https://twitter.com/intent/tweet?text=${textX}&url=${encodeURIComponent(urlActual)}`;
-            }
-
-            if (shareUrl) {
-                window.open(shareUrl, '_blank', 'width=600,height=400');
-            }
-        }
-
-        function copiarEnlace() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("¡Enlace copiado al portapapeles!");
-            }).catch(err => {
-                console.error("Error al copiar el enlace: ", err);
-            });
-        }
-    </script>
 </body>
 </html>

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Triple A anuncia suspensión del servicio de agua en Barranquilla y Soledad - Barranquilla FM</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome para iconos generales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #dc2626;
+            --primary: #dc2626; /* Color rojo original del portal */
             --dark: #0f172a;
             --gray-light: #f8fafc;
             --gray-border: #e2e8f0;
@@ -31,10 +31,11 @@
         body {
             background-color: var(--gray-light);
             color: var(--text-main);
-            line-height: 1.8;
+            line-height: 1.7;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         a { text-decoration: none; color: inherit; }
@@ -58,10 +59,6 @@
             animation: marquee 25s linear infinite;
         }
 
-        .ticker-container span {
-            display: inline-block;
-        }
-
         .live-badge {
             background-color: var(--primary);
             color: white;
@@ -78,6 +75,7 @@
             100% { transform: translate(-100%, 0); }
         }
 
+        /* HEADER */
         header {
             background: #ffffff;
             border-bottom: 1px solid var(--gray-border);
@@ -91,18 +89,27 @@
             width: 100%;
             max-width: 1320px;
             margin: 0 auto;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media(min-width: 768px) {
+            .header-container, .top-leaderboard-wrapper, .page-layout {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
         }
 
         .header-container {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        /* LOGO CON FUENTE DE INDEX Y FLOR DE CAYENA */
         .logo-area {
             display: flex;
             align-items: center;
@@ -118,22 +125,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
         }
 
         .logo-text h1 {
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: var(--dark);
-            line-height: 1.2;
+            letter-spacing: -0.5px;
         }
 
         .logo-text span {
             font-size: 0.75rem;
             color: var(--text-muted);
+            font-weight: 600;
+            display: block;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 600;
         }
 
         .header-socials {
@@ -145,7 +153,7 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: #f1f5f9;
+            background: var(--gray-light);
             color: var(--dark);
             display: flex;
             align-items: center;
@@ -156,11 +164,12 @@
         .header-social-btn:hover {
             background: var(--primary);
             color: #fff;
+            transform: translateY(-2px);
         }
 
         /* BANNER SUPERIOR - PUBLICIDAD */
         .top-leaderboard-wrapper {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -179,8 +188,8 @@
             justify-content: center;
             gap: 15px;
             transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             text-decoration: none;
+            padding: 10px;
         }
 
         .top-leaderboard-slot-empty:hover {
@@ -189,64 +198,71 @@
         }
 
         .top-leaderboard-slot-empty i {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--primary);
         }
 
         @media(max-width: 768px) {
             .top-leaderboard-slot-empty {
-                max-width: 320px;
-                height: 100px;
+                height: auto;
+                min-height: 80px;
                 flex-direction: column;
                 gap: 5px;
-                padding: 10px;
-            }
-            .top-leaderboard-slot-empty i {
-                font-size: 1.4rem;
             }
         }
 
         /* DISEÑO DE DOS COLUMNAS */
         .page-layout {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             margin-bottom: 2rem;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
             flex: 1;
         }
 
         @media(min-width: 1024px) {
             .page-layout {
                 grid-template-columns: 1fr 350px;
+                gap: 2rem;
             }
         }
 
         .article-main {
             background: #fff;
-            padding: 2rem;
+            padding: 1.25rem;
             border-radius: var(--radius);
             border: 1px solid var(--gray-border);
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            min-width: 0;
         }
 
         @media(min-width: 768px) {
             .article-main {
-                padding: 3rem;
+                padding: 2.5rem;
             }
         }
 
-        /* BREADCRUMBS ORDENADOS ESTILO ZONA CERO */
+        /* BREADCRUMBS */
         .breadcrumbs {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             display: flex;
             align-items: center;
             gap: 6px;
             white-space: nowrap;
             overflow-x: auto;
             padding-bottom: 4px;
+            max-width: 100%;
+        }
+
+        .breadcrumbs::-webkit-scrollbar {
+            height: 3px;
+        }
+        .breadcrumbs::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
         }
 
         .breadcrumbs a {
@@ -258,210 +274,116 @@
             color: var(--primary);
         }
 
-        .breadcrumbs span {
+        .breadcrumbs span.current-crumb {
             color: var(--dark);
             font-weight: 600;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .sidebar-ad-card {
-            background: #fff;
-            border: 1px solid var(--gray-border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: var(--transition);
-            display: block;
-            padding: 12px;
-        }
-
-        .sidebar-ad-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
-        }
-
-        .sidebar-ad-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .sidebar-ad-content img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .sidebar-ad-slot-empty {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border: 2px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 25px 15px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: var(--transition);
-            min-height: 220px;
-        }
-
-        .sidebar-ad-slot-empty:hover {
-            border-color: var(--primary);
-            background: #fff5f5;
-        }
-
-        .sidebar-ad-slot-empty i {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .sidebar-ad-slot-empty strong {
-            font-size: 0.95rem;
-            color: var(--dark);
-        }
-
-        .sidebar-ad-slot-empty span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
         .category-tag {
             color: var(--primary);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .article-title {
-            font-size: 1.7rem;
+            font-size: 1.45rem;
             font-weight: 800;
             color: var(--dark);
-            line-height: 1.3;
-            margin-bottom: 1.2rem;
+            line-height: 1.25;
+            margin-bottom: 1rem;
         }
 
         @media(min-width: 768px) {
             .article-title {
-                font-size: 2.2rem;
+                font-size: 2.1rem;
             }
         }
 
-        /* IMAGEN ARRIBA ESTILO ZONA CERO */
+        /* FOTO PRINCIPAL */
         .featured-image-container {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .featured-image {
             width: 100%;
             height: auto;
-            max-height: 420px;
+            max-height: 400px;
             object-fit: cover;
             border-radius: 8px;
             display: block;
         }
 
         .image-caption {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-main);
-            margin-top: 8px;
+            margin-top: 6px;
             font-weight: 500;
         }
 
         .image-source {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
 
-        /* METADATOS ESTILO ZONA CERO (DEBAJO DE TÍTULO) */
-        .article-meta-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--gray-border);
-            padding-bottom: 1.2rem;
-        }
-
-        .meta-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--dark);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
-            overflow: hidden;
-        }
-
-        .meta-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .meta-info h6 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .meta-info a {
-            font-size: 0.82rem;
-            color: #2563eb;
-            font-weight: 600;
-        }
-
-        .meta-info a:hover {
-            text-decoration: underline;
-        }
-
-        .article-dates {
+        /* FECHA */
+        .article-dates-clean {
             font-size: 0.82rem;
             color: var(--primary);
             font-weight: 700;
             margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gray-border);
+            padding-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .article-dates span {
-            display: block;
+        .article-dates-clean span {
             color: var(--text-muted);
             font-weight: 400;
-            margin-top: 2px;
+        }
+
+        .article-body {
+            font-size: 1rem;
+            color: #475569;
+            word-break: break-word;
+        }
+
+        @media(min-width: 768px) {
+            .article-body {
+                font-size: 1.05rem;
+            }
         }
 
         .article-body p {
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
-            color: #475569;
+            margin-bottom: 1.4rem;
         }
 
+        /* ANUNCIO FLOTANTE */
         .in-article-ad-box {
-            float: left;
-            margin: 0 25px 20px 0;
+            width: 100%;
+            margin: 1.5rem 0;
             background: #fff;
             padding: 10px;
             border: 1px solid var(--gray-border);
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.04);
-            max-width: 100%;
+        }
+
+        @media(min-width: 768px) {
+            .in-article-ad-box {
+                float: left;
+                margin: 0 20px 20px 0;
+                width: 250px;
+            }
         }
 
         .ad-label {
@@ -474,23 +396,25 @@
         }
 
         .ad-banner-250 {
-            width: 250px;
-            height: 250px;
+            width: 100%;
+            height: 220px;
             border-radius: 8px;
             overflow: hidden;
             position: relative;
             display: block;
         }
 
+        @media(min-width: 768px) {
+            .ad-banner-250 {
+                width: 230px;
+                height: 230px;
+            }
+        }
+
         .ad-banner-250 img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .ad-banner-250:hover img {
-            transform: scale(1.05);
         }
 
         .ad-caption {
@@ -502,22 +426,22 @@
             color: #fff;
             padding: 15px 10px 10px;
             font-weight: 800;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .horizontal-ad-slot-empty {
             clear: both;
-            margin: 2.5rem 0;
+            margin: 2rem 0;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            padding: 20px;
+            padding: 15px;
             border-radius: 12px;
             text-align: center;
             border: 2px dashed #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             transition: var(--transition);
         }
 
@@ -527,7 +451,7 @@
         }
 
         .horizontal-ad-slot-empty i {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--primary);
         }
 
@@ -537,36 +461,35 @@
             display: table;
         }
 
-        /* CAJA DE COMPARTIR HORIZONTAL */
+        /* COMPARTIR */
         .share-box-horizontal {
             background: #f8fafc;
             border: 1px solid var(--gray-border);
-            padding: 1.25rem 2rem;
+            padding: 1rem;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
 
         .share-box-horizontal span {
             font-weight: 700;
             color: var(--dark);
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
+            font-size: 0.9rem;
         }
 
         .share-buttons-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
         .share-circle-btn {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: #ffffff;
             border: 1px solid var(--gray-border);
@@ -575,47 +498,46 @@
             justify-content: center;
             cursor: pointer;
             color: var(--dark);
-            font-size: 1.1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            font-size: 1rem;
             transition: var(--transition);
         }
 
         .share-circle-btn:hover {
-            transform: translateY(-3px);
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
-            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.2);
         }
 
+        /* RELACIONADAS */
         .related-section {
-            margin-top: 3.5rem;
+            margin-top: 2.5rem;
         }
 
         .related-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: var(--dark);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
             border-bottom: 2px solid var(--gray-border);
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.4rem;
         }
 
         .related-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         @media(min-width: 768px) {
             .related-grid {
                 grid-template-columns: repeat(3, 1fr);
+                gap: 1.2rem;
             }
         }
 
         .related-card {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             border: 1px solid var(--gray-border);
             transition: var(--transition);
@@ -623,49 +545,112 @@
         }
 
         .related-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -3px rgba(0,0,0,0.05);
         }
 
         .related-card img {
             width: 100%;
-            height: 130px;
+            height: 120px;
             object-fit: cover;
         }
 
         .related-card-body {
-            padding: 1rem;
+            padding: 0.9rem;
         }
 
         .related-card-body h5 {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--dark);
             line-height: 1.3;
         }
 
-        /* PIE DE PÁGINA */
+        /* SIDEBAR */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sidebar-ad-card {
+            background: #fff;
+            border: 1px solid var(--gray-border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: block;
+            padding: 10px;
+            transition: var(--transition);
+        }
+
+        .sidebar-ad-card:hover {
+            box-shadow: 0 8px 12px -3px rgba(0,0,0,0.06);
+        }
+
+        .sidebar-ad-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-ad-content img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .sidebar-ad-slot-empty {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            aspect-ratio: 1 / 1;
+            transition: var(--transition);
+        }
+
+        .sidebar-ad-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .sidebar-ad-slot-empty i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        /* FOOTER */
         footer {
             background-color: #ffffff;
             color: var(--text-main);
             border-top: 2px solid var(--gray-border);
-            margin-top: 4rem;
+            margin-top: 3rem;
             width: 100%;
         }
 
         .footer-main-section {
             max-width: 1320px;
             margin: 0 auto;
-            padding: 3rem 1.5rem 2.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 2rem 1rem;
+        }
+
+        @media(min-width: 768px) {
+            .footer-main-section {
+                padding: 2.5rem 1.5rem;
+            }
         }
 
         .footer-brand-col {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             max-width: 700px;
         }
 
@@ -678,59 +663,58 @@
         .footer-logo-badge {
             background: var(--primary);
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .footer-logo-row h3 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             color: var(--primary);
-            letter-spacing: -0.5px;
         }
 
         .footer-custom-legal {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             line-height: 1.5;
             background: #f8fafc;
-            padding: 12px 15px;
+            padding: 10px 12px;
             border-radius: 8px;
             border-left: 3px solid var(--primary);
         }
 
         .footer-socials-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             align-items: center;
-            margin-top: 5px;
+            margin-top: 4px;
+            flex-wrap: wrap;
         }
 
         .footer-socials-group span {
             font-size: 0.8rem;
             font-weight: 700;
             color: var(--dark);
-            margin-right: 5px;
+            margin-right: 4px;
         }
 
         .footer-social-icon {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: #f1f5f9;
             color: var(--dark);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: var(--transition);
         }
-
         .footer-social-icon:hover {
             background: var(--primary);
             color: #fff;
@@ -740,24 +724,30 @@
             background: #ffffff;
             border-top: 1px solid var(--gray-border);
             color: var(--text-muted);
-            padding: 1.2rem 0;
-            font-size: 0.8rem;
+            padding: 1rem 0;
+            font-size: 0.78rem;
         }
 
         .footer-bottom-container {
             max-width: 1320px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
+        }
+
+        @media(min-width: 768px) {
+            .footer-bottom-container {
+                padding: 0 1.5rem;
+            }
         }
 
         .footer-bottom-links {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -787,12 +777,12 @@
         </div>
     </div>
 
-    <!-- ENCABEZADO PRINCIPAL -->
+    <!-- ENCABEZADO PRINCIPAL CON TIPOGRAFÍA DE INDEX Y FLOR DE CAYENA -->
     <header>
         <div class="header-container">
             <a href="index.html" class="logo-area">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-tower-broadcast"></i>
+                <div class="logo-icon" title="Flor de Cayena">
+                    <i class="fa-solid fa-spa"></i>
                 </div>
                 <div class="logo-text">
                     <h1>Barranquilla FM</h1>
@@ -812,8 +802,8 @@
         <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
             <i class="fa-solid fa-rectangle-ad"></i>
             <div style="text-align: left;">
-                <strong style="font-size: 0.95rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
+                <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
             </div>
         </a>
     </div>
@@ -823,13 +813,13 @@
         
         <!-- COLUMNA IZQUIERDA: CUERPO DE LA NOTICIA -->
         <main class="article-main">
-            <!-- RUTA DE NAVEGACIÓN ORDENADA (ESTILO ZONA CERO) -->
+            <!-- RUTA DE NAVEGACIÓN -->
             <div class="breadcrumbs">
                 <a href="index.html">Inicio</a>
                 <span>&gt;</span>
                 <a href="index.html">Generales</a>
                 <span>&gt;</span>
-                <span>Triple A anuncia suspensión del servicio...</span>
+                <span class="current-crumb">Triple A anuncia suspensión del servicio...</span>
             </div>
 
             <!-- CATEGORÍA -->
@@ -838,27 +828,16 @@
             <!-- TÍTULO PRINCIPAL -->
             <h1 class="article-title">Triple A anuncia suspensión del servicio de agua en Barranquilla y Soledad este martes</h1>
             
-            <!-- FOTO PRINCIPAL ARRIBA (HORIZONTAL Y ORDENADA) -->
+            <!-- FOTO PRINCIPAL -->
             <div class="featured-image-container">
                 <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80" alt="Triple A realizando una reparación" class="featured-image">
                 <div class="image-caption">Triple A realizando una reparación.</div>
                 <div class="image-source">Foto: Archivo / Suministrada.</div>
             </div>
 
-            <!-- METADATOS DE AUTOR Y FECHA ESTILO ZONA CERO -->
-            <div class="article-meta-box">
-                <div class="meta-avatar">
-                    <i class="fa-solid fa-building-shield"></i>
-                </div>
-                <div class="meta-info">
-                    <h6>Barranquilla FM</h6>
-                    <a href="#" target="_blank">@barranquillafm</a>
-                </div>
-            </div>
-
-            <div class="article-dates">
-                28 de Agosto de 2026
-                <span>4:31 pm</span>
+            <!-- FECHA -->
+            <div class="article-dates-clean">
+                28 de Agosto de 2026 <span>• 4:31 pm</span>
             </div>
 
             <!-- CONTENIDO DE LA NOTICIA -->
@@ -887,17 +866,17 @@
                 <div class="horizontal-ad-slot-empty">
                     <i class="fa-solid fa-bullhorn"></i>
                     <div style="text-align: left;">
-                        <strong style="font-size: 0.95rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
-                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">Anuncia tu marca, producto o servicio con alta visibilidad en este espacio estratégico.</p>
+                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
+                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Anuncia tu marca, producto o servicio con alta visibilidad.</p>
                     </div>
                 </div>
 
                 <p>Una vez concluyan los trabajos de ingeniería, el sistema de bombeo se reactivará de manera paulatina, normalizando la presión en las tuberías principales en el transcurso de la noche.</p>
             </div>
 
-            <!-- CAJA DE COMPARTIR HORIZONTAL AL FINAL DE LA NOTA -->
+            <!-- COMPARTIR -->
             <div class="share-box-horizontal">
-                <span>Compartir esta noticia:</span>
+                <span>Compartir noticia:</span>
                 <div class="share-buttons-row">
                     <button class="share-circle-btn" onclick="compartirRedes('whatsapp', 'Triple A anuncia suspensión del servicio de agua')" title="Compartir en WhatsApp">
                         <i class="fa-brands fa-whatsapp"></i>
@@ -905,11 +884,11 @@
                     <button class="share-circle-btn" onclick="compartirRedes('facebook')" title="Compartir en Facebook">
                         <i class="fa-brands fa-facebook-f"></i>
                     </button>
-                    <button class="share-circle-btn" onclick="compartirRedes('x', 'Triple A anuncia suspensión del servicio de agua')" title="Compartir en X">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                    </button>
-                    <button class="share-circle-btn" onclick="compartirRedes('messenger', 'Triple A anuncia suspensión del servicio de agua')" title="Compartir en Messenger">
+                    <button class="share-circle-btn" onclick="compartirRedes('messenger')" title="Compartir en Messenger">
                         <i class="fa-brands fa-facebook-messenger"></i>
+                    </button>
+                    <button class="share-circle-btn" onclick="compartirRedes('x', 'Triple A anuncia suspensión del servicio de agua')" title="Compartir en X">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </button>
                 </div>
             </div>
@@ -940,55 +919,53 @@
             </div>
         </main>
 
-        <!-- COLUMNA DERECHA: LATERAL -->
+        <!-- COLUMNA DERECHA: SIDEBAR -->
         <aside class="sidebar">
             <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Coca-Cola">
-                <span class="ad-label" style="margin-bottom: 4px;">Publicidad</span>
+                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
                 <div class="sidebar-ad-content">
                     <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Coca-Cola">
                     <div>
-                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
-                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
+                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
+                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
                     </div>
                 </div>
             </a>
             
             <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Pepsi">
-                <span class="ad-label" style="margin-bottom: 4px;">Publicidad</span>
                 <div class="sidebar-ad-content">
                     <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&q=80" alt="Pepsi">
                     <div>
-                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">Atrévete a Más</strong>
-                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus comidas.</p>
+                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">Atrévete a Más</strong>
+                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus comidas.</p>
                     </div>
                 </div>
             </a>
 
             <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
-                <span class="ad-label" style="margin-bottom: 0;">Espacio Disponible</span>
                 <i class="fa-solid fa-rectangle-ad"></i>
-                <strong>¡Tu Publicidad Aquí!</strong>
-                <span>Destaca tu negocio con nosotros</span>
+                <strong style="font-size: 0.85rem; color: var(--dark);">¡Tu Publicidad Aquí!</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Destaca tu negocio con nosotros</span>
             </a>
         </aside>
 
     </div>
 
-    <!-- PIE DE PÁGINA -->
+    <!-- FOOTER -->
     <footer>
         <div class="footer-main-section">
             <div class="footer-brand-col">
                 <div class="footer-logo-row">
                     <div class="footer-logo-badge"><i class="fa-solid fa-tower-broadcast"></i></div>
-                    <h3>BARRANQUILLA FM S.A.</h3>
+                    <h3>BARRANQUILLA FM</h3>
                 </div>
                 <div class="footer-custom-legal">
-                    BARRANQUILLA FM S.A. Prohibida la reproducción y utilización, total o parcial, de los contenidos en cualquier forma o modalidad, sin previa, expresa y escrita autorización. 2026 &copy;
+                    BARRANQUILLA FM. Prohibida la reproducción y utilización, total o parcial, de los contenidos en cualquier forma o modalidad, sin previa, expresa y escrita autorización. 2026 &copy;
                 </div>
                 <div class="footer-socials-group">
                     <span>Síguenos:</span>
                     <a href="https://facebook.com" target="_blank" class="footer-social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://twitter.com" target="_blank" class="footer-social-icon" title="X"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="https://twitter.com" target="_blank" class="footer-social-icon" title="X"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
                     <a href="https://instagram.com" target="_blank" class="footer-social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
@@ -997,14 +974,14 @@
         <div class="footer-bottom-bar">
             <div class="footer-bottom-container">
                 <div class="footer-bottom-links">
-                    <a href="#">Términos y condiciones</a>
+                    <a href="#">Términos</a>
                     <span>|</span>
                     <a href="#">Contáctenos</a>
                     <span>|</span>
-                    <a href="#">Anuncie con nosotros</a>
+                    <a href="#">Anuncie</a>
                 </div>
                 <div class="footer-phone-contact">
-                    Servicio al cliente: (+57) 300 000 0000 | Barranquilla - Atlántico, Colombia
+                    (+57) 300 000 0000 | Barranquilla
                 </div>
             </div>
         </div>
@@ -1020,11 +997,11 @@
                 shareUrl = `https://api.whatsapp.com/send?text=${texto}`;
             } else if (red === 'facebook') {
                 shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlActual)}`;
+            } else if (red === 'messenger') {
+                shareUrl = `fb-messenger://share?link=${encodeURIComponent(urlActual)}`;
             } else if (red === 'x') {
                 const textX = encodeURIComponent(titulo || document.title);
                 shareUrl = `https://twitter.com/intent/tweet?text=${textX}&url=${encodeURIComponent(urlActual)}`;
-            } else if (red === 'messenger') {
-                shareUrl = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(urlActual)}&app_id=291494419107518&redirect_uri=${encodeURIComponent(urlActual)}`;
             }
 
             if (shareUrl) {
