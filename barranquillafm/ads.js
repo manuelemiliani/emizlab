@@ -51,16 +51,15 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
-    // 3. CARGAR BANNER HORIZONTAL DEL FINAL
+// 3. CARGAR BANNER HORIZONTAL DEL FINAL (Con bordes redondeados y tamaño estándar)
     const horizontalAdContainer = document.getElementById("horizontal-ad-container");
     if (horizontalAdContainer) {
         horizontalAdContainer.innerHTML = `
-        <div class="top-leaderboard-wrapper">
-            <a href="noticia.html" title="Tu Publicidad Aquí" style="display: block; width: 100%; max-width: 728px; margin: 0 auto;">
-                <img src="banner/banner05.png" alt="Banner Principal" style="width: 100%; height: auto; border-radius: 8px; display: block; object-fit: cover;">
-            </a>
-        </div>
+            <div style="width: 100%; max-width: 728px; margin: 2rem auto; text-align: center;">
+                <a href="noticia.html" title="Publicidad" style="display: block; width: 100%;">
+                    <img src="banner/banner05.png" alt="Banner Publicitario Horizontal" style="width: 100%; height: auto; display: block; object-fit: cover; border-radius: 8px;">
+                </a>
+            </div>
         `;
     }
-
 });
