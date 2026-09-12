@@ -713,17 +713,8 @@
         </div>
     </header>
 
-    <!-- BANNER SUPERIOR PUBLICIDAD -->
-    <div class="top-leaderboard-wrapper">
-        <span class="ad-label">Espacio Publicitario</span>
-        <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
-            <i class="fa-solid fa-rectangle-ad"></i>
-            <div style="text-align: left;">
-                <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
-                <span style="font-size: 0.72rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
-            </div>
-        </a>
-    </div>
+<!-- BANNER SUPERIOR (LEADERBOARD) -->
+<div id="top-banner-container"></div>
 
     <!-- CONTENEDOR DE LA PÁGINA -->
     <div class="page-layout">
@@ -884,36 +875,10 @@
                 </div>
             </div>
 
-            <!-- ANUNCIO LATERAL 1: COCA-COLA -->
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Coca-Cola">
-                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
-                <div class="sidebar-ad-content">
-                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Coca-Cola">
-                    <div>
-                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
-                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
-                    </div>
-                </div>
-            </a>
-
-            <!-- ANUNCIO LATERAL 2: PEPSI (NUEVO) -->
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Pepsi">
-                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
-                <div class="sidebar-ad-content">
-                    <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&q=80" alt="Pepsi">
-                    <div>
-                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Atrévete a Más!</strong>
-                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus mejores momentos.</p>
-                    </div>
-                </div>
-            </a>
-
-            <!-- ANUNCIO LATERAL 3: ESPACIO VACÍO / PERSONALIZABLE -->
-            <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
-                <i class="fa-solid fa-rectangle-ad"></i>
-                <strong style="font-size: 0.85rem; color: var(--dark);">¡Tu Publicidad Aquí!</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Destaca tu negocio con nosotros</span>
-            </a>
+<!-- COLUMNA DERECHA: SIDEBAR -->
+<aside class="sidebar" id="sidebar-container">
+    <!-- Los banners se cargarán automáticamente con JavaScript -->
+</aside>
 
         </aside>
 
@@ -954,6 +919,8 @@
             </div>
         </div>
     </footer>
+
+    <script src="sidebar.js"></script>
 
 </body>
 </html>

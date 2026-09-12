@@ -796,17 +796,8 @@
         </div>
     </header>
 
-    <!-- BANNER SUPERIOR PUBLICIDAD -->
-    <div class="top-leaderboard-wrapper">
-        <span class="ad-label">Espacio Publicitario</span>
-        <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
-            <i class="fa-solid fa-rectangle-ad"></i>
-            <div style="text-align: left;">
-                <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
-                <span style="font-size: 0.72rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
-            </div>
-        </a>
-    </div>
+<!-- BANNER SUPERIOR (LEADERBOARD) -->
+<div id="top-banner-container"></div>
 
     <!-- CONTENEDOR DE LA PÁGINA -->
     <div class="page-layout">
@@ -847,29 +838,15 @@
                 
                 <p>Las labores técnicas se concentrarán en la renovación de válvulas de compuerta y la interconexión de nuevos tramos de tubería principal, acciones indispensables para garantizar la estabilidad del servicio y reducir posibles fluctuaciones en la presión durante las próximas temporadas de alta demanda.</p>
 
-                <!-- BANNER CUADRADO 250x250 DENTRO DEL TEXTO -->
-                <div class="in-article-ad-box">
-                    <span class="ad-label">Publicidad</span>
-                    <a href="noticia.html" class="ad-banner-250" title="¡Servicios Técnicos!">
-                        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=500&q=80" alt="Anunciante">
-                        <div class="ad-caption">
-                            ¡Soluciones Industriales! 🛠️ Contáctanos
-                        </div>
-                    </a>
-                </div>
+<!-- Reemplaza el bloque anterior del banner flotante por esto: -->
+<div id="in-article-ad-container"></div>
                 
                 <p>"Estas intervenciones son programadas para ejecutarse en el menor tiempo posible, buscando minimizar las afectaciones a los hogares y comercios de la zona metropolitana", señalaron portavoces de la compañía operadora de acueducto y alcantarillado.</p>
 
                 <p>Se recomienda a los usuarios abastecerse previamente del líquido vital para suplir las necesidades básicas durante las horas que duren las maniobras de reparación. Asimismo, se habilitaron líneas de atención telefónica y carrotanques prioritarios para centros de salud y colegios ubicados en el perímetro afectado.</p>
 
-                <!-- ANUNCIO HORIZONTAL DENTRO DEL TEXTO -->
-                <div class="horizontal-ad-slot-empty">
-                    <i class="fa-solid fa-bullhorn"></i>
-                    <div style="text-align: left;">
-                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
-                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Anuncia tu marca, producto o servicio con alta visibilidad.</p>
-                    </div>
-                </div>
+<!-- Reemplaza el bloque anterior del banner horizontal por esto: -->
+<div id="horizontal-ad-container"></div>
 
                 <p>Una vez concluyan los trabajos de ingeniería, el sistema de bombeo se reactivará de manera paulatina, normalizando la presión en las tuberías principales en el transcurso de la noche.</p>
             </div>
@@ -919,35 +896,10 @@
             </div>
         </main>
 
-        <!-- COLUMNA DERECHA: SIDEBAR -->
-        <aside class="sidebar">
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Coca-Cola">
-                <span class="ad-label" style="margin-bottom: 3px;">Publicidad</span>
-                <div class="sidebar-ad-content">
-                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Coca-Cola">
-                    <div>
-                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
-                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Pepsi">
-                <div class="sidebar-ad-content">
-                    <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&q=80" alt="Pepsi">
-                    <div>
-                        <strong style="font-size: 0.85rem; color: var(--dark); display: block;">Atrévete a Más</strong>
-                        <p style="font-size: 0.78rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus comidas.</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
-                <i class="fa-solid fa-rectangle-ad"></i>
-                <strong style="font-size: 0.85rem; color: var(--dark);">¡Tu Publicidad Aquí!</strong>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Destaca tu negocio con nosotros</span>
-            </a>
-        </aside>
+<!-- COLUMNA DERECHA: SIDEBAR -->
+<aside class="sidebar" id="sidebar-container">
+    <!-- Los banners se cargarán automáticamente con JavaScript -->
+</aside>
 
     </div>
 
@@ -1009,5 +961,9 @@
             }
         }
     </script>
+
+<script src="sidebar.js"></script>
+
+    
 </body>
 </html>
