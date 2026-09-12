@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function() {
         inArticleAdContainer2.innerHTML = `
             <div style="float: left; width: 320px; margin: 0 20px 15px 0; background: transparent; border: none; box-shadow: none; padding: 0;">
                 <a href="noticia.html" title="Anuncio Interno" style="display: block; width: 100%;">
-                    <img src="banner/banner07.png" alt="Banner Publicitario" style="width: 100%; height: auto; display: block; border-radius: 8px; object-fit: cover;">
+                    <img src="banner/banner08.png" alt="Banner Publicitario" style="width: 100%; height: auto; display: block; border-radius: 8px; object-fit: cover;">
                 </a>
             </div>
         `;
