@@ -87,7 +87,7 @@
             width: 100%;
         }
 
-        .header-container, .top-leaderboard-wrapper, .page-layout, footer .footer-content {
+        .header-container, .top-leaderboard-wrapper, .page-layout {
             width: 100%;
             max-width: 1320px;
             margin: 0 auto;
@@ -158,9 +158,7 @@
             color: #fff;
         }
 
-        /* ==========================================================
-           BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" (728x90 / 320x100)
-           ========================================================== */
+        /* BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" */
         .top-leaderboard-wrapper {
             margin-top: 1.5rem;
             text-align: center;
@@ -171,8 +169,8 @@
 
         .top-leaderboard-slot-empty {
             width: 100%;
-            max-width: 728px; /* Estándar de escritorio Leaderboard */
-            height: 90px;     /* Altura estándar de escritorio */
+            max-width: 728px;
+            height: 90px;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             border: 2px dashed #cbd5e1;
             border-radius: 8px;
@@ -195,7 +193,6 @@
             color: var(--primary);
         }
 
-        /* Ajuste automático para dispositivos móviles (medidas estándar 320x100) */
         @media(max-width: 768px) {
             .top-leaderboard-slot-empty {
                 max-width: 320px;
@@ -239,7 +236,6 @@
             }
         }
 
-        /* BREADCRUMBS */
         .breadcrumbs {
             font-size: 0.85rem;
             color: var(--text-muted);
@@ -258,7 +254,6 @@
             color: var(--text-muted);
         }
 
-        /* SIDEBAR LATERAL */
         .sidebar {
             display: flex;
             flex-direction: column;
@@ -368,7 +363,6 @@
             flex-wrap: wrap;
         }
 
-        /* IMAGEN PRINCIPAL FIJA Y RESPONSIVE */
         .featured-image {
             width: 100%;
             height: 320px;
@@ -389,7 +383,6 @@
             color: #475569;
         }
 
-        /* BANNER CUADRADO 250x250 DE PIZZA (DENTRO DEL TEXTO) */
         .in-article-ad-box {
             float: left;
             margin: 0 25px 20px 0;
@@ -444,7 +437,6 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* ANUNCIO HORIZONTAL "TU PUBLICIDAD AQUÍ" DENTRO DEL TEXTO */
         .horizontal-ad-slot-empty {
             clear: both;
             margin: 2.5rem 0;
@@ -476,55 +468,59 @@
             display: table;
         }
 
-        /* CAJA DE COMPARTIR */
-        .share-box {
-            background: #f1f5f9;
-            padding: 1.5rem;
+        /* CAJA DE COMPARTIR HORIZONTAL AL FINAL DE LA NOTA */
+        .share-box-horizontal {
+            background: #f8fafc;
+            border: 1px solid var(--gray-border);
+            padding: 1.25rem 2rem;
             border-radius: 12px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             margin-top: 3rem;
             flex-wrap: wrap;
             gap: 15px;
         }
 
-        .share-box span {
+        .share-box-horizontal span {
             font-weight: 700;
             color: var(--dark);
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
 
-        .share-buttons-group {
+        .share-buttons-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            align-items: center;
         }
 
-        .share-btn {
-            width: 40px;
-            height: 40px;
+        .share-circle-btn {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            border: none;
+            background: #ffffff;
+            border: 1px solid var(--gray-border);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: #fff;
-            font-size: 1rem;
+            color: var(--dark);
+            font-size: 1.1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
             transition: var(--transition);
         }
 
-        .btn-whatsapp { background-color: #25d366; }
-        .btn-facebook { background-color: #1877f2; }
-        .btn-x { background-color: #000000; }
-        .btn-copy { background-color: #475569; }
+        .share-circle-btn:hover {
+            transform: translateY(-3px);
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 6px 12px rgba(220, 38, 38, 0.2);
+        }
 
-        .share-btn:hover { transform: scale(1.1); }
-
-        /* SECCIÓN DE OTRAS ENTRADAS ABAJO */
         .related-section {
-            margin-top: 4rem;
+            margin-top: 3.5rem;
         }
 
         .related-title {
@@ -579,24 +575,141 @@
             line-height: 1.3;
         }
 
-        /* FOOTER A ANCHO COMPLETO */
+        /* ==========================================================
+           PIE DE PÁGINA ACTUALIZADO (SIN SECCIONES NI PORTALES)
+           ========================================================== */
         footer {
-            background-color: var(--dark);
-            color: #fff;
-            padding: 2.5rem 0;
+            background-color: #ffffff;
+            color: var(--text-main);
+            border-top: 2px solid var(--gray-border);
             margin-top: 4rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #94a3b8;
             width: 100%;
         }
 
-        footer .footer-content {
+        .footer-main-section {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 700px;
+        }
+
+        .footer-logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo-badge {
+            background: var(--primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* TÍTULO EN ROJO COMO PEDISTE */
+        .footer-logo-row h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .footer-custom-legal {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .footer-socials-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .footer-socials-group span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-right: 5px;
+        }
+
+        .footer-social-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-social-icon:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* BARRA INFERIOR DE CONTACTO E INFO (FONDO BLANCO) */
+        .footer-bottom-bar {
+            background: #ffffff;
+            border-top: 1px solid var(--gray-border);
+            color: var(--text-muted);
+            padding: 1.2rem 0;
+            font-size: 0.8rem;
+        }
+
+        .footer-bottom-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links a {
+            color: var(--dark);
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-phone-contact {
+            font-weight: 600;
+            color: var(--text-main);
         }
     </style>
 </head>
@@ -628,7 +741,7 @@
         </div>
     </header>
 
-    <!-- BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" (728x90 / MÓVIL 320x100) -->
+    <!-- BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" -->
     <div class="top-leaderboard-wrapper">
         <span class="ad-label">Espacio Publicitario</span>
         <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
@@ -688,7 +801,7 @@
 
                 <p>Asimismo, se contemplan frentes de trabajo enfocados en la arborización urbana y la creación de nuevos parques lineales, los cuales contarán con iluminación LED alimentada por sistemas de energía solar, promoviendo el uso de tecnologías limpias y espacios públicos amigables con el medio ambiente.</p>
 
-                <!-- ANUNCIO HORIZONTAL "TU PUBLICIDAD AQUÍ" DENTRO DEL TEXTO -->
+                <!-- ANUNCIO HORIZONTAL DENTRO DEL TEXTO -->
                 <div class="horizontal-ad-slot-empty">
                     <i class="fa-solid fa-bullhorn"></i>
                     <div style="text-align: left;">
@@ -702,21 +815,21 @@
                 <p>Las veedurías ciudadanas y las alcaldías locales mantendrán mesas de seguimiento permanente para informar a la comunidad sobre los cronogramas de obra, desvíos viales temporales y canales de atención habilitados para resolver cualquier inquietud de los residentes durante el desarrollo de los trabajos.</p>
             </div>
 
-            <!-- CAJA DE COMPARTIR -->
-            <div class="share-box">
-                <span>¡Comparte esta noticia!</span>
-                <div class="share-buttons-group">
-                    <button class="share-btn btn-whatsapp" onclick="compartirRedes('whatsapp', 'Gran transformación urbana en el Atlántico')" title="Compartir en WhatsApp">
+            <!-- CAJA DE COMPARTIR HORIZONTAL AL FINAL DE LA NOTA -->
+            <div class="share-box-horizontal">
+                <span>Compartir esta noticia:</span>
+                <div class="share-buttons-row">
+                    <button class="share-circle-btn" onclick="compartirRedes('whatsapp', 'Gran transformación urbana en el Atlántico')" title="Compartir en WhatsApp">
                         <i class="fa-brands fa-whatsapp"></i>
                     </button>
-                    <button class="share-btn btn-facebook" onclick="compartirRedes('facebook')" title="Compartir en Facebook">
+                    <button class="share-circle-btn" onclick="compartirRedes('facebook')" title="Compartir en Facebook">
                         <i class="fa-brands fa-facebook-f"></i>
                     </button>
-                    <button class="share-btn btn-x" onclick="compartirRedes('x', 'Gran transformación urbana en el Atlántico')" title="Compartir en X">
+                    <button class="share-circle-btn" onclick="compartirRedes('x', 'Gran transformación urbana en el Atlántico')" title="Compartir en X">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </button>
-                    <button class="share-btn btn-copy" onclick="copiarEnlace()" title="Copiar enlace">
-                        <i class="fa-solid fa-link"></i>
+                    <button class="share-circle-btn" onclick="compartirRedes('messenger', 'Gran transformación urbana en el Atlántico')" title="Compartir en Messenger">
+                        <i class="fa-brands fa-facebook-messenger"></i>
                     </button>
                 </div>
             </div>
@@ -771,7 +884,7 @@
                 </div>
             </a>
 
-            <!-- TERCER BANNER DE LATERAL: "TU PUBLICIDAD AQUÍ" -->
+            <!-- TERCER BANNER DE LATERAL -->
             <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
                 <span class="ad-label" style="margin-bottom: 0;">Espacio Disponible</span>
                 <i class="fa-solid fa-rectangle-ad"></i>
@@ -782,11 +895,39 @@
 
     </div>
 
-    <!-- FOOTER A ANCHO COMPLETO -->
+    <!-- PIE DE PÁGINA ACTUALIZADO -->
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 Barranquilla FM. Todos los derechos reservados.</p>
-            <p style="font-size: 0.8rem; color: #64748b;">Portal informativo oficial del departamento del Atlántico.</p>
+        <div class="footer-main-section">
+            <div class="footer-brand-col">
+                <div class="footer-logo-row">
+                    <div class="footer-logo-badge"><i class="fa-solid fa-tower-broadcast"></i></div>
+                    <h3>BARRANQUILLA FM S.A.</h3>
+                </div>
+                <div class="footer-custom-legal">
+                    BARRANQUILLA FM S.A. Prohibida la reproducción y utilización, total o parcial, de los contenidos en cualquier forma o modalidad, sin previa, expresa y escrita autorización. 2026 &copy;
+                </div>
+                <div class="footer-socials-group">
+                    <span>Síguenos:</span>
+                    <a href="https://facebook.com" target="_blank" class="footer-social-icon" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" target="_blank" class="footer-social-icon" title="X"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    <a href="https://instagram.com" target="_blank" class="footer-social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+            <div class="footer-bottom-container">
+                <div class="footer-bottom-links">
+                    <a href="#">Términos y condiciones</a>
+                    <span>|</span>
+                    <a href="#">Contáctenos</a>
+                    <span>|</span>
+                    <a href="#">Anuncie con nosotros</a>
+                </div>
+                <div class="footer-phone-contact">
+                    Servicio al cliente: (+57) 300 000 0000 | Barranquilla - Atlántico, Colombia
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -803,19 +944,13 @@
             } else if (red === 'x') {
                 const textX = encodeURIComponent(titulo || document.title);
                 shareUrl = `https://twitter.com/intent/tweet?text=${textX}&url=${encodeURIComponent(urlActual)}`;
+            } else if (red === 'messenger') {
+                shareUrl = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(urlActual)}&app_id=291494419107518&redirect_uri=${encodeURIComponent(urlActual)}`;
             }
 
             if (shareUrl) {
                 window.open(shareUrl, '_blank', 'width=600,height=400');
             }
-        }
-
-        function copiarEnlace() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert("¡Enlace copiado al portapapeles!");
-            }).catch(err => {
-                console.error("Error al copiar el enlace: ", err);
-            });
         }
     </script>
 </body>
