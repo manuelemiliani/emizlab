@@ -32,11 +32,14 @@
             background-color: var(--gray-light);
             color: var(--text-main);
             line-height: 1.8;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         a { text-decoration: none; color: inherit; }
 
-        /* HEADER SUPERIOR CON MARQUESINA Y REDES */
+        /* MARQUESINA SUPERIOR */
         .top-ticker-bar {
             background-color: #0b0f19;
             color: #fff;
@@ -46,6 +49,7 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
+            width: 100%;
         }
 
         .ticker-container {
@@ -80,12 +84,20 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            width: 100%;
+        }
+
+        .header-container, .top-leaderboard-wrapper, .page-layout, footer .footer-content {
+            width: 100%;
+            max-width: 1320px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
 
         .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 1.5rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -146,19 +158,70 @@
             color: #fff;
         }
 
-        /* DISEÑO DE DOS COLUMNAS (CONTENIDO + SIDEBAR) */
+        /* ==========================================================
+           BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" (728x90 / 320x100)
+           ========================================================== */
+        .top-leaderboard-wrapper {
+            margin-top: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-leaderboard-slot-empty {
+            width: 100%;
+            max-width: 728px; /* Estándar de escritorio Leaderboard */
+            height: 90px;     /* Altura estándar de escritorio */
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            text-decoration: none;
+        }
+
+        .top-leaderboard-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .top-leaderboard-slot-empty i {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        /* Ajuste automático para dispositivos móviles (medidas estándar 320x100) */
+        @media(max-width: 768px) {
+            .top-leaderboard-slot-empty {
+                max-width: 320px;
+                height: 100px;
+                flex-direction: column;
+                gap: 5px;
+                padding: 10px;
+            }
+            .top-leaderboard-slot-empty i {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* DISEÑO DE DOS COLUMNAS */
         .page-layout {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
+            flex: 1;
         }
 
         @media(min-width: 1024px) {
             .page-layout {
-                grid-template-columns: 1fr 340px;
+                grid-template-columns: 1fr 350px;
             }
         }
 
@@ -176,7 +239,26 @@
             }
         }
 
-        /* SIDEBAR ESTILO ZONA CERO (3 BANNERS) */
+        /* BREADCRUMBS */
+        .breadcrumbs {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .breadcrumbs span {
+            color: var(--text-muted);
+        }
+
+        /* SIDEBAR LATERAL */
         .sidebar {
             display: flex;
             flex-direction: column;
@@ -191,6 +273,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             transition: var(--transition);
             display: block;
+            padding: 12px;
         }
 
         .sidebar-ad-card:hover {
@@ -198,11 +281,53 @@
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
         }
 
-        .sidebar-ad-card img {
+        .sidebar-ad-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-ad-content img {
             width: 100%;
-            height: auto;
-            display: block;
+            height: 150px;
             object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .sidebar-ad-slot-empty {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            min-height: 220px;
+        }
+
+        .sidebar-ad-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .sidebar-ad-slot-empty i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .sidebar-ad-slot-empty strong {
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+
+        .sidebar-ad-slot-empty span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
         .category-tag {
@@ -243,12 +368,19 @@
             flex-wrap: wrap;
         }
 
+        /* IMAGEN PRINCIPAL FIJA Y RESPONSIVE */
         .featured-image {
             width: 100%;
-            height: 380px;
+            height: 320px;
             object-fit: cover;
             border-radius: 12px;
             margin-bottom: 2rem;
+        }
+
+        @media(min-width: 768px) {
+            .featured-image {
+                height: 380px;
+            }
         }
 
         .article-body p {
@@ -257,7 +389,7 @@
             color: #475569;
         }
 
-        /* BANNER CUADRADO 250x250 DENTRO DEL TEXTO */
+        /* BANNER CUADRADO 250x250 DE PIZZA (DENTRO DEL TEXTO) */
         .in-article-ad-box {
             float: left;
             margin: 0 25px 20px 0;
@@ -275,7 +407,7 @@
             text-transform: uppercase;
             color: var(--text-muted);
             letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             display: block;
         }
 
@@ -312,30 +444,30 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* ANUNCIO HORIZONTAL ADICIONAL */
-        .horizontal-ad-box {
+        /* ANUNCIO HORIZONTAL "TU PUBLICIDAD AQUÍ" DENTRO DEL TEXTO */
+        .horizontal-ad-slot-empty {
             clear: both;
             margin: 2.5rem 0;
-            background: #f1f5f9;
-            padding: 15px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 20px;
             border-radius: 12px;
             text-align: center;
-            border: 1px dashed #cbd5e1;
-        }
-
-        .horizontal-ad-content {
+            border: 2px dashed #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            flex-wrap: wrap;
+            transition: var(--transition);
         }
 
-        .horizontal-ad-content img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 6px;
+        .horizontal-ad-slot-empty:hover {
+            border-color: var(--primary);
+            background: #fff5f5;
+        }
+
+        .horizontal-ad-slot-empty i {
+            font-size: 1.8rem;
+            color: var(--primary);
         }
 
         .clearfix::after {
@@ -447,14 +579,24 @@
             line-height: 1.3;
         }
 
+        /* FOOTER A ANCHO COMPLETO */
         footer {
             background-color: var(--dark);
             color: #fff;
-            padding: 3rem 1.5rem;
+            padding: 2.5rem 0;
             margin-top: 4rem;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #94a3b8;
+            width: 100%;
+        }
+
+        footer .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
     </style>
 </head>
@@ -467,7 +609,7 @@
         </div>
     </div>
 
-    <!-- ENCABEZADO PRINCIPAL IDÉNTICO AL INDEX -->
+    <!-- ENCABEZADO PRINCIPAL -->
     <header>
         <div class="header-container">
             <a href="index.html" class="logo-area">
@@ -486,55 +628,78 @@
         </div>
     </header>
 
-    <!-- CONTENEDOR DE LA PÁGINA: NOTICIA + 3 BANNERS A LA DERECHA -->
+    <!-- BANNER SUPERIOR - "TU PUBLICIDAD AQUÍ" (728x90 / MÓVIL 320x100) -->
+    <div class="top-leaderboard-wrapper">
+        <span class="ad-label">Espacio Publicitario</span>
+        <a href="noticia.html" class="top-leaderboard-slot-empty" title="Tu Publicidad Aquí">
+            <i class="fa-solid fa-rectangle-ad"></i>
+            <div style="text-align: left;">
+                <strong style="font-size: 0.95rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Banner principal de alta visibilidad para tu marca</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- CONTENEDOR DE LA PÁGINA -->
     <div class="page-layout">
         
         <!-- COLUMNA IZQUIERDA: CUERPO DE LA NOTICIA -->
         <main class="article-main">
+            <!-- RUTA DE NAVEGACIÓN -->
+            <div class="breadcrumbs">
+                <a href="index.html">Inicio</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+                <a href="index.html">Infraestructura Urbana</a>
+                <i class="fa-solid fa-chevron-right" style="font-size: 0.7rem;"></i>
+                <span>Gran transformación urbana</span>
+            </div>
+
             <span class="category-tag">Infraestructura Urbana</span>
             <h1 class="article-title">Gran transformación urbana proyectada para la zona metropolitana del Atlántico</h1>
             
             <div class="article-meta">
                 <span><i class="fa-regular fa-clock"></i> Publicado hace 2 horas</span>
                 <span><i class="fa-regular fa-folder"></i> Por Redacción Barranquilla FM</span>
-                <a href="index.html" style="color: var(--primary); font-weight: 600; margin-left: auto;"><i class="fa-solid fa-arrow-left"></i> Volver al inicio</a>
             </div>
 
             <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=80" alt="Transformación Urbana" class="featured-image">
 
-            <!-- CONTENIDO CON BANNER DE HAMBURGUESA FLOTANDO -->
+            <!-- CONTENIDO DE LA NOTICIA AMPLIADO -->
             <div class="article-body clearfix">
                 
-                <!-- BANNER 250x250 DENTRO DEL TEXTO -->
+                <p><strong>BARRANQUILLA</strong> — Con el propósito de impulsar la competitividad regional y mejorar de manera directa la calidad de vida de los habitantes, las autoridades departamentales dieron a conocer el paquete de macroproyectos de transformación urbana que se ejecutarán en la zona metropolitana durante los próximos meses.</p>
+                
+                <p>Las obras contemplan la modernización integral de corredores viales estratégicos, la construcción de nuevos puentes interconectores y la recuperación de espacios públicos orientados al esparcimiento familiar, la seguridad ciudadana y la reactivación económica del comercio local en los municipios aledaños.</p>
+
+                <p>Durante la presentación oficial, los ingenieros urbanistas destacaron que el plan maestro incluye la implementación de tecnología de última generación en la semaforización inteligente, la ampliación de ciclorrutas intermunicipales y la optimización de los sistemas de drenaje pluvial para mitigar los impactos de la temporada invernal en puntos críticos históricamente afectados.</p>
+
+                <!-- BANNER CUADRADO 250x250 DE PIZZA (DENTRO DEL TEXTO) -->
                 <div class="in-article-ad-box">
                     <span class="ad-label">Publicidad</span>
-                    <a href="noticia.html" class="ad-banner-250" title="¡La Mejor Hamburguesa Artesanal!">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80" alt="Hamburguesa Anunciante">
+                    <a href="noticia.html" class="ad-banner-250" title="¡Deliciosa Pizza Artesanal!">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=500&q=80" alt="Pizza Anunciante">
                         <div class="ad-caption">
-                            ¡Doble Carne & Queso! 🍔 Pídela Ya
+                            ¡Pizza 100% Artesanal! 🍕 Pídela Ya
                         </div>
                     </a>
                 </div>
-
-                <p><strong>BARRANQUILLA</strong> — Con el propósito de impulsar la competitividad regional y mejorar de manera directa la calidad de vida de los habitantes, las autoridades departamentales dieron a conocer el paquete de macroproyectos de transformación urbana que se ejecutarán en la zona metropolitana durante los próximos meses.</p>
                 
-                <p>Las obras contemplan la modernización de corredores viales estratégicos, la construcción de nuevos puentes interconectores y la recuperación integral de espacios públicos orientados al esparcimiento familiar y la reactivación del comercio local.</p>
-                
-                <p>"Este plan representa un salto cualitativo en materia de movilidad y desarrollo sostenible para el Atlántico. Buscamos conectar de forma más eficiente los municipios vecinos con el distrito capital", señalaron voceros del proyecto.</p>
+                <p>"Este plan representa un salto cualitativo en materia de movilidad y desarrollo sostenible para el departamento del Atlántico. Buscamos conectar de forma más eficiente los municipios vecinos con el distrito capital, reduciendo los tiempos de desplazamiento y facilitando el flujo logístico de mercancías y pasajeros", señalaron portavoces del consorcio ejecutor.</p>
 
-                <!-- ANUNCIO HORIZONTAL ADICIONAL DENTRO DEL TEXTO -->
-                <div class="horizontal-ad-box">
-                    <span class="ad-label" style="margin-bottom: 4px;">Anuncio Patrocinado</span>
-                    <div class="horizontal-ad-content">
-                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=200&q=80" alt="Promo">
-                        <div style="text-align: left;">
-                            <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Combo Especial Fin de Semana!</strong>
-                            <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">Pide tu hamburguesa con papas y bebida artesanal a domicilio.</p>
-                        </div>
+                <p>Asimismo, se contemplan frentes de trabajo enfocados en la arborización urbana y la creación de nuevos parques lineales, los cuales contarán con iluminación LED alimentada por sistemas de energía solar, promoviendo el uso de tecnologías limpias y espacios públicos amigables con el medio ambiente.</p>
+
+                <!-- ANUNCIO HORIZONTAL "TU PUBLICIDAD AQUÍ" DENTRO DEL TEXTO -->
+                <div class="horizontal-ad-slot-empty">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <div style="text-align: left;">
+                        <strong style="font-size: 0.95rem; color: var(--dark); display: block;">¡Tu Publicidad Aquí!</strong>
+                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">Anuncia tu marca, producto o servicio con alta visibilidad en este espacio estratégico.</p>
                     </div>
                 </div>
 
-                <p>Se espera que la ejecución de estas iniciativas genere miles de empleos directos e indirectos, dinamizando sectores clave como la construcción, la proveeduría local y los servicios asociados al transporte urbano.</p>
+                <p>Se espera que la ejecución de estas iniciativas genere miles de empleos directos e indirectos en la región, dinamizando sectores clave como la construcción, la proveeduría local de materiales, la consultoría técnica y los servicios asociados al transporte y la hotelería.</p>
+
+                <p>Las veedurías ciudadanas y las alcaldías locales mantendrán mesas de seguimiento permanente para informar a la comunidad sobre los cronogramas de obra, desvíos viales temporales y canales de atención habilitados para resolver cualquier inquietud de los residentes durante el desarrollo de los trabajos.</p>
             </div>
 
             <!-- CAJA DE COMPARTIR -->
@@ -547,7 +712,6 @@
                     <button class="share-btn btn-facebook" onclick="compartirRedes('facebook')" title="Compartir en Facebook">
                         <i class="fa-brands fa-facebook-f"></i>
                     </button>
-                    <!-- LOGO DE X CON SVG OFICIAL -->
                     <button class="share-btn btn-x" onclick="compartirRedes('x', 'Gran transformación urbana en el Atlántico')" title="Compartir en X">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     </button>
@@ -557,7 +721,7 @@
                 </div>
             </div>
 
-            <!-- OTRAS ENTRADAS / NOTICIAS RELACIONADAS ABAJO -->
+            <!-- OTRAS ENTRADAS -->
             <div class="related-section">
                 <h4 class="related-title">Otras Entradas y Noticias</h4>
                 <div class="related-grid">
@@ -583,23 +747,47 @@
             </div>
         </main>
 
-        <!-- COLUMNA DERECHA: LOS 3 BANNERS ESTILO ZONA CERO (En móvil bajan al final) -->
+        <!-- COLUMNA DERECHA: LOS 3 BANNERS DEL SIDEBAR -->
         <aside class="sidebar">
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio 1">
-                <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=400&q=80" alt="Publicidad 1">
+            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Coca-Cola">
+                <span class="ad-label" style="margin-bottom: 4px;">Publicidad</span>
+                <div class="sidebar-ad-content">
+                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80" alt="Coca-Cola">
+                    <div>
+                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">¡Siente el Sabor Único!</strong>
+                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">Disfruta cada momento bien frío con los tuyos.</p>
+                    </div>
+                </div>
             </a>
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio 2">
-                <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=400&q=80" alt="Publicidad 2">
+            
+            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio Pepsi">
+                <span class="ad-label" style="margin-bottom: 4px;">Publicidad</span>
+                <div class="sidebar-ad-content">
+                    <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=400&q=80" alt="Pepsi">
+                    <div>
+                        <strong style="font-size: 0.9rem; color: var(--dark); display: block;">Atrévete a Más</strong>
+                        <p style="font-size: 0.8rem; margin: 0; color: var(--text-muted);">El sabor refrescante que acompaña tus comidas.</p>
+                    </div>
+                </div>
             </a>
-            <a href="noticia.html" class="sidebar-ad-card" title="Anuncio 3">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80" alt="Publicidad 3">
+
+            <!-- TERCER BANNER DE LATERAL: "TU PUBLICIDAD AQUÍ" -->
+            <a href="noticia.html" class="sidebar-ad-slot-empty" title="Tu Publicidad Aquí">
+                <span class="ad-label" style="margin-bottom: 0;">Espacio Disponible</span>
+                <i class="fa-solid fa-rectangle-ad"></i>
+                <strong>¡Tu Publicidad Aquí!</strong>
+                <span>Destaca tu negocio con nosotros</span>
             </a>
         </aside>
 
     </div>
 
+    <!-- FOOTER A ANCHO COMPLETO -->
     <footer>
-        <p>&copy; 2026 Barranquilla FM. Todos los derechos reservados.</p>
+        <div class="footer-content">
+            <p>&copy; 2026 Barranquilla FM. Todos los derechos reservados.</p>
+            <p style="font-size: 0.8rem; color: #64748b;">Portal informativo oficial del departamento del Atlántico.</p>
+        </div>
     </footer>
 
     <script>
