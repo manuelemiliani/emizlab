@@ -51,15 +51,18 @@ document.addEventListener("DOMContentLoaded", function() {
         `;
     }
 
-// 3. CARGAR BANNER HORIZONTAL DEL FINAL (Con bordes redondeados y tamaño estándar)
-    const horizontalAdContainer = document.getElementById("horizontal-ad-container");
-    if (horizontalAdContainer) {
-        horizontalAdContainer.innerHTML = `
-            <div style="width: 100%; max-width: 728px; margin: 2rem auto; text-align: center;">
-                <a href="noticia.html" title="Publicidad" style="display: block; width: 100%;">
-                    <img src="banner/banner05.png" alt="Banner Publicitario Horizontal" style="width: 100%; height: auto; display: block; object-fit: cover; border-radius: 8px;">
+
+    // 3. CARGAR BANNER FLOTANTE FINAL (Solo la imagen pura, sin bordes ni textos)
+    const inArticleAdContainer2 = document.getElementById("in-article-ad-container2");
+    if (inArticleAdContainer2) {
+        inArticleAdContainer2.innerHTML = `
+            <div style="float: left; width: 320px; margin: 0 20px 15px 0; background: transparent; border: none; box-shadow: none; padding: 0;">
+                <a href="noticia.html" title="Anuncio Interno" style="display: block; width: 100%;">
+                    <img src="banner/banner06.gif" alt="Banner Publicitario" style="width: 100%; height: auto; display: block; border-radius: 8px; object-fit: cover;">
                 </a>
             </div>
         `;
     }
+
+
 });
