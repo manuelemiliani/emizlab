@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación Emiliani | Fútbol Infantil en Barranquilla</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #5c3be7;
+            --primary-light: #7a5ef3;
+            --secondary: #00d2ff;
+            --accent: #22c55e;
+            --dark: #0f172a;
+            --dark-muted: #475569;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow: 0 20px 40px rgba(92, 59, 231, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- Header / Navbar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none !important;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn-donate {
+            background: var(--primary);
+            color: white !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(92, 59, 231, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            text-decoration: none !important;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-donate:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(92, 59, 231, 0.4);
+        }
+
+        .menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 10rem 0 5rem;
+            position: relative;
+            background: radial-gradient(circle at 90% 10%, rgba(92, 59, 231, 0.05) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(92, 59, 231, 0.08);
+            color: var(--primary);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            letter-spacing: -1px;
+        }
+
+        .hero-title span {
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--dark-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-play {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .play-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(92, 59, 231, 0.3);
+            transition: var(--transition);
+        }
+
+        .btn-play:hover .play-icon {
+            transform: scale(1.1);
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .circle-bg {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(92, 59, 231, 0.2);
+        }
+
+        .circle-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .floating-badge {
+            position: absolute;
+            bottom: 20px;
+            left: -10px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .floating-badge i {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        /* --- Sección Nosotros --- */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* --- Galería Slider (8 Fotos) --- */
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: var(--white);
+        }
+
+        .gallery-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .gallery-slide {
+            min-width: 100%;
+            height: 380px;
+            position: relative;
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 10px;
+            pointer-events: none;
+        }
+
+        .gallery-btn {
+            background: rgba(255, 255, 255, 0.85);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 1rem;
+            pointer-events: auto;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .gallery-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .gallery-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--white);
+            width: 22px;
+            border-radius: 10px;
+        }
+
+        .section-tag {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--dark-muted);
+        }
+
+        .feature-list i {
+            width: 24px;
+            height: 24px;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* --- Tarjetas de Programas --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+            border-color: rgba(92, 59, 231, 0.1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(92, 59, 231, 0.1), rgba(0, 210, 255, 0.1));
+            color: var(--primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--dark-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- Modal de Donaciones --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: #f1f5f9;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--dark-muted);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: var(--dark);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .payment-option:hover, .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(92, 59, 231, 0.04);
+        }
+
+        .payment-option i {
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+
+        .payment-option span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .donor-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .donor-form label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--dark);
+        }
+
+        .donor-form input, .donor-form select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .donor-form input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(92, 59, 231, 0.15);
+        }
+
+        .btn-submit-donation {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(92, 59, 231, 0.3);
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit-donation:hover {
+            background: var(--primary-light);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 5rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            color: #94a3b8;
+            margin: 1.2rem 0;
+            max-width: 360px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none !important;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none !important;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design (Móviles) --- */
+        @media (max-width: 992px) {
+            .hero-grid, .grid-2 {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero {
+                padding-top: 7rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .circle-bg {
+                width: 300px;
+                height: 300px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-futbol"></i>
+                </div>
+                <span>Fundación Emiliani</span>
+            </a>
+
+            <button class="menu-btn" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#programas">Programas</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><button class="btn-donate open-modal-btn">Donar <i class="fa-solid fa-heart"></i></button></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="badge">
+                        <i class="fa-solid fa-location-dot"></i> Barranquilla, Colombia
+                    </div>
+                    <h1 class="hero-title">Formando el futuro a través del <span>fútbol infantil</span></h1>
+                    <p class="hero-desc">En la Fundación Emiliani transformamos la vida de niños y jóvenes mediante la disciplina deportiva, el trabajo en equipo y la inclusión social.</p>
+                    
+                    <div class="hero-actions">
+                        <button class="btn-donate open-modal-btn">Donar <i class="fa-solid fa-heart"></i></button>
+                        <a href="#nosotros" class="btn-play">
+                            <div class="play-icon">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                            <span>Ver Historia</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-image-wrapper">
+                    <div class="circle-bg">
+                        <!-- Foto 1 cargada localmente -->
+                        <img src="img/fundacion-emiliani.jpg" alt="Entrenamiento fútbol Fundación Emiliani">
+                    </div>
+                    <div class="floating-badge">
+                        <i class="fa-solid fa-medal"></i>
+                        <div>
+                            <strong style="display:block; font-size: 0.95rem;">+100 Niños</strong>
+                            <span style="font-size: 0.8rem; color: var(--dark-muted);">Beneficiados en Barranquilla</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosotros / Misión -->
+    <section class="section" id="nosotros">
+        <div class="container">
+            <div class="grid-2">
+                
+                <!-- Galería de Imágenes (8 fotos desplazables) -->
+                <div class="gallery-container">
+                    <div class="gallery-slider" id="gallerySlider">
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento1.jpg" alt="Entrenamiento de fútbol 1">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento2.jpg" alt="Entrenamiento de fútbol 2">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento3.jpg" alt="Niños jugando fútbol 3">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento4.jpg" alt="Entrenamiento de fútbol 4">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento5.jpg" alt="Entrenamiento de fútbol 5">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento6.jpg" alt="Niños jugando fútbol 6">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento7.jpg" alt="Entrenamiento de fútbol 7">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="img/fundacion-emiliani-entrenamiento8.jpg" alt="Entrenamiento de fútbol 8">
+                        </div>
+                    </div>
+
+                    <div class="gallery-nav">
+                        <button class="gallery-btn" id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="gallery-btn" id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+
+                    <div class="gallery-dots" id="galleryDots"></div>
+                </div>
+
+                <div class="about-content">
+                    <div class="section-tag">
+                        <i class="fa-solid fa-shapes"></i> Sobre la Fundación Emiliani
+                    </div>
+                    <h2 class="section-title">Preparando a la niñez para ganar dentro y fuera de la cancha</h2>
+                    <p style="color: var(--dark-muted); margin-bottom: 1rem;">
+                        Nuestra misión en fundaemiliani.org es brindar oportunidades reales de desarrollo integral a niños de sectores vulnerables en Barranquilla a través del entrenamiento deportivo y valores comunitarios.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li><i class="fa-solid fa-check"></i> Escuelas de fútbol gratuitas para categorías infantiles.</li>
+                        <li><i class="fa-solid fa-check"></i> Formación en valores, disciplina y trabajo en equipo.</li>
+                        <li><i class="fa-solid fa-check"></i> Acompañamiento nutricional y psicosocial.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programas -->
+    <section class="section" id="programas" style="background: white;">
+        <div class="container">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <div class="section-tag" style="justify-content: center;">
+                    <i class="fa-solid fa-star"></i> Lo Que Hacemos
+                </div>
+                <h2 class="section-title">Nuestros Programas de Impacto</h2>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3>Semillero Deportivo</h3>
+                    <p>Entrenamientos diarios enfocados en técnica, táctica y preparación física para niños entre 5 y 15 años.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h3>Refuerzo Educativo</h3>
+                    <p>Incentivamos la permanencia escolar condicionando el entrenamiento al buen rendimiento académico.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-hands-holding-child"></i>
+                    </div>
+                    <h3>Apoyo a Familias</h3>
+                    <p>Integración de padres y cuidadores en talleres de convivencia y hábitos saludables para la comunidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo" style="color: white;">
+                        <div class="logo-icon">
+                            <i class="fa-solid fa-futbol"></i>
+                        </div>
+                        <span>Fundación Emiliani</span>
+                    </a>
+                    <p>Transformando el presente y futuro de los niños en Barranquilla mediante el fútbol y los valores sociales.</p>
+                    
+                    <!-- Redes Sociales -->
+                    <div class="social-links">
+                        <a href="https://facebook.com/FundacionEmiliani" target="_blank" rel="noopener noreferrer" class="social-icon" title="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/FundacionEmiliani" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://tiktok.com/@FundacionEmiliani" target="_blank" rel="noopener noreferrer" class="social-icon" title="TikTok">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer" class="social-icon" title="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#nosotros">Nosotros</a></li>
+                        <li><a href="#programas">Programas</a></li>
+                        <li><a href="#donar" class="open-modal-btn">Donar</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contacto</h4>
+                    <ul class="footer-links">
+                        <li><i class="fa-solid fa-globe" style="margin-right: 8px;"></i> fundaemiliani.org</li>
+                        <li><i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Barranquilla, Atlántico</li>
+                        <li><i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> contacto@fundaemiliani.org</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2026 Fundación Emiliani. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Ventana Emergente / Modal de Donaciones -->
+    <div class="modal-overlay" id="donateModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModalBtn">&times;</button>
+            <div class="modal-header">
+                <h3>Realiza tu Donación</h3>
+                <p style="font-size: 0.85rem; color: var(--dark-muted);">Apoya el desarrollo del fútbol infantil en Barranquilla</p>
+            </div>
+
+            <form class="donor-form" onsubmit="event.preventDefault(); alert('¡Gracias por tu apoyo a la Fundación Emiliani!');">
+                <label>Selecciona Medio de Pago</label>
+                <div class="payment-methods">
+                    <div class="payment-option selected">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                        <span>Nequi</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span>Bancolombia</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <span>PSE</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <span>Tarjeta</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fa-brands fa-paypal"></i>
+                        <span>PayPal</span>
+                    </div>
+                    <div class="payment-option">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Otros</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="donor-name">Nombre Completo</label>
+                    <input type="text" id="donor-name" placeholder="Tu nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="donor-phone">Celular / WhatsApp</label>
+                    <input type="tel" id="donor-phone" placeholder="Ej: 300 123 4567" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="donor-email">Correo Electrónico</label>
+                    <input type="email" id="donor-email" placeholder="correo@ejemplo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="donor-amount">Monto a Donar (COP)</label>
+                    <select id="donor-amount">
+                        <option value="20000">$20.000 COP</option>
+                        <option value="50000" selected>$50.000 COP</option>
+                        <option value="100000">$100.000 COP</option>
+                        <option value="custom">Otro Valor</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit-donation">¡A donar se dijo! <i class="fa-solid fa-heart"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Menú Móvil
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Modal de Donaciones
+        const donateModal = document.getElementById('donateModal');
+        const openModalBtns = document.querySelectorAll('.open-modal-btn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        openModalBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                donateModal.classList.add('active');
+            });
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            donateModal.classList.remove('active');
+        });
+
+        donateModal.addEventListener('click', (e) => {
+            if (e.target === donateModal) {
+                donateModal.classList.remove('active');
+            }
+        });
+
+        // Selección de opciones de pago
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        // Slider / Galería (8 Fotos)
+        const slider = document.getElementById('gallerySlider');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('galleryDots');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+
+        // Crear puntos indicadores
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateSlider();
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateSlider();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Movimiento automático cada 4 segundos
+        setInterval(nextSlide, 4000);
+    </script>
+</body>
+</html>
