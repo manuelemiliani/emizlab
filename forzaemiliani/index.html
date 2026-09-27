@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORZA EMILIANI | Movimento Italo-Colombiano</title>
+  <style>
+    /* --- VARIABLES & RESET --- */
+    :root {
+      --verde-it: #008C45;
+      --rojo-it: #CD212A;
+      --amarillo-co: #FCD116;
+      --azul-co: #003893;
+      --oscuro: #121824;
+      --gris-claro: #f4f6f9;
+      --blanco: #ffffff;
+      --texto: #2d3748;
+      --fuente: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--fuente);
+    }
+
+    body {
+      background-color: var(--gris-claro);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* --- BARRA DE IDENTIDAD (SOLO BANDERA DE ITALIA) --- */
+    .flag-bar {
+      height: 6px;
+      width: 100%;
+      background: linear-gradient(to right, 
+        var(--verde-it) 0% 33.33%, 
+        var(--blanco) 33.33% 66.66%, 
+        var(--rojo-it) 66.66% 100%
+      );
+    }
+
+    /* --- HEADER & NAVEGACIÓN --- */
+    header {
+      background-color: var(--blanco);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--oscuro);
+    }
+
+    .logo span {
+      color: var(--rojo-it);
+    }
+
+    .logo .badge {
+      font-size: 0.75rem;
+      background: var(--azul-co);
+      color: var(--blanco);
+      padding: 2px 8px;
+      border-radius: 12px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.8rem;
+    }
+
+    nav a {
+      font-weight: 600;
+      color: var(--texto);
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--verde-it);
+    }
+
+    .btn-header {
+      background: var(--rojo-it);
+      color: var(--blanco);
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+
+    .btn-header:hover {
+      background: #a81920;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      background: linear-gradient(135deg, rgba(18,24,36,0.88) 0%, rgba(0,56,147,0.82) 100%), 
+                  url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      color: var(--blanco);
+      padding: 5rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 span {
+      color: var(--amarillo-co);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--verde-it);
+      color: var(--blanco);
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 4px 14px rgba(0,140,69,0.4);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--blanco);
+      border: 2px solid var(--blanco);
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); background: #007037; }
+    .btn-secondary:hover { background: var(--blanco); color: var(--oscuro); }
+
+    /* --- PILARES Y PROPUESTAS --- */
+    .section {
+      padding: 4.5rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.2rem;
+      color: var(--oscuro);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      color: #64748b;
+      font-size: 1.05rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--blanco);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      border-top: 4px solid var(--verde-it);
+      transition: transform 0.3s;
+    }
+
+    .card:nth-child(2) { border-top-color: var(--azul-co); }
+    .card:nth-child(3) { border-top-color: var(--rojo-it); }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      color: var(--oscuro);
+    }
+
+    .card p {
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    /* --- SECCIÓN SOBRE NOSOTROS --- */
+    .about-box {
+      background: var(--blanco);
+      border-radius: 16px;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+    }
+
+    .about-text h3 {
+      font-size: 1.8rem;
+      color: var(--oscuro);
+      margin-bottom: 1rem;
+    }
+
+    .about-text p {
+      margin-bottom: 1rem;
+      color: #4a5568;
+    }
+
+    .quote-card {
+      background: linear-gradient(135deg, #1e293b, var(--azul-co));
+      color: var(--blanco);
+      padding: 2.5rem;
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .quote-card p {
+      font-size: 1.15rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .quote-author {
+      font-weight: 700;
+      color: var(--amarillo-co);
+    }
+
+    /* --- FORMULARIO UNIRSE --- */
+    .join-section {
+      background: var(--oscuro);
+      color: var(--blanco);
+      border-radius: 16px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .join-section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .join-form {
+      max-width: 550px;
+      margin: 2rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 0.8rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: var(--blanco);
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      outline: 2px solid var(--verde-it);
+    }
+
+    .btn-submit {
+      background: var(--amarillo-co);
+      color: var(--oscuro);
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: #e5bd10;
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      background: #0b0f17;
+      color: #94a3b8;
+      padding: 3rem 1.5rem 1.5rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h4 {
+      color: var(--blanco);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1e293b;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    /* --- MEDIA QUERIES (RESPONSIVE) --- */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav ul {
+        gap: 1rem;
+        font-size: 0.9rem;
+      }
+
+      .hero h1 {
+        font-size: 2.1rem;
+      }
+
+      .about-box {
+        grid-template-columns: 1fr;
+        padding: 1.8rem;
+      }
+
+      .form-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA BANDERAS: SOLO ITALIA -->
+  <div class="flag-bar"></div>
+
+  <!-- HEADER CON MENÚ COMPLETO (INIZIO EN LUGAR DE INIZIO / INICIO) -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        FORZA <span>EMILIANI</span>
+        <span class="badge">IT-CO</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#inicio">Inizio</a></li>
+          <li><a href="#propuestas">Progetto</a></li>
+          <li><a href="#nosotros">Chi Siamo</a></li>
+          <li><a href="#contacto" class="btn-header">Uniti a noi</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <span class="hero-tag">🇮🇹 Movimento Italo-Colombiano 🇨🇴</span>
+      <h1>Un progetto nato tra <span>Ravenna, Italia e Barranquilla</span></h1>
+      <p>Siamo un gruppo di italo-discendenti che sta costruendo un ponte tra Piacenza e il Suroccidente di Barranquilla.</p>
+      <div class="hero-buttons">
+        <a href="#contacto" class="btn-primary">Súmate a la red de apoyo</a>
+        <a href="#propuestas" class="btn-secondary">Scopri il Progetto</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILARES Y PROPUESTAS -->
+  <section class="section" id="propuestas">
+    <div class="section-header">
+      <h2>Origine e Base Operativa</h2>
+      <p>Progetto politico-culturale in fase di costituzione sia in Italia che in Colombia.</p>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🇮🇹</div>
+        <h3>Origine</h3>
+        <p><strong>Ravenna, Italia</strong> — Radici profonde e connessione storica con il territorio italiano e la città di Ravenna, Italia.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🇨🇴</div>
+        <h3>Base Operativa</h3>
+        <p><strong>Barranquilla</strong> — Trabajo activo de integración enfocado en el Suroccidente de Barranquilla y la comunidad italo-colombiana.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🌉</div>
+        <h3>Il Ponte</h3>
+        <p>Uniendo Piacenza con Barranquilla para promover el desarrollo socio-cultural, la cooperación y el fortalecimiento comunitario.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE NOSOTROS -->
+  <section class="section" id="nosotros">
+    <div class="about-box">
+      <div class="about-text">
+        <h3>Progetto Politico-Culturale</h3>
+        <p><strong>FORZA EMILIANI</strong> è un movimento di italo-discendenti in fase di costituzione, creato per unire l'Italia e la Colombia con azioni concrete di impatto sociale e culturale.</p>
+        <p><em>Proyecto político-cultural italo-colombiano en proceso de constitución en Italia y Colombia. Sito web in costruzione.</em></p>
+      </div>
+      <div class="quote-card">
+        <p>"Siamo un gruppo di italo-discendenti che sta costruendo un ponte tra Piacenza e il Suroccidente di Barranquilla."</p>
+        <div class="quote-author">— FORZA EMILIANI</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN UNIRSE -->
+  <section class="section" id="contacto">
+    <div class="join-section">
+      <h2>Únete a los simpatizantes</h2>
+      <p>Súmate a la red de apoyo. Déjanos tus datos para recibir información sobre el proceso de constitución y la próxima recolección de firmas en Barranquilla.</p>
+      
+      <form class="join-form" onsubmit="event.preventDefault(); alert('¡Gracias por sumarte a la red de apoyo de Forza Emiliani!');">
+        <input type="text" placeholder="Nome completo / Nombre completo" class="form-control" required>
+        <div class="form-group">
+          <input type="email" placeholder="Email" class="form-control" required>
+          <input type="tel" placeholder="Telefono / WhatsApp" class="form-control" required>
+        </div>
+        <button type="submit" class="btn-submit">SÚMATE A LA RED DE APOYO</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>FORZA EMILIANI</h4>
+        <p>Movimento Italo-Colombiano in fase di costituzione.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Sedi / Sedes</h4>
+        <ul>
+          <li>🇮🇹 Ravenna, Italia</li>
+          <li>🇨🇴 Barranquilla, Colombia</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Stato / Estado</h4>
+        <ul>
+          <li>Progetto in costituzione</li>
+          <li>Sito web in costruzione</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FORZA EMILIANI — Movimento Italo-Colombiano. Tutti i diritti riservati.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
