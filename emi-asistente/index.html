@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EMI Asistente - HUD Interface</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #010814;
+            color: #00d8ff;
+            font-family: 'Segoe UI', Consolas, monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Dashboard HUD Layout */
+        .hud-dashboard {
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            grid-template-rows: 1fr 40px;
+            padding: 20px;
+            gap: 20px;
+            align-items: center;
+            background: radial-gradient(circle at 50% 50%, #031c38 0%, #010814 85%);
+        }
+
+        /* Contenedor Central HUD */
+        .center-hud-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            min-height: 520px;
+        }
+
+        /* Vector de Venitas / Circuitos (Laterales) */
+        .circuits-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* --- 4 NODOS ORBITALES INTERACTIVOS Y MODERNOS --- */
+        .orbit-node {
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0, 216, 255, 0.4);
+            background: rgba(1, 15, 33, 0.85);
+            box-shadow: 0 0 18px rgba(0, 216, 255, 0.25), inset 0 0 12px rgba(0, 216, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 12;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            overflow: hidden;
+        }
+
+        .orbit-node:hover {
+            transform: scale(1.15);
+            border-color: #00d8ff;
+            box-shadow: 0 0 28px #00d8ff, inset 0 0 18px #00d8ff;
+        }
+
+        /* Ubicaciones exactas de los 4 nodos circulares */
+        .node-top-left     { top: 10%; left: 15%; }
+        .node-top-right    { top: 10%; right: 15%; }
+        .node-bottom-left  { bottom: 10%; left: 15%; }
+        .node-bottom-right { bottom: 10%; right: 15%; }
+
+        /* Estilo Específico 1: RADAR (Top Left) */
+        .radar-sweeper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, rgba(0, 216, 255, 0.6) 0deg, transparent 60deg, transparent 360deg);
+            animation: spinCW 2.5s linear infinite;
+        }
+
+        .radar-crosshair {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radar-crosshair::before { content: ''; position: absolute; width: 100%; height: 1px; background: rgba(0,216,255,0.4); }
+        .radar-crosshair::after { content: ''; position: absolute; height: 100%; width: 1px; background: rgba(0,216,255,0.4); }
+
+        /* Estilo Específico 2: AI CORE (Top Right) */
+        .ai-core-ring {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 2px dashed #00d8ff;
+            border-radius: 50%;
+            animation: spinCCW 6s linear infinite;
+        }
+
+        .ai-title-text {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 10px #00d8ff, 0 0 20px #00d8ff;
+            z-index: 3;
+            letter-spacing: 1px;
+        }
+
+        /* Estilo Específico 3: ACCESO SEGURO (Bottom Left) */
+        .lock-icon-svg {
+            width: 26px;
+            height: 26px;
+            fill: none;
+            stroke: #00d8ff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 6px #00d8ff);
+            margin-bottom: 2px;
+            z-index: 3;
+        }
+
+        .node-subtext {
+            font-size: 0.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #80e8ff;
+            text-shadow: 0 0 4px #00d8ff;
+            z-index: 3;
+            text-transform: uppercase;
+        }
+
+        /* Estilo Específico 4: ESCUDO SEGURIDAD (Bottom Right) */
+        .shield-icon-svg {
+            width: 28px;
+            height: 28px;
+            fill: rgba(0, 216, 255, 0.15);
+            stroke: #00d8ff;
+            stroke-width: 2;
+            filter: drop-shadow(0 0 8px #00d8ff);
+            z-index: 3;
+            animation: pulseShield 2s ease-in-out infinite alternate;
+        }
+
+        /* Esfera Central HUD */
+        .core-sphere {
+            position: relative;
+            width: clamp(260px, 28vw, 360px);
+            height: clamp(260px, 28vw, 360px);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            background: radial-gradient(circle, rgba(0, 216, 255, 0.25) 0%, rgba(1, 12, 30, 0.85) 65%, transparent 75%);
+            box-shadow: 0 0 45px rgba(0, 216, 255, 0.4);
+            animation: pulseIdle 3s ease-in-out infinite;
+            transition: all 0.5s ease;
+        }
+
+        .hud-ring-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px #00d8ff);
+            transition: filter 0.5s ease;
+        }
+
+        .ring-cw { transform-origin: center; animation: spinCW 20s linear infinite; }
+        .ring-ccw { transform-origin: center; animation: spinCCW 12s linear infinite; }
+        .ring-fast { transform-origin: center; animation: spinCW 7s linear infinite; }
+
+        .core-eye {
+            width: 135px;
+            height: 135px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #00385e 0%, #000a17 85%);
+            border: 2px solid #00d8ff;
+            box-shadow: 0 0 25px #00d8ff, inset 0 0 15px rgba(0, 216, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 12;
+            text-align: center;
+            padding: 8px;
+            transition: all 0.5s ease;
+        }
+
+        .core-eye-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #00d8ff, 0 0 18px #00d8ff;
+            line-height: 1.1;
+            transition: text-shadow 0.5s ease;
+        }
+
+        .core-eye-sub {
+            font-size: 0.6rem;
+            color: #80e8ff;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            background: rgba(0, 216, 255, 0.2);
+            border: 1px solid #00d8ff;
+            padding: 1px 6px;
+            border-radius: 8px;
+            transition: all 0.5s ease;
+        }
+
+        /* --- ESTADOS DE COLOR ASISTENTE --- */
+        /* Usuario Hablando -> Amarillo / Dorado */
+        .core-sphere.user-listening {
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.35) 0%, rgba(1, 12, 30, 0.85) 65%, transparent 75%);
+            box-shadow: 0 0 55px rgba(255, 215, 0, 0.6);
+        }
+        .core-sphere.user-listening .hud-ring-svg {
+            filter: drop-shadow(0 0 12px #ffd700);
+        }
+        .core-sphere.user-listening .hud-ring-svg circle {
+            stroke: #ffd700 !important;
+        }
+        .core-sphere.user-listening .core-eye {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px #ffd700, inset 0 0 18px rgba(255, 215, 0, 0.8);
+            background: radial-gradient(circle, #5e4d00 0%, #000a17 85%);
+        }
+        .core-sphere.user-listening .core-eye-title {
+            text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+        }
+        .core-sphere.user-listening .core-eye-sub {
+            color: #fff3a8;
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.25);
+        }
+
+        /* Asistente Hablando -> Verde Neón */
+        .core-sphere.assistant-speaking {
+            background: radial-gradient(circle, rgba(0, 255, 128, 0.35) 0%, rgba(1, 12, 30, 0.85) 65%, transparent 75%);
+            box-shadow: 0 0 55px rgba(0, 255, 128, 0.6);
+        }
+        .core-sphere.assistant-speaking .hud-ring-svg {
+            filter: drop-shadow(0 0 12px #00ff80);
+        }
+        .core-sphere.assistant-speaking .hud-ring-svg circle {
+            stroke: #00ff80 !important;
+        }
+        .core-sphere.assistant-speaking .core-eye {
+            border-color: #00ff80;
+            box-shadow: 0 0 30px #00ff80, inset 0 0 18px rgba(0, 255, 128, 0.8);
+            background: radial-gradient(circle, #005e2b 0%, #000a17 85%);
+        }
+        .core-sphere.assistant-speaking .core-eye-title {
+            text-shadow: 0 0 10px #00ff80, 0 0 20px #00ff80;
+        }
+        .core-sphere.assistant-speaking .core-eye-sub {
+            color: #a8ffcb;
+            border-color: #00ff80;
+            background: rgba(0, 255, 128, 0.25);
+        }
+
+        /* Paneles Laterales */
+        .panel-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .hud-widget {
+            border: 1px solid rgba(0, 216, 255, 0.35);
+            background: rgba(1, 15, 33, 0.78);
+            padding: 14px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 12px rgba(0, 216, 255, 0.15);
+        }
+
+        .hud-widget-header {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 216, 255, 0.3);
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            color: #80e8ff;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Anillos Dinámicos RAM / CPU */
+        .gauges-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .gauge-circle {
+            position: relative;
+            width: 105px;
+            height: 105px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-circle svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .gauge-circle circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .gauge-value-text {
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.65rem;
+            color: #ffffff;
+            text-shadow: 0 0 6px #00d8ff;
+            z-index: 3;
+            line-height: 1.3;
+        }
+
+        /* Manuel Estatus 100% - Esquina Inferior Izquierda */
+        .manuel-status-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+        }
+
+        .brain-icon-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.5px solid #00d8ff;
+            background: rgba(0, 216, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px #00d8ff;
+            animation: brainGlow 2s infinite alternate;
+        }
+
+        .brain-svg {
+            width: 28px;
+            height: 28px;
+            fill: #00d8ff;
+            filter: drop-shadow(0 0 6px #00d8ff);
+        }
+
+        .manuel-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .manuel-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 8px #00d8ff;
+        }
+
+        .manuel-badge {
+            display: inline-block;
+            margin-top: 2px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            background: rgba(0, 216, 255, 0.25);
+            border: 1px solid #00d8ff;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #80e8ff;
+            box-shadow: 0 0 8px rgba(0, 216, 255, 0.6);
+            width: fit-content;
+        }
+
+        /* Clima con Iconos Animados */
+        .weather-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .weather-temp {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #ffffff;
+            text-shadow: 0 0 12px #00d8ff;
+        }
+
+        .weather-icon-svg {
+            width: 45px;
+            height: 45px;
+            filter: drop-shadow(0 0 8px #00d8ff);
+        }
+
+        .sun-spin { transform-origin: center; animation: spinCW 25s linear infinite; }
+        .cloud-float { animation: floatCloud 3s ease-in-out infinite alternate; }
+
+        .forecast-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(0, 216, 255, 0.2);
+        }
+
+        .forecast-icon-sm {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+        }
+
+        /* Footer Status */
+        .footer-status {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #00d8ff;
+            text-shadow: 0 0 10px #00d8ff;
+        }
+
+        /* Keyframes */
+        @keyframes spinCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spinCCW { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+        @keyframes pulseIdle {
+            0%, 100% { transform: scale(0.98); opacity: 0.95; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }
+
+        @keyframes brainGlow {
+            0% { box-shadow: 0 0 8px #00d8ff; transform: scale(1); }
+            100% { box-shadow: 0 0 20px #00d8ff; transform: scale(1.05); }
+        }
+
+        @keyframes pulseShield {
+            0% { transform: scale(0.92); opacity: 0.8; }
+            100% { transform: scale(1.08); opacity: 1; }
+        }
+
+        @keyframes floatCloud {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-4px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 920px) {
+            .hud-dashboard {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                height: auto;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .center-hud-container {
+                min-height: 380px;
+            }
+
+            .node-top-left     { top: 5%; left: 5%; }
+            .node-top-right    { top: 5%; right: 5%; }
+            .node-bottom-left  { bottom: 5%; left: 5%; }
+            .node-bottom-right { bottom: 5%; right: 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hud-dashboard">
+        <!-- Panel Izquierdo Superior: MÉTRICAS CPU Y RAM DINÁMICAS -->
+        <div class="panel-side">
+            <div class="hud-widget">
+                <div class="hud-widget-header">
+                    <span>MÉTRICAS DE HARDWARE</span>
+                    <span>SYS 100%</span>
+                </div>
+                
+                <div class="gauges-container">
+                    <!-- Medidor de RAM dinámico -->
+                    <div class="gauge-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#002847" stroke-width="6"/>
+                            <circle id="ramProgress" cx="50" cy="50" r="40" fill="none" stroke="#00d8ff" stroke-width="6" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="60" stroke-linecap="round"/>
+                        </svg>
+                        <div class="gauge-value-text">
+                            RAM: <span id="ramVal">75</span>%<br>
+                            <span style="font-size:0.55rem; color:#80e8ff;">SWAP: <span id="swapVal">49</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Medidor de CPU dinámico -->
+                    <div class="gauge-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#002847" stroke-width="6"/>
+                            <circle id="cpuProgress" cx="50" cy="50" r="40" fill="none" stroke="#00d8ff" stroke-width="6" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="80" stroke-linecap="round"/>
+                        </svg>
+                        <div class="gauge-value-text">
+                            CPU:<br>
+                            0: <span id="cpu0Val">74</span><br>
+                            1: <span id="cpu1Val">57</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Izquierdo Inferior: MANUEL ESTATUS 100% -->
+            <div class="hud-widget">
+                <div class="hud-widget-header">
+                    <span>SISTEMA CEREBRAL</span>
+                    <span>ONLINE</span>
+                </div>
+                <div class="manuel-status-box">
+                    <div class="brain-icon-container">
+                        <!-- Icono SVG Cerebro -->
+                        <svg class="brain-svg" viewBox="0 0 24 24">
+                            <path d="M12,3C9.24,3 7,5.24 7,8 C6.4,8 5.83,8.17 5.35,8.5 C3.9,9.5 3,11.16 3,13 C3,15.28 4.35,17.25 6.29,18.15 C6.73,19.8 8.22,21 10,21 C10.7,21 11.37,20.8 11.94,20.44 C12.5,20.8 13.2,21 13.9,21 C15.68,21 17.17,19.8 17.61,18.15 C19.55,17.25 20.9,15.28 20.9,13 C20.9,11.16 20,9.5 18.55,8.5 C18.07,8.17 17.5,8 16.9,8 C16.9,5.24 14.66,3 12,3 Z M12,5 C13.66,5 15,6.34 15,8 L15,9 L16,9 C16.55,9 17,9.45 17,10 C17,10.55 16.55,11 16,11 L15,11 L15,13 L17,13 C17.55,13 18,13.45 18,14 C18,14.55 17.55,15 17,15 L15,15 L15,17 C15,17.55 14.55,18 14,18 C13.45,18 13,17.55 13,17 L13,15 L11,15 L11,17 C11,17.55 10.45,18 9.9,18 C9.35,18 8.9,17.55 8.9,17 L8.9,15 L7,15 C6.45,15 6,14.55 6,14 C6,13.45 6.45,13 7,13 L8.9,13 L8.9,11 L7.9,11 C7.35,11 6.9,10.55 6.9,10 C6.9,9.45 7.35,9 7.9,9 L8.9,9 L8.9,8 C8.9,6.34 10.24,5 12,5 Z"/>
+                        </svg>
+                    </div>
+                    <div class="manuel-info">
+                        <span class="manuel-name">MANUEL</span>
+                        <span class="manuel-badge">ESTATUS 100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Centro HUD: Esfera Central y 4 Nuevos Nodos Orbitales Estilo Imagen -->
+        <div class="center-hud-container">
+            <!-- SVG Circuitos Venitas Laterales -->
+            <svg class="circuits-svg" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet">
+                <g stroke="#00d8ff" stroke-width="1.5" fill="none" opacity="0.8">
+                    <path d="M 170 300 L 90 300 L 70 280 L 30 280" />
+                    <rect x="130" y="295" width="10" height="10" stroke="#00d8ff" stroke-width="1" fill="rgba(0,216,255,0.2)"/>
+                    <circle cx="30" cy="280" r="3" fill="#00d8ff" />
+
+                    <path d="M 430 300 L 490 300 L 520 330 L 570 330" />
+                    <circle cx="570" cy="330" r="3" fill="#00d8ff" />
+                </g>
+            </svg>
+
+            <!-- 1. RADAR (Arriba Izquierda) -->
+            <div class="orbit-node node-top-left" id="nodeRadar" title="Mapeo Radar">
+                <div class="radar-sweeper"></div>
+                <div class="radar-crosshair"></div>
+                <span class="node-subtext" style="position:relative; z-index:4; margin-top:35px;">RADAR</span>
+            </div>
+
+            <!-- 2. AI CORE (Arriba Derecha) -->
+            <div class="orbit-node node-top-right" id="nodeAI" title="Inteligencia Artificial">
+                <div class="ai-core-ring"></div>
+                <span class="ai-title-text">AI</span>
+                <span class="node-subtext">CORE</span>
+            </div>
+
+            <!-- 3. ACCESO SEGURO (Abajo Izquierda) -->
+            <div class="orbit-node node-bottom-left" id="nodeAccess" title="Acceso Seguro">
+                <svg class="lock-icon-svg" viewBox="0 0 24 24">
+                    <rect x="5" y="11" width="14" height="10" rx="2" stroke="#00d8ff"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#00d8ff"/>
+                    <circle cx="12" cy="16" r="1" fill="#00d8ff"/>
+                </svg>
+                <span class="node-subtext">ACCESO</span>
+                <span class="node-subtext" style="font-size:0.45rem; color:#ffffff;">SEGURO</span>
+            </div>
+
+            <!-- 4. SEGURIDAD ESCUDO (Abajo Derecha) -->
+            <div class="orbit-node node-bottom-right" id="nodeShield" title="Protección Escudo">
+                <svg class="shield-icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" stroke="#00d8ff"/>
+                    <path d="M9 12l2 2 4-4" stroke="#00d8ff" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="node-subtext" style="margin-top:2px;">SECURE</span>
+            </div>
+
+            <!-- Núcleo Esfera Central - EMI ASISTENTE -->
+            <div class="core-sphere" id="coreSphere">
+                <svg class="hud-ring-svg" viewBox="0 0 300 300">
+                    <g class="ring-cw">
+                        <circle cx="150" cy="150" r="142" fill="none" stroke="#00d8ff" stroke-width="1.5" opacity="0.6"/>
+                        <circle cx="150" cy="150" r="134" fill="none" stroke="#00d8ff" stroke-width="3" stroke-dasharray="15 8 4 8"/>
+                    </g>
+                    <g class="ring-ccw">
+                        <circle cx="150" cy="150" r="115" fill="none" stroke="#00d8ff" stroke-width="5" stroke-dasharray="8 8"/>
+                        <circle cx="150" cy="150" r="98" fill="none" stroke="#00d8ff" stroke-width="1" opacity="0.8"/>
+                    </g>
+                    <g class="ring-fast">
+                        <circle cx="150" cy="150" r="78" fill="none" stroke="#00d8ff" stroke-width="3" stroke-dasharray="50 25"/>
+                    </g>
+                </svg>
+
+                <div class="core-eye">
+                    <div class="core-eye-title">EMI<br>ASISTENTE</div>
+                    <div class="core-eye-sub">NÚCLEO 100%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Derecho: Clima Barranquilla y Ubicación -->
+        <div class="panel-side">
+            <div class="hud-widget">
+                <div class="hud-widget-header">
+                    <span>CLIMA BARRANQUILLA</span>
+                    <span>LIVE</span>
+                </div>
+                
+                <div class="weather-top">
+                    <div class="weather-temp">31°C</div>
+                    <svg class="weather-icon-svg" viewBox="0 0 64 64">
+                        <g class="sun-spin">
+                            <circle cx="28" cy="28" r="10" fill="#00d8ff" opacity="0.9"/>
+                            <line x1="28" y1="12" x2="28" y2="6" stroke="#00d8ff" stroke-width="2"/>
+                            <line x1="28" y1="44" x2="28" y2="50" stroke="#00d8ff" stroke-width="2"/>
+                            <line x1="12" y1="28" x2="6" y2="28" stroke="#00d8ff" stroke-width="2"/>
+                            <line x1="44" y1="28" x2="50" y2="28" stroke="#00d8ff" stroke-width="2"/>
+                        </g>
+                        <path class="cloud-float" d="M26 40 C26 34, 34 32, 38 36 C42 32, 50 36, 50 40 C54 40, 54 46, 50 48 L26 48 C22 48, 22 40, 26 40 Z" fill="#ffffff" opacity="0.8"/>
+                    </svg>
+                </div>
+
+                <div style="font-size:0.75rem; line-height:1.6; color:#80e8ff;">
+                    Soleado / Caluroso • Sensación: 36°C<br>
+                    Humedad: 78% | Viento: 19 km/h (NE)
+                </div>
+
+                <div style="margin-top: 8px;">
+                    <div class="forecast-row">
+                        <span>Lunes</span>
+                        <svg class="forecast-icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="#00d8ff"/></svg>
+                        <span>32° / 25°</span>
+                        <span style="color:#80e8ff;">Soleado</span>
+                    </div>
+                    <div class="forecast-row">
+                        <span>Martes</span>
+                        <svg class="forecast-icon-sm" viewBox="0 0 24 24"><path d="M6 14 C6 11, 12 10, 14 12 C17 10, 20 13, 19 16 L6 16 Z" fill="#00d8ff"/><line x1="9" y1="18" x2="8" y2="21" stroke="#00d8ff" stroke-width="2"/><line x1="14" y1="18" x2="13" y2="21" stroke="#00d8ff" stroke-width="2"/></svg>
+                        <span>31° / 24°</span>
+                        <span style="color:#80e8ff;">Chubascos</span>
+                    </div>
+                    <div class="forecast-row">
+                        <span>Miércoles</span>
+                        <svg class="forecast-icon-sm" viewBox="0 0 24 24"><path d="M6 14 C6 11, 12 10, 14 12 C17 10, 20 13, 19 16 L6 16 Z" fill="#00d8ff"/></svg>
+                        <span>30° / 25°</span>
+                        <span style="color:#80e8ff;">Nublado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hud-widget">
+                <div class="hud-widget-header">
+                    <span>UBICACIÓN & RED</span>
+                </div>
+                <p style="font-size: 0.75rem; line-height: 1.6;">
+                    CIUDAD: Barranquilla, COL<br>
+                    COORDENADAS: 10.9685° N, 74.7813° W<br>
+                    ESTADO RED: ONLINE (100 Mbps)<br>
+                    IP: 190.157.32.12
+                </p>
+            </div>
+        </div>
+
+        <!-- Pie de Página -->
+        <div class="footer-status">EMI ASISTENTE • OPERATIVO AL 100%</div>
+    </div>
+
+    <script>
+        // Animación dinámica continua de CPU y RAM
+        const ramVal = document.getElementById('ramVal');
+        const swapVal = document.getElementById('swapVal');
+        const cpu0Val = document.getElementById('cpu0Val');
+        const cpu1Val = document.getElementById('cpu1Val');
+        
+        const ramProgress = document.getElementById('ramProgress');
+        const cpuProgress = document.getElementById('cpuProgress');
+
+        setInterval(() => {
+            const ram = Math.floor(Math.random() * (88 - 68 + 1)) + 68;
+            const swap = Math.floor(Math.random() * (52 - 45 + 1)) + 45;
+            const cpu0 = Math.floor(Math.random() * (92 - 60 + 1)) + 60;
+            const cpu1 = Math.floor(Math.random() * (85 - 50 + 1)) + 50;
+
+            ramVal.innerText = ram;
+            swapVal.innerText = swap;
+            cpu0Val.innerText = cpu0;
+            cpu1Val.innerText = cpu1;
+
+            const ramOffset = 251.2 - (251.2 * ram) / 100;
+            const cpuAvg = (cpu0 + cpu1) / 2;
+            const cpuOffset = 251.2 - (251.2 * cpuAvg) / 100;
+
+            ramProgress.style.strokeDashoffset = ramOffset;
+            cpuProgress.style.strokeDashoffset = cpuOffset;
+        }, 1200);
+
+        // Feedback táctil al hacer clic en los nuevos nodos
+        document.querySelectorAll('.orbit-node').forEach(node => {
+            node.addEventListener('click', () => {
+                node.style.borderColor = '#ffffff';
+                setTimeout(() => node.style.borderColor = 'rgba(0, 216, 255, 0.4)', 600);
+            });
+        });
+
+        /* --- MOTOR DE RECONOCIMIENTO Y SÍNTESIS DE VOZ (SISTEMA EMI) --- */
+        const coreSphere = document.getElementById('coreSphere');
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'es-ES';
+
+            let isSpeaking = false;
+
+            // Iniciar escucha continua
+            try {
+                recognition.start();
+            } catch(e) {}
+
+            recognition.onresult = (event) => {
+                if (isSpeaking) return;
+
+                const result = event.results[event.results.length - 1];
+                
+                // Mientras la persona está hablando (cambia a amarillo/dorado)
+                setVisualState('user');
+
+                if (result.isFinal) {
+                    const text = result[0].transcript.trim();
+                    processUserSpeech(text);
+                }
+            };
+
+            recognition.onend = () => {
+                // Mantener siempre activo el micrófono
+                try {
+                    recognition.start();
+                } catch(e) {}
+            };
+
+            function processUserSpeech(text) {
+                let responseText = "Entendido, consulta procesada.";
+                const lower = text.toLowerCase();
+
+                if (lower.includes("hola") || lower.includes("emi")) {
+                    responseText = "Hola, sistema EMI operativo y a su servicio.";
+                } else if (lower.includes("estado") || lower.includes("sistema")) {
+                    responseText = "Todos los sistemas se encuentran funcionando al cien por cien.";
+                } else if (lower.includes("clima") || lower.includes("temperatura")) {
+                    responseText = "En Barranquilla tenemos 31 grados centígrados con sensación térmica de 36.";
+                } else if (lower.includes("hora")) {
+                    const now = new Date();
+                    responseText = `Son las ${now.getHours()} horas con ${now.getMinutes()} minutos.`;
+                }
+
+                speakResponse(responseText);
+            }
+
+            function speakResponse(text) {
+                if (!('speechSynthesis' in window)) return;
+
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 1.0;
+
+                utterance.onstart = () => {
+                    isSpeaking = true;
+                    setVisualState('assistant'); // Cambia a verde neón cuando EMI habla
+                };
+
+                utterance.onend = () => {
+                    isSpeaking = false;
+                    setVisualState('idle'); // Regresa al azul cian original
+                };
+
+                utterance.onerror = () => {
+                    isSpeaking = false;
+                    setVisualState('idle');
+                };
+
+                window.speechSynthesis.speak(utterance);
+            }
+
+            function setVisualState(state) {
+                coreSphere.classList.remove('user-listening', 'assistant-speaking');
+
+                if (state === 'user') {
+                    coreSphere.classList.add('user-listening');
+                } else if (state === 'assistant') {
+                    coreSphere.classList.add('assistant-speaking');
+                }
+            }
+
+            // Iniciar por toque en la esfera si el navegador requiere interacción inicial
+            coreSphere.addEventListener('click', () => {
+                try {
+                    recognition.start();
+                } catch(e) {}
+            });
+        }
+    </script>
+</body>
+</html>
